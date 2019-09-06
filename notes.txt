@@ -1,0 +1,34 @@
+command for 7zip gzip compression
+7z a -tgzip -y output.gzip input.ext   (for single file) (can probably remove the gzip extension snowflake knows this already just use native extension)
+# do not need to do this snowsql automatically does on load (AUTO_COMPRESS option)
+
+
+command for bcp
+bcp "SELECT * from SAP_Production.dbo.TCURX" queryout .\tcurx.csv -t, -c -T -S 10.61.95.22
+
+
+commands for snowsql cli
+
+to connect: (connection properties defined in ~\snowsql\config)
+snowsql
+
+to copy local file to stage
+put file://file_location @stage_name
+
+
+
+----------------------------------------
+
+general flow of data for each source
+    pull 1 file per table per source
+    organize into folder structure source/table
+    compress each source table file independently (keep these files between 10 - 100 MB)
+    push each compressed file to snowflake stage
+    unpack each file sent to snowflake stage into appropriate location in repo
+
+
+
+questions:
+    flat file vs json (is json going to be more flexible for source changes???)
+
+

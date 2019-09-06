@@ -1,0 +1,186 @@
+from typing import List, Dict
+from collections import defaultdict
+from math import ceil
+import pyodbc
+
+
+class Source:
+    source: str = None
+    server: str = None
+    database: str = None
+    schema: str = None
+
+    def __init__(self, source, server, database, schema):
+        self.source = source
+        self.server = server
+        self.database = database
+        self.schema = schema
+
+    def __repr__(self):
+        return '<Source - {{Source:{source}|Server:{server}|Db:{database}|Schema:{schema}}}>'.format(source=self.source,
+                                                                                                     server=self.server,
+                                                                                                     database=self.database,
+                                                                                                     schema=self.schema)
+
+
+class SourceTable:
+    source: Source = None
+    table: str = None
+    row_count: int = None
+    total_batches: int = None
+    primary_keys: List[str] = None
+    columns: List[str] = None
+
+    def __init__(self, source: Source, table: str, row_count: int, primary_keys : List[str], columns: List[str]):
+        self.source = source
+        self.table = table
+        self.row_count = row_count
+        self.primary_keys = primary_keys
+        self.columns = columns
+        self.get_number_of_batches(row_count)
+
+    def __repr__(self):
+        return '<SourceTable - {{Source:{source}|Server:{server}|{database}.{schema}.{table}|Rows:{row_count}}}>'.format(
+            source=self.source.source,
+            server=self.source.server,
+            database=self.source.database,
+            schema=self.source.schema,
+            table=self.table,
+            row_count=self.row_count
+        )
+
+    def get_number_of_batches(self, row_count: int):
+        rows_in_batch: float = 1e6
+        self.total_batches = ceil(row_count / rows_in_batch)
+
+
+class SourceTableBatch:
+    source_table: SourceTable = None
+    source: Source = None
+    batch_number: int = None
+
+    def __init__(self, source_table: SourceTable, batch_number: int):
+        self.source_table = source_table
+        self.source = source_table.source # Just for easy access
+        self.batch_number = batch_number
+
+    def __repr__(self):
+        return '<SourceTableBatch - {{Source:{source}|Server:{server}|{database}.{schema}.{table}|Batch#:{batch_number}}}>'.format(
+            source=self.source_table.source.source,
+            server=self.source_table.source.server,
+            database=self.source_table.source.database,
+            schema=self.source_table.source.schema,
+            table=self.source_table.table,
+            batch_number=self.batch_number
+        )
+
+#
+#
+#
+##### Helper functions to get source/table metadata
+
+def get_table_metadata(source: Source) -> Dict:
+    # conn_str = 'DRIVER={{SQL Server Native Client 11.0}};SERVER={server};Trusted_Connection=yes'.format(
+    conn_str = 'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes'.format(
+        server=source.server, database=source.database)
+    with pyodbc.connect(conn_str) as conn:
+        row_counts = get_table_row_counts(source, conn)
+        columns = get_table_columns(source, conn)
+
+    for table, info in columns.items():
+        info['row_count'] = row_counts[table]
+    return columns
+
+
+def get_table_row_counts(source: Source, conn: pyodbc.Connection) -> Dict:
+    qry = get_table_row_counts_qry(source)
+    with conn.cursor() as cursor:
+        data = cursor.execute(qry).fetchall()
+    columns = [key[0] for key in cursor.description]
+    data = rows_to_json(data, columns)
+    return {row['table_name']: row['row_count'] for row in data}
+
+
+def get_table_columns(source: Source, conn: pyodbc.Connection) -> Dict:
+    qry = get_table_meta_qry(source)
+    with conn.cursor() as cursor:
+        data = cursor.execute(qry).fetchall()
+    columns = [key[0] for key in cursor.description]
+    data = rows_to_json(data, columns)
+    return process_table_columns(data)
+
+
+def process_table_columns(columns: List[Dict]) -> Dict:
+    data = defaultdict(lambda: defaultdict(list))
+    for row in columns:
+        table_name = row['table_name']
+        column_name = row['column_name']
+        column_id = row['column_id']
+        part_of_pk = row['part_of_pk']
+        data[table_name]['columns'].append(column_name)
+        if part_of_pk:
+            data[table_name]['primary_keys'].append(column_name)
+    return data
+
+
+def get_table_meta_qry(source: Source):
+    return '''
+        with table_columns as (
+            select
+                schema_name(tab.schema_id) schema_name,
+                tab.name                   table_name,
+                col.column_id              column_id,
+                col.name                   column_name,
+                cast(IIF(ic.object_id is null, 0, 1) as bit) part_of_pk
+            from {database}.sys.tables tab
+             inner join {database}.sys.columns col
+                        on tab.object_id = col.object_id
+             inner join {database}.sys.indexes pk
+                        on tab.object_id = pk.object_id
+                            and pk.is_primary_key = 1
+            left join {database}.sys.index_columns ic
+                        on ic.object_id = pk.object_id
+                            and ic.index_id = pk.index_id
+                            and ic.column_id = col.column_id
+            where schema_name(tab.schema_id) = '{schema}'
+        ), view_columns as (
+            select
+              schema_name(v.schema_id) schema_name,
+              object_name(c.object_id) view_name,
+              c.name                   column_name
+            from {database}.sys.columns c
+               join {database}.sys.views v
+                    on v.object_id = c.object_id
+            where schema_name(v.schema_id) = '{schema}'
+        )
+        select table_name, column_id, column_name, part_of_pk
+        from table_columns tc
+        where exists(select 1 from view_columns vc where tc.schema_name = vc.schema_name and concat('V_', tc.table_name) = vc.view_name and tc.column_name = vc.column_name)
+        order by schema_name, table_name, column_id -- TODO make it so this doesnt have to be ordered
+    '''.format(database=source.database, schema=source.schema)
+
+
+def get_table_row_counts_qry(source: Source):
+    return '''
+        select
+            schema_name(schema_id) schema_name,
+            so.name        table_name,
+            ddps.row_count row_count
+        from {database}.sys.objects so
+             join {database}.sys.indexes si
+                  on si.OBJECT_ID = so.OBJECT_ID
+             join {database}.sys.dm_db_partition_stats as ddps
+                  on si.OBJECT_ID = ddps.OBJECT_ID and si.index_id = ddps.index_id
+        where si.index_id < 2 and so.is_ms_shipped = 0 and schema_name(schema_id) = '{schema}'
+    '''.format(database=source.database, schema=source.schema)
+
+
+def rows_to_json(rows: List[pyodbc.Row], columns) -> List[Dict]:
+    dict_rows = []
+    for row in rows:
+        dict_rows.append(dict(zip(columns, row)))
+    return dict_rows
+
+if __name__ == '__main__':
+    source = Source('sap', '10.4.1.100', 'SMSCLTSQLRPTPROD', 'dbo')
+    (row_counts, columns) = get_table_metadata(source)

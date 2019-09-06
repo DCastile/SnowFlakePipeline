@@ -1,0 +1,14 @@
+.idea/
+
+data/
+logs/
+
+
+__pycache__/
+
+
+# temp and may also contain sensitive info
+config.py
+/samples
+daves_function.py
+
