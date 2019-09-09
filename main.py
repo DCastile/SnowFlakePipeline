@@ -1,6 +1,8 @@
 from worker import Worker, source_table_task
 from source_table import Source, SourceTable, SourceTableBatch, get_table_metadata
 
+from snowflake_table_syncher import SnowFlakeTableSyncher
+
 import time
 from queue import Queue
 # from multiprocessing import Queue
@@ -29,6 +31,7 @@ if __name__ == '__main__':
         'Finished collecting source/table metadata - Duration:{duration}'.format(duration=time.time() - start_time))
 
     source_table_batches = list(filter(lambda x: x.source_table.table == 'TCURX', source_table_batches))
+
 
     for source_table_batch in source_table_batches:
         print(source_table_batch)
