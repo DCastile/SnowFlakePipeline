@@ -1,0 +1,4 @@
+all primary keys (including mandt) are properly defined for each source table
+a view will exist for each table to be moved
+    when adding new columns these go onto the end
+    if columns must be specified in specific order the view and the snowflake table definition must match and a full reload must be performed

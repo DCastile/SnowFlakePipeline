@@ -6,6 +6,7 @@ from datetime import datetime
 from subprocess import run, CompletedProcess
 from os import getpid
 import logging
+from threading import current_thread
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -28,7 +29,7 @@ class SourceTableExtractor:
         self.source = source_table_batch.source_table.source
 
     def run(self):
-        logger.info('Starting bcp <PID:{pid} | Source:{source} | Table:{table} | Batch:{batch}>'.format(pid=getpid(),
+        logger.info('Starting bcp <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(pid=getpid(), thread=current_thread().getName(),
                                                                                                         source=self.source.source,
                                                                                                         table=self.source_table.table,
                                                                                                         batch=self.source_table_batch.batch_number))
@@ -39,7 +40,7 @@ class SourceTableExtractor:
         completed_message: Dict = {}
 
         self.end_time = datetime.now()
-        logger.info('Finished bcp <PID:{pid} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(pid=getpid(),
+        logger.info('Finished bcp <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(pid=getpid(), thread=current_thread().getName(),
                                                                                                         source=self.source,
                                                                                                         table=self.source_table.table,
                                                                                                         batch=self.source_table_batch.batch_number,duration=self.end_time-self.start_time))

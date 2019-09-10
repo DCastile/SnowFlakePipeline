@@ -1,0 +1,1 @@
+for each table check for corresponding table in repo

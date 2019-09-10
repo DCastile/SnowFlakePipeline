@@ -8,6 +8,7 @@ import snowflake.connector
 import os
 from os import getpid
 import logging
+from threading import current_thread
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -47,7 +48,7 @@ class SnowFlakeTableSyncher:
 
     def run_put(self, conn: snowflake.connector.SnowflakeConnection):
         logger.info(
-            'Starting snowflake put <PID:{pid} | Source:{source} | Table:{table} | Batch:{batch}>'.format(pid=getpid(),
+            'Starting snowflake put <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(pid=getpid(), thread=current_thread().getName(),
                                                                                                           source=self.source.source,
                                                                                                           table=self.source_table.table,
                                                                                                           batch=self.source_table_batch.batch_number))
@@ -62,16 +63,18 @@ class SnowFlakeTableSyncher:
             os.remove(self.file_location)
 
         logger.info(
-            'Finished snowflake put <PID:{pid} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(
+            'Finished snowflake put <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(
                 pid=getpid(),
+                thread=current_thread().getName(),
                 source=self.source.source,
                 table=self.source_table.table,
                 batch=self.source_table_batch.batch_number, duration=datetime.now() - self.start_time))
 
     def run_merge(self, conn: snowflake.connector.SnowflakeConnection):
         logger.info(
-            'Starting snowflake merge <PID:{pid} | Source:{source} | Table:{table} | Batch:{batch}>'.format(
+            'Starting snowflake merge <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(
                 pid=getpid(),
+                thread=current_thread().getName(),
                 source=self.source.source,
                 table=self.source_table.table,
                 batch=self.source_table_batch.batch_number))
@@ -81,8 +84,9 @@ class SnowFlakeTableSyncher:
         completed: Dict = {}
 
         logger.info(
-            'Finished snowflake merge <PID:{pid} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(
+            'Finished snowflake merge <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(
                 pid=getpid(),
+                thread=current_thread().getName(),
                 source=self.source.source,
                 table=self.source_table.table,
                 batch=self.source_table_batch.batch_number, duration=datetime.now() - self.start_time))

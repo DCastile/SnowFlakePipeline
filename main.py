@@ -30,7 +30,7 @@ if __name__ == '__main__':
     logger.info(
         'Finished collecting source/table metadata - Duration:{duration}'.format(duration=time.time() - start_time))
 
-    source_table_batches = list(filter(lambda x: x.source_table.table == 'TCURX', source_table_batches))
+    source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX', 'VBAK', 'MARA', 'KNA1'), source_table_batches))
 
 
     for source_table_batch in source_table_batches:
