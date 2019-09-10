@@ -49,7 +49,7 @@ class Worker(Thread):
                         break
                     else:
                         lap_time += (time() - start_time)
-                        sleep(10)
+                        sleep(0.5)
                         continue
                 func, args = self.sf_tasks.get()
                 try:

@@ -7,6 +7,7 @@ import time
 from queue import Queue
 # from multiprocessing import Queue
 from typing import List
+from random import shuffle
 
 import logging
 
@@ -26,11 +27,11 @@ if __name__ == '__main__':
         for batch_number in range(0, source_table.total_batches):
             source_table_batch = SourceTableBatch(source_table, batch_number)
             source_table_batches.append(source_table_batch)
-
+    shuffle(source_table_batches)
     logger.info(
         'Finished collecting source/table metadata - Duration:{duration}'.format(duration=time.time() - start_time))
 
-    source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX', 'VBAK', 'MARA', 'KNA1'), source_table_batches))
+    # source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX', 'VBAK', 'MARA', 'KNA1'), source_table_batches))
 
 
     for source_table_batch in source_table_batches:
