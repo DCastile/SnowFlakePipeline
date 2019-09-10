@@ -99,7 +99,7 @@ class SnowFlakeTableSyncher:
         staged_file = '{stage_name}/{file_name}.gz'.format(stage_name=self.stage_name, file_name=self.file_name)
         join_columns_str: str = self._build_join_columns_str()
         update_columns_str: str = self._build_update_columns_str()
-        columns_str: str = ','.join(self.source_table.columns)
+        columns_str: str = ','.join(map(lambda x: '"{col}"'.format(col=x), self.source_table.columns))
 
         insert_values: str = ','.join(
             map(lambda x: '${numb}'.format(numb=x), range(1, 1 + len(self.source_table.columns))))
@@ -119,7 +119,7 @@ class SnowFlakeTableSyncher:
         qry_items = []
         for col_idx, col_name in enumerate(self.source_table.primary_keys, 1):
             qry_items.append(
-                'target.{target_column} = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
+                'target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
         return '\n\t\t\t\tand '.join(qry_items)
 
     def _build_update_columns_str(self):
@@ -128,7 +128,7 @@ class SnowFlakeTableSyncher:
         qry_items = []
         for col_idx, col_name in enumerate(columns_not_pk, 1 + len(self.source_table.primary_keys)):
             qry_items.append(
-                'target.{target_column} = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
+                'target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
         return ',\n\t\t\t\t'.join(qry_items)
 
     def get_snowflake_connection(self) -> snowflake.connector.connection:
