@@ -9,12 +9,16 @@ class Source:
     server: str = None
     database: str = None
     schema: str = None
+    user: str = None
+    password: str = None
 
-    def __init__(self, source, server, database, schema):
+    def __init__(self, source, server, database, schema, user = None, password = None):
         self.source = source
         self.server = server
         self.database = database
         self.schema = schema
+        self.user = user
+        self.password = password
 
     def __repr__(self):
         return '<Source - {{Source:{source}|Server:{server}|Db:{database}|Schema:{schema}}}>'.format(source=self.source,
@@ -81,8 +85,12 @@ class SourceTableBatch:
 
 def get_table_metadata(source: Source) -> Dict:
     # conn_str = 'DRIVER={{SQL Server Native Client 11.0}};SERVER={server};Trusted_Connection=yes'.format(
-    conn_str = 'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes'.format(
-        server=source.server, database=source.database)
+    if source.user:
+        conn_str = 'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={user};PWD={password}'.format(
+            server=source.server, database=source.database, user=source.user, password=source.password)
+    else:
+        conn_str = 'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes'.format(
+            server=source.server, database=source.database)
     with pyodbc.connect(conn_str) as conn:
         row_counts = get_table_row_counts(source, conn)
         columns = get_table_columns(source, conn)
