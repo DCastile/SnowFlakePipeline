@@ -73,7 +73,7 @@ def generate_where_clause(primary_keys: List[str], batch_number, total_batches):
     if total_batches == 1:
         return ''
     else:
-        return 'where checksum({primary_keys}) % {total_batches} = {batch_number}'.format(
+        return 'where abs(checksum({primary_keys})) % {total_batches} = {batch_number}'.format(
             primary_keys=','.join(primary_keys),
             batch_number=batch_number,
             total_batches=total_batches
