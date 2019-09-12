@@ -28,6 +28,16 @@ class SourceTableExtractor:
         self.source_table = source_table_batch.source_table
         self.source = source_table_batch.source_table.source
 
+    def dict(self):
+        tmp = {
+            'start_time': self.start_time,
+            'end_time': self.end_time,
+            'row_count': self.row_count,
+            'command': self.command
+        }
+        tmp.update(self.source_table_batch.dict())
+        return tmp
+
     def run(self):
         logger.info('Starting bcp <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(pid=getpid(), thread=current_thread().getName(),
                                                                                                         source=self.source.source,

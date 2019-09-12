@@ -39,6 +39,18 @@ class SnowFlakeTableSyncher:
         self.file_location = get_file_path(self.source_table_batch)
         self.stage_name = config.snowflake_stage_name[self.source.source]
 
+    def dict(self):
+        tmp = {
+            'start_time': self.start_time,
+            'end_time': self.end_time,
+            'row_count': self.row_count,
+            'put_command': self.put_command,
+            'merge_command': self.merge_command,
+            'stage_name': self.stage_name
+        }
+        tmp.update(self.source_table_batch.dict())
+        return tmp
+
     def run(self):
         self.start_time = datetime.now()
         with self.get_snowflake_connection() as conn:
@@ -48,10 +60,11 @@ class SnowFlakeTableSyncher:
 
     def run_put(self, conn: snowflake.connector.SnowflakeConnection):
         logger.info(
-            'Starting snowflake put <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(pid=getpid(), thread=current_thread().getName(),
-                                                                                                          source=self.source.source,
-                                                                                                          table=self.source_table.table,
-                                                                                                          batch=self.source_table_batch.batch_number))
+            'Starting snowflake put <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(
+                pid=getpid(), thread=current_thread().getName(),
+                source=self.source.source,
+                table=self.source_table.table,
+                batch=self.source_table_batch.batch_number))
 
         self.put_command = self.build_snowflake_put_command()
 

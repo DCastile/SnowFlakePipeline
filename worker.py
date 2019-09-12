@@ -1,10 +1,12 @@
 # help: https://www.metachris.com/2016/04/python-threadpool/
 
+from typing import List
 from threading import Thread
 from queue import Queue
 # from multiprocessing import Process, Queue
 from snowflake_table_syncher import SnowFlakeTableSyncher
 from source_table_extractor import SourceTableExtractor
+from source_table import SourceTableBatch
 from os import getpid
 from time import time, sleep
 
@@ -17,10 +19,11 @@ logger = logging.getLogger(__name__)
 class Worker(Thread):
     """ Thread executing tasks from a given tasks queue """
 
-    def __init__(self, bcp_tasks: Queue, sf_tasks: Queue, type):
+    def __init__(self, bcp_tasks: Queue, sf_tasks: Queue, logging_tasks: List[dict], type):
         super().__init__()
         self.bcp_tasks = bcp_tasks
         self.sf_tasks = sf_tasks
+        self.logging_tasks = logging_tasks
         self.type = type
         self.daemon = True
         self.start()
@@ -35,33 +38,46 @@ class Worker(Thread):
                 if self.bcp_tasks.empty():
                     break
                 func, args = self.bcp_tasks.get()
-                try:
-                    func(args)
-                    # self.bcp_tasks.task_done()
-                    self.sf_tasks.put((snowflake_task, args))
-                except Exception as e:
-                    logger.error(e)
+                ret: SourceTableExtractor = func(args)
+                self.sf_tasks.put((snowflake_task, args))
+                tmp = ret.dict()
+                self.logging_tasks.append(tmp)
+                # try:
+                #     ret: SourceTableExtractor = func(args)
+                #     self.sf_tasks.put((snowflake_task, args))
+                #     self.logging_tasks.append(ret.dict())
+                # except Exception as e:
+                #     logger.error(e)
+                #     self.logging_tasks.append(e.__dict__)
             else:
                 if self.sf_tasks.empty() and self.bcp_tasks.empty():  # check if all work is done
                     if not start_time:
-                        start_time = time() # timer starts now
-                    if lap_time > 4: # just make sure we don't run into a race condition where both queues are empty but the sf work hasn't been done
+                        start_time = time()  # timer starts now
+                    if lap_time > 4:  # just make sure we don't run into a race condition where both queues are empty but the sf work hasn't been done
                         break
                     else:
                         lap_time += (time() - start_time)
                         sleep(0.5)
                         continue
                 func, args = self.sf_tasks.get()
-                try:
-                    func(args)
-                    # self.sf_tasks.task_done()
-                except Exception as e:
-                    logger.error(e)
+                ret: SnowFlakeTableSyncher = func(args)
+                tmp = ret.dict()
+                self.logging_tasks.append(tmp)
+                # try:
+                #     ret: SnowFlakeTableSyncher = func(args)
+                #     self.logging_tasks.append(ret.dict())
+                # except Exception as e:
+                #     logger.error(e)
+                #     self.logging_tasks.append(e.__dict__)
 
 
-def snowflake_task(arg):
-    SnowFlakeTableSyncher(arg).run()
+def snowflake_task(arg: SourceTableBatch):
+    tmp = SnowFlakeTableSyncher(arg)
+    tmp.run()
+    return tmp
 
 
-def source_table_task(arg):
-    SourceTableExtractor(arg).run()
+def source_table_task(arg: SourceTableBatch):
+    tmp = SourceTableExtractor(arg)
+    tmp.run()
+    return tmp

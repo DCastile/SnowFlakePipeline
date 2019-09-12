@@ -27,3 +27,5 @@ def get_log_path(source_table_batch: SourceTableBatch):
         table=source_table_batch.source_table.table,
         batch_number=source_table_batch.batch_number
     )
+
+

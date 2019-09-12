@@ -1,13 +1,18 @@
 from worker import Worker, source_table_task
 from source_table import Source, SourceTable, SourceTableBatch, get_table_metadata
+import config
 
 from snowflake_table_syncher import SnowFlakeTableSyncher
 
 import time
+import json
 from queue import Queue
 # from multiprocessing import Queue
 from typing import List
 from random import shuffle
+import uuid
+from datetime import datetime
+import snowflake.connector
 
 import logging
 
@@ -15,6 +20,8 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
+    job_uuid = uuid.uuid4()
+
     start_time = time.time()
     source = Source('sap', '10.4.1.100', 'SMSCLTSQLRPTPROD', 'dbo')
     table_metadata = get_table_metadata(source)
@@ -31,7 +38,7 @@ if __name__ == '__main__':
     logger.info(
         'Finished collecting source/table metadata - Duration:{duration}'.format(duration=time.time() - start_time))
 
-    # source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX', 'VBAK', 'MARA', 'KNA1'), source_table_batches))
+    source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX'), source_table_batches))
 
 
     for source_table_batch in source_table_batches:
@@ -41,16 +48,18 @@ if __name__ == '__main__':
 
     sf_tasks = Queue()
     bcp_tasks = Queue()
+    logging_tasks : List[dict] = []
+
     for source_table_batch in source_table_batches:
         bcp_tasks.put((source_table_task, source_table_batch))
 
     bcp_workers = []
     for i in range(max_processes):
-        bcp_workers.append(Worker(bcp_tasks, sf_tasks, 'bcp'))
+        bcp_workers.append(Worker(bcp_tasks, sf_tasks, logging_tasks, 'bcp'))
 
     sf_workers = []
     for i in range(max_processes):
-        sf_workers.append(Worker(bcp_tasks, sf_tasks, 'snowflake'))
+        sf_workers.append(Worker(bcp_tasks, sf_tasks, logging_tasks, 'snowflake'))
 
     for worker in bcp_workers:
         worker.join()
@@ -60,5 +69,20 @@ if __name__ == '__main__':
     for worker in sf_workers:
         worker.join()
 
+
     logger.info('Processing complete - Duration:{duration} - Total Row Count:{row_count}'.format(
         duration=time.time() - start_time, row_count=row_count))
+
+
+    logger.info('Sending results from this run to snowflake for further analysis')
+    now = datetime.now()
+    for log_task in logging_tasks:
+        log_task.update({'job_instance_uuid' : job_uuid, 'job_instance_timestamp': now})
+    file_name = '{datetime}.json'.format(datetime=now.strftime('%Y-%m-%d-%H-%M-%S'))
+    file_path = './logs/{file_name}'.format(file_name=file_name)
+    with open(file_path, 'w') as file:
+        file.write(json.dumps(logging_tasks, default=str))
+    with snowflake.connector.connect(**config.snowflake_connection_properties) as conn:
+        conn.execute_string('use schema logs; put file://{file_path} @logs_stage'.format(file_path=file_path))
+
+    logger.info('Finished sending results from this run to snowflake for further analysis')
