@@ -13,14 +13,21 @@ from random import shuffle
 import uuid
 from datetime import datetime
 import snowflake.connector
+import socket
 
 import logging
+import getpass
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 if __name__ == '__main__':
     job_uuid = uuid.uuid4()
+    run_from_hostname = socket.gethostname()
+    run_from_ip = socket.gethostbyname(run_from_hostname)
+    run_from_fqdn = socket.getfqdn()
+    run_from_user = getpass.getuser()
+
 
     start_time = time.time()
     source = Source('sap', '10.4.1.100', 'SMSCLTSQLRPTPROD', 'dbo')
@@ -38,7 +45,7 @@ if __name__ == '__main__':
     logger.info(
         'Finished collecting source/table metadata - Duration:{duration}'.format(duration=time.time() - start_time))
 
-    source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX'), source_table_batches))
+    source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX', 'KNA1'), source_table_batches))
 
 
     for source_table_batch in source_table_batches:

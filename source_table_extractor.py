@@ -8,6 +8,8 @@ from os import getpid
 import logging
 from threading import current_thread
 
+import re
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -20,8 +22,8 @@ class SourceTableExtractor:
     # logging
     start_time: datetime = None
     end_time: datetime = None
-    row_count: int = None
     command = None
+    log_file : str = None
 
     def __init__(self, source_table_batch: SourceTableBatch):
         self.source_table_batch = source_table_batch
@@ -32,7 +34,6 @@ class SourceTableExtractor:
         tmp = {
             'start_time': self.start_time,
             'end_time': self.end_time,
-            'row_count': self.row_count,
             'command': self.command
         }
         tmp.update(self.source_table_batch.dict())
@@ -49,24 +50,22 @@ class SourceTableExtractor:
         completed: CompletedProcess = run(self.command)
         completed_message: Dict = {}
 
+        self.source_table_batch.row_count = parse_bcp_log(self.log_file)
+
         self.end_time = datetime.now()
         logger.info('Finished bcp <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(pid=getpid(), thread=current_thread().getName(),
                                                                                                         source=self.source,
                                                                                                         table=self.source_table.table,
                                                                                                         batch=self.source_table_batch.batch_number,duration=self.end_time-self.start_time))
-        # TODO dont add the snowflake task unless bcp completed successfully
-        if completed.returncode == 0:
-            return True
-        else:
-            return False
+
 
     def build_bcp_command(self):
         qry = self.build_sql()
         out_file = util.get_file_path(self.source_table_batch)
-        log_file = util.get_log_path(self.source_table_batch)
+        self.log_file = util.get_log_path(self.source_table_batch)
         # bcp "SELECT * from SAP_Production.dbo.TCURX" queryout .\tcurx.csv -t, -c -T -S 10.61.95.22
         return 'bcp.exe "{qry}" queryout {out_file} -t "|" -c -C 65001 -T -S {server} -o {log_file}'.format(
-            qry=qry, out_file=out_file, server=self.source.server, log_file=log_file
+            qry=qry, out_file=out_file, server=self.source.server, log_file=self.log_file
         )
 
     def build_sql(self):
@@ -89,26 +88,39 @@ def generate_where_clause(primary_keys: List[str], batch_number, total_batches):
             total_batches=total_batches
         )
 
+def parse_bcp_log(file_name : str):
+    pattern = re.compile('\d+ rows copied.')
+    with open(file_name, 'r') as file:
+        for line in file:
+            match = pattern.match(line)
+            if match:
+                digit_match = re.compile('\d+').match(line)
+                return int(digit_match[0])
+
+
 
 if __name__ == '__main__':
-    args = {
-        'source': 'sap',
-        'server': '10.4.1.100',
-        'database': 'SMSCLTSQLRPTPROD',
-        'schema': 'dbo',
-        'table': 'tcurx',
-        'primary_keys': ['CURRKEY'],
-        'batch_number': 1,
-        'total_batches': 1
-    }
     # args = {
     #     'source': 'sap',
-    #     'server': '10.651.95.22',
-    #     'database': 'SAP_Production',
+    #     'server': '10.4.1.100',
+    #     'database': 'SMSCLTSQLRPTPROD',
     #     'schema': 'dbo',
     #     'table': 'tcurx',
     #     'primary_keys': ['CURRKEY'],
     #     'batch_number': 1,
     #     'total_batches': 1
     # }
-    ste = SourceTableExtractor(**args).run()
+    # # args = {
+    # #     'source': 'sap',
+    # #     'server': '10.651.95.22',
+    # #     'database': 'SAP_Production',
+    # #     'schema': 'dbo',
+    # #     'table': 'tcurx',
+    # #     'primary_keys': ['CURRKEY'],
+    # #     'batch_number': 1,
+    # #     'total_batches': 1
+    # # }
+    # ste = SourceTableExtractor(**args).run()
+
+    row_count = parse_bcp_log('./logs/sap/10.4.1.100-SMSCLTSQLRPTPROD-dbo-KNA1-0.log')
+    print(row_count)

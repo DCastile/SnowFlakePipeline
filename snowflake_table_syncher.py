@@ -26,7 +26,6 @@ class SnowFlakeTableSyncher:
     # logging
     start_time: datetime = None
     end_time: datetime = None
-    row_count: int = None
     put_command = None
     merge_command = None
     stage_name = None
@@ -43,7 +42,6 @@ class SnowFlakeTableSyncher:
         tmp = {
             'start_time': self.start_time,
             'end_time': self.end_time,
-            'row_count': self.row_count,
             'put_command': self.put_command,
             'merge_command': self.merge_command,
             'stage_name': self.stage_name

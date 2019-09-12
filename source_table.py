@@ -74,7 +74,7 @@ class SourceTable:
         return tmp
 
     def get_number_of_batches(self, row_count: int):
-        rows_in_batch: float = 3e6
+        rows_in_batch: float = 1e5
         self.total_batches = ceil(row_count / rows_in_batch)
 
 
