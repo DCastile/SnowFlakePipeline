@@ -14,6 +14,7 @@ import uuid
 from datetime import datetime
 import snowflake.connector
 import socket
+from collections import Counter
 
 import logging
 import getpass
@@ -30,7 +31,8 @@ if __name__ == '__main__':
 
 
     start_time = time.time()
-    source = Source('sap', '10.4.1.100', 'SMSCLTSQLRPTPROD', 'dbo')
+    source = Source('sap', '10.61.95.22', 'SAP_Production', 'dbo')
+    # source = Source('sap', '10.4.1.100', 'SMSCLTSQLRPTPROD', 'dbo')
     table_metadata = get_table_metadata(source)
     source_table_batches: List[SourceTableBatch] = []
 
@@ -46,7 +48,8 @@ if __name__ == '__main__':
         'Finished collecting source/table metadata - Duration:{duration}'.format(duration=time.time() - start_time))
 
     source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX', 'KNA1'), source_table_batches))
-
+    task_count = len(source_table_batches)
+    task_counter = Counter()
 
     for source_table_batch in source_table_batches:
         print(source_table_batch)
@@ -62,11 +65,11 @@ if __name__ == '__main__':
 
     bcp_workers = []
     for i in range(max_processes):
-        bcp_workers.append(Worker(bcp_tasks, sf_tasks, logging_tasks, 'bcp'))
+        bcp_workers.append(Worker(bcp_tasks, sf_tasks, logging_tasks, 'bcp', task_counter, task_count))
 
     sf_workers = []
     for i in range(max_processes):
-        sf_workers.append(Worker(bcp_tasks, sf_tasks, logging_tasks, 'snowflake'))
+        sf_workers.append(Worker(bcp_tasks, sf_tasks, logging_tasks, 'snowflake', task_counter, task_count))
 
     for worker in bcp_workers:
         worker.join()

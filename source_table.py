@@ -65,7 +65,7 @@ class SourceTable:
     def dict(self):
         tmp = {
             'table': self.table,
-            'row_count': self.row_count,
+            'table_row_count': self.row_count,
             'total_batches': self.total_batches,
             'primary_keys': self.primary_keys,
             'columns': self.columns
@@ -82,6 +82,7 @@ class SourceTableBatch:
     source_table: SourceTable = None
     source: Source = None
     batch_number: int = None
+    row_count: int = None
 
     def __init__(self, source_table: SourceTable, batch_number: int):
         self.source_table = source_table
@@ -100,7 +101,8 @@ class SourceTableBatch:
 
     def dict(self):
         tmp = {
-            'batch_number': self.batch_number
+            'batch_number': self.batch_number,
+            'row_count': self.row_count
         }
         tmp.update(self.source_table.dict())
         return tmp

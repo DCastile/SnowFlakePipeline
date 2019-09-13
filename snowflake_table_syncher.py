@@ -57,13 +57,14 @@ class SnowFlakeTableSyncher:
         self.end_time = datetime.now()
 
     def run_put(self, conn: snowflake.connector.SnowflakeConnection):
-        logger.info(
-            'Starting snowflake put <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(
-                pid=getpid(), thread=current_thread().getName(),
-                source=self.source.source,
-                table=self.source_table.table,
-                batch=self.source_table_batch.batch_number))
+        # logger.info(
+        #     'Starting snowflake put <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(
+        #         pid=getpid(), thread=current_thread().getName(),
+        #         source=self.source.source,
+        #         table=self.source_table.table,
+        #         batch=self.source_table_batch.batch_number))
 
+        self.put_command = self.build_snowflake_put_command()
         self.put_command = self.build_snowflake_put_command()
 
         conn.execute_string(self.put_command)
@@ -82,13 +83,13 @@ class SnowFlakeTableSyncher:
                 batch=self.source_table_batch.batch_number, duration=datetime.now() - self.start_time))
 
     def run_merge(self, conn: snowflake.connector.SnowflakeConnection):
-        logger.info(
-            'Starting snowflake merge <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(
-                pid=getpid(),
-                thread=current_thread().getName(),
-                source=self.source.source,
-                table=self.source_table.table,
-                batch=self.source_table_batch.batch_number))
+        # logger.info(
+        #     'Starting snowflake merge <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(
+        #         pid=getpid(),
+        #         thread=current_thread().getName(),
+        #         source=self.source.source,
+        #         table=self.source_table.table,
+        #         batch=self.source_table_batch.batch_number))
 
         self.merge_command = self.build_snowflake_merge_command()
         conn.execute_string(self.merge_command)

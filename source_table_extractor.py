@@ -40,10 +40,10 @@ class SourceTableExtractor:
         return tmp
 
     def run(self):
-        logger.info('Starting bcp <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(pid=getpid(), thread=current_thread().getName(),
-                                                                                                        source=self.source.source,
-                                                                                                        table=self.source_table.table,
-                                                                                                        batch=self.source_table_batch.batch_number))
+        # logger.info('Starting bcp <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(pid=getpid(), thread=current_thread().getName(),
+        #                                                                                                 source=self.source.source,
+        #                                                                                                 table=self.source_table.table,
+        #                                                                                                 batch=self.source_table_batch.batch_number))
         self.start_time = datetime.now()
 
         self.command = self.build_bcp_command()
