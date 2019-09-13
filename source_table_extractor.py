@@ -34,7 +34,8 @@ class SourceTableExtractor:
         tmp = {
             'start_time': self.start_time,
             'end_time': self.end_time,
-            'command': self.command
+            'command': [self.command],
+            'type': 'bcp'
         }
         tmp.update(self.source_table_batch.dict())
         return tmp

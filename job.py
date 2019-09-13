@@ -1,6 +1,7 @@
 from source_table import Source, SourceTable, SourceTableBatch
 from worker import Worker, source_table_task
 import config
+from easter_eggs import magic
 
 import snowflake.connector
 
@@ -25,6 +26,7 @@ class Job:
     def __init__(self, source_table_batches: List[SourceTableBatch], num_workers: int):
         self.start_time = datetime.now()
 
+        self.easter_egg = magic()
         self.job_uuid = uuid.uuid4()
         self.run_from_hostname = socket.gethostname()
         self.run_from_ip = socket.gethostbyname(self.run_from_hostname)
@@ -70,7 +72,8 @@ class Job:
 
 
     def send_logs_to_snowflake(self):
-        # TODO This needs to be cleaned up quite a bit
+        # TODO Make this code better
+        # TODO need to merge the staged files into somewhere reportable
         logger.info('Sending results from this run to snowflake for further analysis')
         now = datetime.now()
         for log_task in self.logging_tasks:

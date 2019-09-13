@@ -42,9 +42,9 @@ class SnowFlakeTableSyncher:
         tmp = {
             'start_time': self.start_time,
             'end_time': self.end_time,
-            'put_command': self.put_command,
-            'merge_command': self.merge_command,
-            'stage_name': self.stage_name
+            'command': [self.put_command, self.merge_command],
+            'stage_name': self.stage_name,
+            'type': 'snowflake'
         }
         tmp.update(self.source_table_batch.dict())
         return tmp
