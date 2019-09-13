@@ -63,7 +63,7 @@ class Worker(Thread):
                 if self.task_counter['snowflake'] >= self.total_task_count:  # check if all work is done
                     break
                 try:
-                    func, args = self.sf_tasks.get(block=False)
+                    func, args = self.sf_tasks.get(block=False) # if there is nothing in there try again
                 except:
                     sleep(2)
                     continue

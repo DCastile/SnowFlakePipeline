@@ -31,8 +31,8 @@ if __name__ == '__main__':
 
 
     start_time = time.time()
-    source = Source('sap', '10.61.95.22', 'SAP_Production', 'dbo')
-    # source = Source('sap', '10.4.1.100', 'SMSCLTSQLRPTPROD', 'dbo')
+    # source = Source('sap', '10.61.95.22', 'SAP_Production', 'dbo')
+    source = Source('sap', '10.4.1.100', 'SMSCLTSQLRPTPROD', 'dbo')
     table_metadata = get_table_metadata(source)
     source_table_batches: List[SourceTableBatch] = []
 
