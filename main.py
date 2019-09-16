@@ -41,6 +41,6 @@ if __name__ == '__main__':
     logger.info(
         'Finished collecting source/table metadata - Duration:{duration}'.format(duration=time.time() - start_time))
 
-    source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX', 'KNA1'), source_table_batches))
+    #source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX', 'KNA1'), source_table_batches))
 
     job = Job(source_table_batches, 4)
