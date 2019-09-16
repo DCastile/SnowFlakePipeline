@@ -21,7 +21,7 @@ class Worker(Thread):
     """ Thread executing tasks from a given tasks queue """
 
     def __init__(self, bcp_tasks: Queue, sf_tasks: Queue, logging_tasks: List[dict], type, task_counter: Counter,
-                 total_task_count):
+                 total_task_count, thread_name=None):
         super().__init__()
         self.bcp_tasks = bcp_tasks
         self.sf_tasks = sf_tasks
@@ -30,6 +30,9 @@ class Worker(Thread):
         self.task_counter = task_counter
         self.total_task_count = total_task_count
         self.daemon = True
+        if thread_name:
+            self.name = thread_name
+
         self.start()
 
     def run(self):

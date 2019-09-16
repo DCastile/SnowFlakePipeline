@@ -5,7 +5,7 @@ from easter_eggs import magic
 
 import snowflake.connector
 
-#std lib
+# std lib
 from collections import Counter
 from datetime import datetime
 import json
@@ -34,7 +34,7 @@ class Job:
         self.run_from_user = getpass.getuser()
 
         self.source_table_batches = source_table_batches
-        shuffle(self.source_table_batches) # shuffles in place
+        shuffle(self.source_table_batches)  # shuffles in place
         self.batch_count = len(self.source_table_batches)
         self.task_counter = Counter()
 
@@ -50,26 +50,36 @@ class Job:
         for batch in self.source_table_batches:
             self.bcp_tasks.put((source_table_task, batch))
 
-        for source_table_batch in self.source_table_batches:
-            self.bcp_tasks.put((source_table_task, source_table_batch))
-
         bcp_workers = []
         for i in range(self.num_workers):
             bcp_workers.append(
-                Worker(self.bcp_tasks, self.sf_tasks, self.logging_tasks, 'bcp', self.task_counter, self.batch_count))
+                Worker(self.bcp_tasks, self.sf_tasks, self.logging_tasks, 'bcp', self.task_counter, self.batch_count, thread_name='Thread-BCP-{}'.format(i)))
 
         sf_workers = []
         for i in range(self.num_workers):
             sf_workers.append(
-                Worker(self.bcp_tasks, self.sf_tasks, self.logging_tasks, 'bcp', self.task_counter, self.batch_count))
+                Worker(self.bcp_tasks, self.sf_tasks, self.logging_tasks, 'snowflake', self.task_counter, self.batch_count, thread_name='Thread-SF-{}'.format(i)))
 
         for worker in bcp_workers:
+            worker.join()
+
+        for worker in sf_workers:
             worker.join()
 
         self.send_logs_to_snowflake()
         self.end_time = datetime.now()
 
-
+    def dict(self):
+        return {
+            'easter_egg': self.easter_egg,
+            'job_uuid': self.job_uuid,
+            'job_start': self.start_time,
+            'run_from_hostname': self.run_from_hostname,
+            'run_from_ip': self.run_from_ip,
+            'run_from_fqdn': self.run_from_fqdn,
+            'run_from_user': self.run_from_user,
+            'total_batches': self.batch_count
+        }
 
     def send_logs_to_snowflake(self):
         # TODO Make this code better
@@ -77,7 +87,8 @@ class Job:
         logger.info('Sending results from this run to snowflake for further analysis')
         now = datetime.now()
         for log_task in self.logging_tasks:
-            log_task.update({'job_instance_uuid': self.job_uuid, 'job_instance_timestamp': now})
+            log_task.update(self.dict())
+
         file_name = '{datetime}.json'.format(datetime=now.strftime('%Y-%m-%d-%H-%M-%S'))
         file_path = './logs/{file_name}'.format(file_name=file_name)
         with open(file_path, 'w') as file:
