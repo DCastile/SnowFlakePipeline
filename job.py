@@ -66,14 +66,15 @@ class Job:
         for worker in sf_workers:
             worker.join()
 
-        self.send_logs_to_snowflake()
         self.end_time = datetime.now()
+        self.send_logs_to_snowflake()
 
     def dict(self):
         return {
             'easter_egg': self.easter_egg,
             'job_uuid': self.job_uuid,
             'job_start': self.start_time,
+            'job_end': self.end_time,
             'run_from_hostname': self.run_from_hostname,
             'run_from_ip': self.run_from_ip,
             'run_from_fqdn': self.run_from_fqdn,

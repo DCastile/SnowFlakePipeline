@@ -18,6 +18,7 @@ from (
 	        when 'datetime' then 'datetime'
 	        when 'decimal' then 'numeric'
 	        when 'numeric' then 'numeric'
+	        when 'bit' then 'boolean'
 	        else DATA_TYPE
 		end SnowFlakeDataType,
 	    max(ORDINAL_POSITION) over(partition by TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME) num_columns

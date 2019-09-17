@@ -32,11 +32,15 @@ if __name__ == '__main__':
             raise argparse.ArgumentError('Batch has been specified without a table')
         if not args.source:
             raise argparse.ArgumentError('Batch has been specified without a source')
+        else:
+            pass
+            # TODO rerun only this table batch either incrementally or in full
 
     if args.table:
         if not args.source:
             raise argparse.ArgumentError('Batch has been specified without a source')
+        else:
+            pass
+            # TODO rerun only this table either incrementally or in full
 
-
-    # some logic for account/user/password
 

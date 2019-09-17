@@ -1,7 +1,8 @@
 from worker import Worker, source_table_task
-from source_table import Source, SourceTable, SourceTableBatch, get_table_metadata
+from source_table import Source, SourceTable, SourceTableBatch
 from job import Job
 import config
+from table_meta import TableMeta
 
 from snowflake_table_syncher import SnowFlakeTableSyncher
 
@@ -28,7 +29,8 @@ if __name__ == '__main__':
     start_time = time.time()
     source = Source('sap', '10.61.95.22', 'SAP_Production', 'dbo')
     # source = Source('sap', '10.4.1.100', 'SMSCLTSQLRPTPROD', 'dbo')
-    table_metadata = get_table_metadata(source)
+    table_meta = TableMeta()
+    table_metadata = table_meta.get_table_metadata(source)
     source_table_batches: List[SourceTableBatch] = []
 
     row_count = 0
