@@ -1,0 +1,33 @@
+create or replace table repo.logs.logs as
+select *
+from (
+select
+	json:job_uuid ::string           job_uuid,
+	json:job_start :: datetime       job_start,
+	json:run_from_hostname :: string run_from_hostname,
+	json:run_from_ip :: string       run_from_ip,
+	json:run_from_fqdn :: string     run_from_fqdn,
+	json:run_from_user :: string     run_from_user,
+	json:source :: string            source,
+	json:server :: string            server,
+	json: database :: string         database,
+	json: schema :: string           schema_name,
+	json: table :: string            table_name,
+	json: type ::string              type,
+	json:row_count :: int            row_count,
+	json:start_time :: datetime      start_time,
+	json:end_time :: datetime        end_time,
+
+	json:batch_number :: int         batch_number,
+	json:total_batches :: int        total_batches,
+	to_array(json:primary_keys)      primary_keys,
+	to_array(json: columns)          columns,
+	to_array(json:command) :: array  command,
+	json:easter_egg :: string        easter_egg
+from
+	(
+		select
+			parse_json($1) json
+		from @logs_stage
+	) a
+) a
