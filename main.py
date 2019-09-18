@@ -1,25 +1,11 @@
-from worker import Worker, source_table_task
 from source_table import Source, SourceTable, SourceTableBatch
 from job import Job
-import config
 from table_meta import TableMeta
 
-from snowflake_table_syncher import SnowFlakeTableSyncher
-
 import time
-import json
-from queue import Queue
-# from multiprocessing import Queue
 from typing import List
-from random import shuffle
-import uuid
-from datetime import datetime
-import snowflake.connector
-import socket
-from collections import Counter
 
 import logging
-import getpass
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -27,8 +13,9 @@ logger = logging.getLogger(__name__)
 if __name__ == '__main__':
 
     start_time = time.time()
-    source = Source('sap', '10.61.95.22', 'SAP_Production', 'dbo')
+    # source = Source('sap', '10.61.95.22', 'SAP_Production', 'dbo')
     # source = Source('sap', '10.4.1.100', 'SMSCLTSQLRPTPROD', 'dbo')
+    source = Source('sap_hist', '10.4.1.100', 'Archive', 'sap')
     table_meta = TableMeta()
     table_metadata = table_meta.get_table_metadata(source)
     source_table_batches: List[SourceTableBatch] = []
@@ -43,6 +30,7 @@ if __name__ == '__main__':
     logger.info(
         'Finished collecting source/table metadata - Duration:{duration}'.format(duration=time.time() - start_time))
 
-    #source_table_batches = list(filter(lambda x: x.source_table.table in ('TCURX', 'KNA1'), source_table_batches))
+    source_table_batches = list(filter(lambda x: x.source_table.table in ('VBPA'), source_table_batches))
 
     job = Job(source_table_batches, 4)
+

@@ -65,7 +65,6 @@ class SnowFlakeTableSyncher:
         #         batch=self.source_table_batch.batch_number))
 
         self.put_command = self.build_snowflake_put_command()
-        self.put_command = self.build_snowflake_put_command()
 
         conn.execute_string(self.put_command)
         completed: Dict = {}
@@ -145,7 +144,9 @@ class SnowFlakeTableSyncher:
 
     def get_snowflake_connection(self) -> snowflake.connector.connection:
         # eventually need to use environment variables or passkey
-        return snowflake.connector.connect(**config.snowflake_connection_properties)
+        tmp = config.snowflake_connection_properties.copy()
+        tmp['schema'] = self.source.source
+        return snowflake.connector.connect(**tmp)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,4 @@
 
-
 Import history tables recreate contracts table in snowflake measure consumption and duration
 
 
