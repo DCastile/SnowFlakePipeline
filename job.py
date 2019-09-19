@@ -59,7 +59,7 @@ class Job:
             self.bcp_tasks.put((source_table_task, batch))
 
         bcp_workers = []
-        for i in range(self.snowflake_worker_count):
+        for i in range(self.bcp_worker_count):
             bcp_workers.append(
                 Worker(self.bcp_tasks, self.sf_tasks, self.logging_tasks, 'bcp', self.task_counter, self.batch_count,
                        thread_name='Thread-BCP-{}'.format(i)))
@@ -89,9 +89,10 @@ class Job:
             'run_from_ip': self.run_from_ip,
             'run_from_fqdn': self.run_from_fqdn,
             'run_from_user': self.run_from_user,
+            'incremental': self.incremental,
             'total_batches': self.batch_count,
-            'bcp_worker_count' : self.bcp_worker_count,
-            'snowflake_worker_count' : self.snowflake_worker_count
+            'bcp_worker_count': self.bcp_worker_count,
+            'snowflake_worker_count': self.snowflake_worker_count
         }
 
     def send_logs_to_snowflake(self):
@@ -110,4 +111,3 @@ class Job:
             conn.execute_string('use schema logs; put file://{file_path} @logs_stage'.format(file_path=file_path))
 
         logger.info('Finished sending results from this run to snowflake for further analysis')
-

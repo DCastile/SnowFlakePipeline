@@ -4,6 +4,7 @@ from (
 select
 	json:job_uuid ::string           job_uuid,
 	json:job_start :: datetime       job_start,
+    json:incremental :: boolean      incremental,
 	json:run_from_hostname :: string run_from_hostname,
 	json:run_from_ip :: string       run_from_ip,
 	json:run_from_fqdn :: string     run_from_fqdn,
@@ -17,7 +18,6 @@ select
 	json:row_count :: int            row_count,
 	json:start_time :: datetime      start_time,
 	json:end_time :: datetime        end_time,
-
 	json:batch_number :: int         batch_number,
 	json:total_batches :: int        total_batches,
 	to_array(json:primary_keys)      primary_keys,

@@ -3,7 +3,7 @@ import socket
 from typing import List
 
 from job import Job
-from config import source_database_map
+from config import source_database_map, sql_server_login_map
 from source_table import Source, SourceTable, SourceTableBatch
 from table_meta import TableMeta
 
@@ -44,8 +44,12 @@ def setup_parameters_from_args(args):
 
 def print_run_info(args):
     print('Running data pipeline for: sources={source} | tables={table} | batch={batch}'.format(source=args.sources,
-                                                                                              table=args.tables,
-                                                                                              batch=args.batch))
+                                                                                                table=args.tables,
+                                                                                                batch=args.batch))
+
+
+def get_login_info(server):
+    return sql_server_login_map.get(server)
 
 
 if __name__ == '__main__':
@@ -82,13 +86,13 @@ if __name__ == '__main__':
 
     check_for_args_errors(args)
     (source_names, server, table_names) = setup_parameters_from_args(args)
-
-
+    user, password = get_login_info(server)
 
     sources: List[Source] = []
     for source in source_names:
         # TODO hard coded schema right here -- need to remove schema and introspect all
-        sources.append(Source(source, server, source_database_map[(source, server)], 'dbo'))
+        tmp = Source(source, server, source_database_map[(source, server)], 'dbo', user=user, password=password)
+        sources.append(tmp)
 
     source_table_batches: List[SourceTableBatch] = []
     # walk down the hierarchy
