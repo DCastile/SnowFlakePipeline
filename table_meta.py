@@ -1,4 +1,4 @@
-from source_table import Source
+from source_table import Source, SourceTable, SourceTableBatch
 
 import pyodbc
 
@@ -7,10 +7,31 @@ from collections import defaultdict
 
 
 class TableMeta:
+    source : Source = None
+    source_table_batches: List[SourceTableBatch] = []
+
+    def __init__(self, source: Source):
+        self.source = source
+        self.generate_source_table_batches()
+
+    def generate_source_table_batches(self):
+        for table, metadata in self.get_table_metadata().items():
+            source_table = SourceTable(self.source, table, metadata['row_count'], metadata['primary_keys'], metadata['columns'])
+            for batch_number in range(0, source_table.total_batches):
+                source_table_batch = SourceTableBatch(source_table, batch_number)
+                self.source_table_batches.append(source_table_batch)
+
+    def get_source_table_batches(self, tables : List[str] = None):
+        if tables:
+            tables = set(tables)
+            func = lambda x: x.source_table.table in tables
+            return filter(func, self.source_table_batches)
+        else:
+            return self.source_table_batches
 
 
-    def get_table_metadata(self, source: Source) -> Dict:
-        # conn_str = 'DRIVER={{SQL Server Native Client 11.0}};SERVER={server};Trusted_Connection=yes'.format(
+    def get_table_metadata(self) -> Dict:
+        source = self.source
         if source.user:
             conn_str = 'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={user};PWD={password}'.format(
                 server=source.server, database=source.database, user=source.user, password=source.password)
@@ -18,23 +39,23 @@ class TableMeta:
             conn_str = 'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes'.format(
                 server=source.server, database=source.database)
         with pyodbc.connect(conn_str) as conn:
-            row_counts = self.get_table_row_counts(source, conn)
-            columns = self.get_table_columns(source, conn)
+            row_counts = self.get_table_row_counts(conn)
+            columns = self.get_table_columns(conn)
 
         for table, info in columns.items():
             info['row_count'] = row_counts[table]
         return columns
 
-    def get_table_row_counts(self, source: Source, conn: pyodbc.Connection) -> Dict:
-        qry = self.get_table_row_counts_qry(source)
+    def get_table_row_counts(self, conn: pyodbc.Connection) -> Dict:
+        qry = self.get_table_row_counts_qry(self.source)
         with conn.cursor() as cursor:
             data = cursor.execute(qry).fetchall()
         columns = [key[0] for key in cursor.description]
         data = rows_to_json(data, columns)
         return {row['table_name']: row['row_count'] for row in data}
 
-    def get_table_columns(self, source: Source, conn: pyodbc.Connection) -> Dict:
-        qry = self.get_table_meta_qry(source)
+    def get_table_columns(self, conn: pyodbc.Connection) -> Dict:
+        qry = self.get_table_meta_qry(self.source)
         with conn.cursor() as cursor:
             data = cursor.execute(qry).fetchall()
         columns = [key[0] for key in cursor.description]

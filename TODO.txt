@@ -15,9 +15,9 @@ For incrementals we have some decisions:
     - Do we assume all incrementals will be < 3M rows? -- I'm thinking this is best????????????
     - Or do we do same hashing and just add in an additional filter?
     - Abstract the table meta class to get incremental row counts? Table scans are expensive
+    For CDC:
+        - Get changed pk's from cdc table valued functions and select all current records from that
 
-
-Optimize the filter to reduce db compute, implement incremental filter
 
 
 

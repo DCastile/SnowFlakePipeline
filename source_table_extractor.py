@@ -74,20 +74,20 @@ class SourceTableExtractor:
             'select *',
             'from {db}.{schema}.V_{table}'.format(db=self.source.database, schema=self.source.schema,
                                                   table=self.source_table.table),
-            generate_where_clause(self.source_table.primary_keys, self.source_table_batch.batch_number,
+            self.generate_where_clause(self.source_table.primary_keys, self.source_table_batch.batch_number,
                                   self.source_table.total_batches)
         ])
 
 
-def generate_where_clause(primary_keys: List[str], batch_number, total_batches):
-    if total_batches == 1:
-        return ''
-    else:
-        return 'where abs(checksum({primary_keys})) % {total_batches} = {batch_number}'.format(
-            primary_keys=','.join(primary_keys),
-            batch_number=batch_number,
-            total_batches=total_batches
-        )
+    def generate_where_clause(self, primary_keys: List[str], batch_number, total_batches):
+        if total_batches == 1:
+            return ''
+        else:
+            return 'where abs(checksum({primary_keys})) % {total_batches} = {batch_number}'.format(
+                primary_keys=','.join(primary_keys),
+                batch_number=batch_number,
+                total_batches=total_batches
+            )
 
 def parse_bcp_log(file_name : str):
     pattern = re.compile('\d+ rows copied.')
