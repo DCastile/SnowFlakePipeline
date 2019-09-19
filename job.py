@@ -43,7 +43,10 @@ class Job:
         logical_cores = os.cpu_count()
         num_workers = min(logical_cores, self.batch_count)
         snowflake_to_bcp_worker_ratio = 2.0
-        self.bcp_worker_count = math.floor(num_workers / snowflake_to_bcp_worker_ratio)
+        if num_workers == 1:
+            self.bcp_worker_count = 1
+        else:
+            self.bcp_worker_count = math.floor(num_workers / snowflake_to_bcp_worker_ratio)
         self.snowflake_worker_count = num_workers
 
         self.bcp_tasks = Queue()
