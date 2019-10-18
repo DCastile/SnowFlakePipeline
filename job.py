@@ -1,4 +1,4 @@
-from source_table import Source, SourceTable, SourceTableBatch
+from source_table import SourceTableBatch
 from worker import Worker, source_table_task
 import config
 from easter_eggs import magic
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 class Job:
 
-    def __init__(self, source_table_batches: List[SourceTableBatch], incremental: bool = True):
+    def __init__(self, source_table_batches: List[SourceTableBatch]):
         self.start_time = datetime.now()
 
         self.easter_egg = magic()
@@ -52,8 +52,6 @@ class Job:
         self.bcp_tasks = Queue()
         self.sf_tasks = Queue()
         self.logging_tasks = []
-
-        self.incremental: bool = incremental
 
         self.run()
 
@@ -92,7 +90,6 @@ class Job:
             'run_from_ip': self.run_from_ip,
             'run_from_fqdn': self.run_from_fqdn,
             'run_from_user': self.run_from_user,
-            'incremental': self.incremental,
             'total_batches': self.batch_count,
             'bcp_worker_count': self.bcp_worker_count,
             'snowflake_worker_count': self.snowflake_worker_count

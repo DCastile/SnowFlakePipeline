@@ -5,7 +5,6 @@ from typing import List
 from job import Job
 from config import source_database_map, sql_server_login_map
 from source_table import Source, SourceTable, SourceTableBatch
-from table_meta import TableMeta
 
 
 def check_for_args_errors(args):
@@ -55,7 +54,7 @@ def get_login_info(server):
 if __name__ == '__main__':
 
     source_choices = ['sap', 'singlepoint']
-    server_choices = ['10.4.1.100', '10.61.95.22']
+    server_choices = ['10.4.1.100', '10.61.95.22', 'c18n3588.c18n.c.vtscloud.io']
 
     parser = argparse.ArgumentParser(description='A CLI for moving data to SnowFlake')
 
@@ -63,7 +62,7 @@ if __name__ == '__main__':
     # parser.add_argument('-u', '--user', type=str, help='Define the SnowFlake user to login with')
     # parser.add_argument('-p', '--password', type=str, help='Define the SnowFlake password to login with')
 
-    parser.add_argument('-t', '--type', choices=['incremental', 'full'], type=str, default='incremental',
+    parser.add_argument('-t', '--type', choices=['incremental_cdc', 'incremental_bods', 'full'], type=str, default='incremental',
                         help='Define the data transfer type (Incremental or Full)')
     parser.add_argument('-s', '--sources', choices=source_choices, type=str, nargs='+',
                         help='Define the sources to transfer')
@@ -86,25 +85,37 @@ if __name__ == '__main__':
 
     check_for_args_errors(args)
     (source_names, server, table_names) = setup_parameters_from_args(args)
+    load_type = args.type
+
     user, password = get_login_info(server)
 
     sources: List[Source] = []
     for source in source_names:
-        # TODO hard coded schema right here -- need to remove schema and introspect all
+        # TODO have defaults for this
         tmp = Source(source, server, source_database_map[(source, server)], 'dbo', user=user, password=password)
         sources.append(tmp)
+
 
     source_table_batches: List[SourceTableBatch] = []
     # walk down the hierarchy
     if args.batch:
         print_run_info(args)
-        raise NotImplemented()  # TODO not implementing this quite yet
+        raise NotImplemented('Batch level runs have not been implemented')  # TODO not implementing this quite yet
     elif table_names:
         print_run_info(args)
         # should only ever be 1 if we are specifying a table
         for source in sources:
-            source_table_batches.extend(TableMeta(source).get_source_table_batches(table_names))
+            source_tables = filter(lambda x: x.table in table_names,source.get_source_tables())
+            for source_table in source_tables:
+                tmp = source_table.get_source_table_batches()
+                source_table_batches.extend(tmp)
+
     elif source_names:
         for source in sources:
-            source_table_batches.extend(TableMeta(source).source_table_batches)
+            source_tables = source.get_source_tables()
+            for source_table in source_tables:
+                tmp = source_table.get_source_table_batches()
+                source_table_batches.extend(tmp)
+
+
     job = Job(source_table_batches)

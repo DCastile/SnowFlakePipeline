@@ -71,7 +71,8 @@ class SnowFlakeTableSyncher:
 
         # remove the temp file
         if os.path.exists(self.file_location):
-            os.remove(self.file_location)
+            pass
+            # os.remove(self.file_location)
 
         logger.info(
             'Finished snowflake put <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(
@@ -91,6 +92,7 @@ class SnowFlakeTableSyncher:
         #         batch=self.source_table_batch.batch_number))
 
         self.merge_command = self.build_snowflake_merge_command()
+        print(self.merge_command)
         conn.execute_string(self.merge_command)
         completed: Dict = {}
 
@@ -128,7 +130,7 @@ class SnowFlakeTableSyncher:
 
     def _build_join_columns_str(self):
         qry_items = []
-        for col_idx, col_name in enumerate(self.source_table.primary_keys, 1):
+        for col_idx, col_name in enumerate(self.source_table.primary_keys, 2):
             qry_items.append(
                 'target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
         return '\n\t\t\t\tand '.join(qry_items)
@@ -137,7 +139,9 @@ class SnowFlakeTableSyncher:
         pk_set = set(self.source_table.primary_keys)
         columns_not_pk = [col for col in self.source_table.columns if col not in pk_set]
         qry_items = []
-        for col_idx, col_name in enumerate(columns_not_pk, 1 + len(self.source_table.primary_keys)):
+        sequence = range(1, len(columns_not_pk) + 2)
+        sequence = list(filter(lambda x: x == 1 or x > len(self.source_table.primary_keys) + 1, sequence))
+        for col_idx, col_name in zip(sequence, columns_not_pk):
             qry_items.append(
                 'target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
         return ',\n\t\t\t\t'.join(qry_items)

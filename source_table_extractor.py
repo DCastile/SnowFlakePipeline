@@ -61,7 +61,7 @@ class SourceTableExtractor:
 
 
     def build_bcp_command(self):
-        qry = self.build_sql()
+        qry = self.source_table_batch.qry
         out_file = util.get_file_path(self.source_table_batch)
         self.log_file = util.get_log_path(self.source_table_batch)
         # bcp "SELECT * from SAP_Production.dbo.TCURX" queryout .\tcurx.csv -t, -c -T -S 10.61.95.22
@@ -69,25 +69,7 @@ class SourceTableExtractor:
             qry=qry, out_file=out_file, server=self.source.server, log_file=self.log_file
         )
 
-    def build_sql(self):
-        return ' '.join([
-            'select *',
-            'from {db}.{schema}.V_{table}'.format(db=self.source.database, schema=self.source.schema,
-                                                  table=self.source_table.table),
-            self.generate_where_clause(self.source_table.primary_keys, self.source_table_batch.batch_number,
-                                  self.source_table.total_batches)
-        ])
 
-
-    def generate_where_clause(self, primary_keys: List[str], batch_number, total_batches):
-        if total_batches == 1:
-            return ''
-        else:
-            return 'where abs(checksum({primary_keys})) % {total_batches} = {batch_number}'.format(
-                primary_keys=','.join(primary_keys),
-                batch_number=batch_number,
-                total_batches=total_batches
-            )
 
 def parse_bcp_log(file_name : str):
     pattern = re.compile('\d+ rows copied.')

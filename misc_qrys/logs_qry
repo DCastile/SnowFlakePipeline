@@ -34,3 +34,7 @@ from
 				from @logs_stage
 			) a
 	) a
+
+
+
+

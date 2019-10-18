@@ -1,4 +1,4 @@
-from source_table import SourceTableBatch
+from source_table import SourceTableBatch, SourceTable, Source
 
 
 def get_file_name(source_table_batch: SourceTableBatch):

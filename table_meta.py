@@ -4,21 +4,41 @@ import pyodbc
 
 from typing import Dict, List
 from collections import defaultdict
-
+import os
+import re
 
 class TableMeta:
-    source : Source = None
+    source: Source = None
     source_table_batches: List[SourceTableBatch] = []
+    tables: List[str] = None
+    columns: Dict[str, List[str]] = {}
 
-    def __init__(self, source: Source):
+    def __init__(self, source: Source, load_type: str):
         self.source = source
+        self.load_type = load_type
         self.generate_source_table_batches()
 
+    def get_metadata_from_queries(self):
+        path = 'src_qrys/{source}'.format(source=self.source.source)
+        self.tables = [file_name.replace('.sql', '') for file_name in os.listdir(path) if '.sql' in file_name]
+        for table in self.tables:
+            with open(path + '/{table}.sql'.format(table=table), 'r') as f:
+                query = f.read()
+            self.columns[table] = self.parse_column_names_from_query(query)
+
+
+
+
     def generate_source_table_batches(self):
+        self.get_metadata_from_queries()
+
         for table, metadata in self.get_table_metadata().items():
+            sql_path = 'src_qrys/{source}/{table}.sql'.format(source=self.source.source, table=table)
+            with open(sql_path, 'r') as f:
+                base_qry = f.read()
             source_table = SourceTable(self.source, table, metadata['row_count'], metadata['primary_keys'], metadata['columns'])
             for batch_number in range(0, source_table.total_batches):
-                source_table_batch = SourceTableBatch(source_table, batch_number)
+                source_table_batch = SourceTableBatch(source_table, batch_number, qry=base_qry)
                 self.source_table_batches.append(source_table_batch)
 
     def get_source_table_batches(self, tables : List[str] = None):
@@ -54,13 +74,7 @@ class TableMeta:
         data = rows_to_json(data, columns)
         return {row['table_name']: row['row_count'] for row in data}
 
-    def get_table_columns(self, conn: pyodbc.Connection) -> Dict:
-        qry = self.get_table_meta_qry(self.source)
-        with conn.cursor() as cursor:
-            data = cursor.execute(qry).fetchall()
-        columns = [key[0] for key in cursor.description]
-        data = rows_to_json(data, columns)
-        return self.process_table_columns(data)
+
 
     def process_table_columns(self, columns: List[Dict]) -> Dict:
         data = defaultdict(lambda: defaultdict(list))
@@ -74,43 +88,9 @@ class TableMeta:
                 data[table_name]['primary_keys'].append(column_name)
         return data
 
-    def get_table_meta_qry(self, source: Source):
-        return '''
-            with table_columns as (
-                select
-                    schema_name(tab.schema_id) schema_name,
-                    tab.name                   table_name,
-                    col.column_id              column_id,
-                    col.name                   column_name,
-                    cast(IIF(ic.object_id is null, 0, 1) as bit) part_of_pk
-                from {database}.sys.tables tab
-                 inner join {database}.sys.columns col
-                            on tab.object_id = col.object_id
-                 inner join {database}.sys.indexes pk
-                            on tab.object_id = pk.object_id
-                                and pk.is_primary_key = 1
-                left join {database}.sys.index_columns ic
-                            on ic.object_id = pk.object_id
-                                and ic.index_id = pk.index_id
-                                and ic.column_id = col.column_id
-                where schema_name(tab.schema_id) = '{schema}'
-            ), view_columns as (
-                select
-                  schema_name(v.schema_id) schema_name,
-                  object_name(c.object_id) view_name,
-                  c.name                   column_name
-                from {database}.sys.columns c
-                   join {database}.sys.views v
-                        on v.object_id = c.object_id
-                where schema_name(v.schema_id) = '{schema}'
-            )
-            select table_name, column_id, column_name, part_of_pk
-            from table_columns tc
-            where exists(select 1 from view_columns vc where tc.schema_name = vc.schema_name and concat('V_', tc.table_name) = vc.view_name and tc.column_name = vc.column_name)
-            order by schema_name, table_name, column_id -- TODO make it so this doesnt have to be ordered
-        '''.format(database=source.database, schema=source.schema)
 
     def get_table_row_counts_qry(self, source: Source):
+        # TODO change strategy for incremental vs full
         return '''
             select
                 schema_name(schema_id) schema_name,
@@ -125,8 +105,22 @@ class TableMeta:
         '''.format(database=source.database, schema=source.schema)
 
 
-def rows_to_json(rows: List[pyodbc.Row], columns) -> List[Dict]:
-    dict_rows = []
-    for row in rows:
-        dict_rows.append(dict(zip(columns, row)))
-    return dict_rows
+    def build_sql(self, source_table_batch: SourceTableBatch):
+        where_clause = self.generate_where_clause(source_table_batch.source_table.primary_keys, source_table_batch.batch_number,
+                                  source_table_batch.source_table.total_batches)
+        return '\n'.join([ source_table_batch.qry, where_clause])
+
+
+    def generate_where_clause(self, primary_keys: List[str], batch_number, total_batches):
+        if self.load_type == 'incremental':
+            pass
+        else:
+            if total_batches == 1:
+                return ''
+            else:
+                return 'where abs(checksum({primary_keys})) % {total_batches} = {batch_number}'.format(
+                    primary_keys=','.join(primary_keys),
+                    batch_number=batch_number,
+                    total_batches=total_batches
+                )
+
