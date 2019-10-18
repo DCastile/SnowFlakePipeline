@@ -92,7 +92,6 @@ class SnowFlakeTableSyncher:
         #         batch=self.source_table_batch.batch_number))
 
         self.merge_command = self.build_snowflake_merge_command()
-        print(self.merge_command)
         conn.execute_string(self.merge_command)
         completed: Dict = {}
 
