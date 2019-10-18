@@ -260,18 +260,12 @@ def parse_column_names_from_query(query):
     pattern = re.compile(r'\[[\w\/]*\]')
     aliases = ['DELETED']
     for line in query.split('\n'):
-        if 'select' in line.lower():
-            pass
-        elif 'from' in line.lower():
-            pass
-        elif '=' in line:
+        if '=' in line:
             tmp = line.split('=')[0]
-            matches = re.findall(pattern, line)
-            column = matches[0] # they should be the same...
+            matches = re.findall(pattern, tmp)
+            column = matches[0]  # they should be the same...
             column = column.replace('[', '').replace(']', '')
             aliases.append(column)
-        else:
-            pass
     return aliases
 
 
