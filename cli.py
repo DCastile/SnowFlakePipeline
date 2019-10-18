@@ -6,6 +6,11 @@ from job import Job
 from config import source_database_map, sql_server_login_map
 from source_table import Source, SourceTable, SourceTableBatch
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 def check_for_args_errors(args):
     if args.batch and not (args.table or args.sources):
@@ -117,5 +122,5 @@ if __name__ == '__main__':
                 tmp = source_table.get_source_table_batches()
                 source_table_batches.extend(tmp)
 
-
+    logger.info('Completed collecting meta data -- passing information to scheduler and workers')
     job = Job(source_table_batches)
