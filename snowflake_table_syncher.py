@@ -71,8 +71,7 @@ class SnowFlakeTableSyncher:
 
         # remove the temp file
         if os.path.exists(self.file_location):
-            pass
-            # os.remove(self.file_location)
+            os.remove(self.file_location)
 
         logger.info(
             'Finished snowflake put <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(
