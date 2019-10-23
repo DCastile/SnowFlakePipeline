@@ -18,6 +18,8 @@ from (
 		    when 'varchar' then 'string'
 		    when 'nvarchar' then 'string'
 	        when 'datetime' then 'datetime'
+	        when 'datetime2' then 'datetime'
+	        when 'smalldatetime' then 'datetime'
 	        when 'decimal' then 'numeric'
 	        when 'money' then 'numeric'
 	        when 'numeric' then 'numeric'
@@ -38,7 +40,6 @@ order by ORDINAL_POSITION
 -------------------------------------- needed for cdc
 select 0 ordinal_position, 'deleted int,' SnowFlakeCreate, null SqlServerViewCreate
 union
-
 select
 -- 	COLUMN_NAME,
 -- 	DATA_TYPE,
@@ -59,6 +60,8 @@ from (
 		    when 'varchar' then 'string'
 		    when 'nvarchar' then 'string'
 	        when 'datetime' then 'datetime'
+	        when 'datetime2' then 'datetime'
+	        when 'smalldatetime' then 'datetime'
 	        when 'decimal' then 'numeric'
 	        when 'money' then 'numeric'
 	        when 'numeric' then 'numeric'

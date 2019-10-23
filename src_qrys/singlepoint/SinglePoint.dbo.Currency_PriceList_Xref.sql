@@ -1,0 +1,2 @@
+select
+from SinglePoint.dbo.Currency_PriceList_Xref

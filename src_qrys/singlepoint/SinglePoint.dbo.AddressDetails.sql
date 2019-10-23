@@ -1,0 +1,22 @@
+select
+	 [AddressID] = isNull(quotename([AddressID], char(34)), '\N'),
+	 [WarehouseID] = isNull(quotename([WarehouseID], char(34)), '\N'),
+	 [SalesTerritoryID] = isNull(quotename([SalesTerritoryID], char(34)), '\N'),
+	 [TaxScheduleID] = isNull(quotename([TaxScheduleID], char(34)), '\N'),
+	 [DefaultContactID] = isNull(quotename([DefaultContactID], char(34)), '\N'),
+	 [ChangedByID] = isNull(quotename([ChangedByID], char(34)), '\N'),
+	 [SalesPersonID] = isNull(quotename([SalesPersonID], char(34)), '\N'),
+	 [LastChanged] = isNull(convert(varchar(50), [LastChanged], 21), '\N'),
+	 [DrivingDistance_Miles] = isNull(quotename([DrivingDistance_Miles], char(34)), '\N'),
+	 [DrivingTime_Minutes] = isNull(quotename([DrivingTime_Minutes], char(34)), '\N'),
+	 [Driving_UpdateRequired] = isNull(quotename([Driving_UpdateRequired], char(34)), '\N'),
+	 [AsyncStatus] = isNull(quotename([AsyncStatus], char(34)), '\N'),
+	 [AsyncError] = isNull(quotename([AsyncError], char(34)), '\N'),
+	 [CreateDate] = isNull(convert(varchar(50), [CreateDate], 21), '\N'),
+	 [ServiceWarehouseID] = isNull(quotename([ServiceWarehouseID], char(34)), '\N'),
+	 [TaxClass] = isNull(quotename([TaxClass], char(34)), '\N'),
+	 [GenericAddressFlag] = isNull(quotename([GenericAddressFlag], char(34)), '\N'),
+	 [GenericContactFlag] = isNull(quotename([GenericContactFlag], char(34)), '\N'),
+	 [WarehouseCalculation_Method] = isNull(quotename([WarehouseCalculation_Method], char(34)), '\N'),
+	 [WarehouseCalculation_Date] = isNull(convert(varchar(50), [WarehouseCalculation_Date], 21), '\N')
+from SinglePoint.dbo.AddressDetails

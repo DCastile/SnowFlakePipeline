@@ -1,0 +1,2 @@
+select
+from SinglePoint.dbo.Customer_NetPromoterScore_Mapping

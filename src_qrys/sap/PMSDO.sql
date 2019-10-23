@@ -1,0 +1,20 @@
+select
+	 [MANDT] = isNull(quotename([MANDT], char(34)), '\N'),
+	 [OBJNR] = isNull(quotename([OBJNR], char(34)), '\N'),
+	 [VKORG] = isNull(quotename([VKORG], char(34)), '\N'),
+	 [VTWEG] = isNull(quotename([VTWEG], char(34)), '\N'),
+	 [SPART] = isNull(quotename([SPART], char(34)), '\N'),
+	 [VKGRP] = isNull(quotename([VKGRP], char(34)), '\N'),
+	 [VKBUR] = isNull(quotename([VKBUR], char(34)), '\N'),
+	 [BSTKD] = isNull(quotename([BSTKD], char(34)), '\N'),
+	 [BSTDK] = isNull(quotename([BSTDK], char(34)), '\N'),
+	 [MATNR] = isNull(quotename([MATNR], char(34)), '\N'),
+	 [MENGE] = isNull(quotename([MENGE], char(34)), '\N'),
+	 [MEINS] = isNull(quotename([MEINS], char(34)), '\N'),
+	 [CUOBJ] = isNull(quotename([CUOBJ], char(34)), '\N'),
+	 [FFPRF] = isNull(quotename([FFPRF], char(34)), '\N'),
+	 [FAKTF] = isNull(quotename([FAKTF], char(34)), '\N'),
+	 [ETL_DATA_SOURCE] = isNull(quotename([ETL_DATA_SOURCE], char(34)), '\N'),
+	 [ETL_PROCESS_ID] = isNull(quotename([ETL_PROCESS_ID], char(34)), '\N'),
+	 [ETL_LOAD_DATE] = isNull(quotename([ETL_LOAD_DATE], char(34)), '\N')
+from SAP_Production.dbo.PMSDO

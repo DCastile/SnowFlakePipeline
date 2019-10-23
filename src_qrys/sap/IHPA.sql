@@ -1,0 +1,21 @@
+select
+	 [MANDT] = isNull(quotename([MANDT], char(34)), '\N'),
+	 [OBJNR] = isNull(quotename([OBJNR], char(34)), '\N'),
+	 [PARVW] = isNull(quotename([PARVW], char(34)), '\N'),
+	 [COUNTER] = isNull(quotename([COUNTER], char(34)), '\N'),
+	 [OBTYP] = isNull(quotename([OBTYP], char(34)), '\N'),
+	 [PARNR] = isNull(quotename([PARNR], char(34)), '\N'),
+	 [INHER] = isNull(quotename([INHER], char(34)), '\N'),
+	 [ERDAT] = isNull(convert(varchar(50), [ERDAT], 21), '\N'),
+	 [ERZEIT] = isNull(quotename([ERZEIT], char(34)), '\N'),
+	 [ERNAM] = isNull(quotename([ERNAM], char(34)), '\N'),
+	 [AEDAT] = isNull(convert(varchar(50), [AEDAT], 21), '\N'),
+	 [AEZEIT] = isNull(quotename([AEZEIT], char(34)), '\N'),
+	 [AENAM] = isNull(quotename([AENAM], char(34)), '\N'),
+	 [KZLOESCH] = isNull(quotename([KZLOESCH], char(34)), '\N'),
+	 [ADRNR] = isNull(quotename([ADRNR], char(34)), '\N'),
+	 [TZONSP] = isNull(quotename([TZONSP], char(34)), '\N'),
+	 [ETL_DATA_SOURCE] = isNull(quotename([ETL_DATA_SOURCE], char(34)), '\N'),
+	 [ETL_PROCESS_ID] = isNull(quotename([ETL_PROCESS_ID], char(34)), '\N'),
+	 [ETL_LOAD_DATE] = isNull(convert(varchar(50), [ETL_LOAD_DATE], 21), '\N')
+from SAP_Production.dbo.IHPA

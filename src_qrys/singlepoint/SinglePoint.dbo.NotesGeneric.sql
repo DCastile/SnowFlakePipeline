@@ -1,0 +1,21 @@
+select
+	 [NoteID] = isNull(quotename([NoteID], char(34)), '\N'),
+	 [FKID] = isNull(quotename([FKID], char(34)), '\N'),
+	 [ObjectType] = isNull(quotename([ObjectType], char(34)), '\N'),
+	 [Title] = isNull(quotename([Title], char(34)), '\N'),
+	 [Body] = isNull(quotename([Body], char(34)), '\N'),
+	 [Audiance] = isNull(quotename([Audiance], char(34)), '\N'),
+	 [EffectiveDate] = isNull(convert(varchar(50), [EffectiveDate], 21), '\N'),
+	 [ExpirationDate] = isNull(convert(varchar(50), [ExpirationDate], 21), '\N'),
+	 [Priority] = isNull(quotename([Priority], char(34)), '\N'),
+	 [CreatedByUserID] = isNull(quotename([CreatedByUserID], char(34)), '\N'),
+	 [CreatedDateUTC] = isNull(convert(varchar(50), [CreatedDateUTC], 21), '\N'),
+	 [LastUpdatedByUserID] = isNull(quotename([LastUpdatedByUserID], char(34)), '\N'),
+	 [LastUpdatedDateUTC] = isNull(convert(varchar(50), [LastUpdatedDateUTC], 21), '\N'),
+	 [AudianceCode] = isNull(quotename([AudianceCode], char(34)), '\N'),
+	 [Status] = isNull(quotename([Status], char(34)), '\N'),
+	 [CategoryID] = isNull(quotename([CategoryID], char(34)), '\N'),
+	 [Category] = isNull(quotename([Category], char(34)), '\N'),
+	 [ReferenceType] = isNull(quotename([ReferenceType], char(34)), '\N'),
+	 [ReferenceIdentifier] = isNull(quotename([ReferenceIdentifier], char(34)), '\N')
+from SinglePoint.dbo.NotesGeneric

@@ -1,0 +1,22 @@
+select
+	 [BOMGuid] = isNull(quotename([BOMGuid], char(34)), '\N'),
+	 [ItemGuid] = isNull(quotename([ItemGuid], char(34)), '\N'),
+	 [ParentID] = isNull(quotename([ParentID], char(34)), '\N'),
+	 [EvenCountFlag] = isNull(quotename([EvenCountFlag], char(34)), '\N'),
+	 [MinQty] = isNull(quotename([MinQty], char(34)), '\N'),
+	 [MaxQty] = isNull(quotename([MaxQty], char(34)), '\N'),
+	 [StandardQty] = isNull(quotename([StandardQty], char(34)), '\N'),
+	 [StandardFlag] = isNull(quotename([StandardFlag], char(34)), '\N'),
+	 [RootItemGuid] = isNull(quotename([RootItemGuid], char(34)), '\N'),
+	 [MASCompKey] = isNull(quotename([MASCompKey], char(34)), '\N'),
+	 [MASParentKey] = isNull(quotename([MASParentKey], char(34)), '\N'),
+	 [ChangedByID] = isNull(quotename([ChangedByID], char(34)), '\N'),
+	 [LastChanged] = isNull(convert(varchar(50), [LastChanged], 21), '\N'),
+	 [CreateByID] = isNull(quotename([CreateByID], char(34)), '\N'),
+	 [CreateDate] = isNull(convert(varchar(50), [CreateDate], 21), '\N'),
+	 [Source] = isNull(quotename([Source], char(34)), '\N'),
+	 [SourceFKID] = isNull(quotename([SourceFKID], char(34)), '\N'),
+	 [SparesKit] = isNull(quotename([SparesKit], char(34)), '\N'),
+	 [SourceProc] = isNull(quotename([SourceProc], char(34)), '\N'),
+	 [FromSiteAudit] = isNull(quotename([FromSiteAudit], char(34)), '\N')
+from SinglePoint.dbo.tqoBOM

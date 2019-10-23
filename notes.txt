@@ -32,3 +32,10 @@ questions:
     flat file vs json (is json going to be more flexible for source changes???)
 
 
+
+
+
+
+
+-t full -S c18n3588.c18n.c.vtscloud.io -s singlepoint
+-t full -S 10.61.95.22 -s sap

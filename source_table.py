@@ -63,6 +63,8 @@ class Source:
             table_name = src_qry_path.replace('.sql', '')
             with open(src_folder + src_qry_path, 'r') as f:
                 base_qry = f.read()
+            if table_name not in row_counts: # hacky
+                continue
             row_count = row_counts[table_name]
             columns = parse_column_names_from_query(base_qry)
             pk_columns = all_pk_columns[table_name]
@@ -102,7 +104,8 @@ class Source:
         for row in data:
             table_name = row['table_name']
             column_name = row['column_name']
-            pks[table_name].append(column_name)
+            key = get_key(self.source, self.database, self.schema, table_name)
+            pks[key].append(column_name)
         return pks
 
 
@@ -122,11 +125,12 @@ class Source:
         '''.format(database=self.database, schema=self.schema)
         params = None
         data = connection_manager.execute_query(qry, params, self.server, self.database, self.user, self.password)
-        counts = defaultdict(list)
+        counts = {}
         for row in data:
             table_name = row['table_name']
             row_count = row['row_count']
-            counts[table_name] = row_count
+            key = get_key(self.source, self.database, self.schema, table_name)
+            counts[key] = row_count
         return counts
 
 
@@ -268,6 +272,13 @@ def parse_column_names_from_query(query):
             aliases.append(column)
     return aliases
 
+
+def get_key(source, database, schema, table):
+    if source == 'singlepoint':
+        key = '{db}.{schema}.{table}'.format(db=database, schema=schema, table=table)
+    else:
+        key = table
+    return key
 
 if __name__ == '__main__':
     source = Source('singlepoint', 'c18n3588.c18n.c.vtscloud.io', 'SinglePoint', 'dbo', load_type='incremental_cdc')

@@ -1,0 +1,22 @@
+select
+	 [MANDT] = isNull(quotename([MANDT], char(34)), '\N'),
+	 [OBKNR] = isNull(quotename([OBKNR], char(34)), '\N'),
+	 [SDAUFNR] = isNull(quotename([SDAUFNR], char(34)), '\N'),
+	 [POSNR] = isNull(quotename([POSNR], char(34)), '\N'),
+	 [DATUM] = isNull(convert(varchar(50), [DATUM], 21), '\N'),
+	 [LETZNR] = isNull(quotename([LETZNR], char(34)), '\N'),
+	 [KUNDE] = isNull(quotename([KUNDE], char(34)), '\N'),
+	 [ANZSN] = isNull(quotename([ANZSN], char(34)), '\N'),
+	 [VORGANG] = isNull(quotename([VORGANG], char(34)), '\N'),
+	 [VBTYP] = isNull(quotename([VBTYP], char(34)), '\N'),
+	 [SD_AUART] = isNull(quotename([SD_AUART], char(34)), '\N'),
+	 [SD_POSTYP] = isNull(quotename([SD_POSTYP], char(34)), '\N'),
+	 [VKORG] = isNull(quotename([VKORG], char(34)), '\N'),
+	 [VTWEG] = isNull(quotename([VTWEG], char(34)), '\N'),
+	 [SPART] = isNull(quotename([SPART], char(34)), '\N'),
+	 [LTSPS] = isNull(quotename([LTSPS], char(34)), '\N'),
+	 [UII] = isNull(quotename([UII], char(34)), '\N'),
+	 [ETL_DATA_SOURCE] = isNull(quotename([ETL_DATA_SOURCE], char(34)), '\N'),
+	 [ETL_PROCESS_ID] = isNull(quotename([ETL_PROCESS_ID], char(34)), '\N'),
+	 [ETL_LOAD_DATE] = isNull(convert(varchar(50), [ETL_LOAD_DATE], 21), '\N')
+from SAP_Production.dbo.SER02

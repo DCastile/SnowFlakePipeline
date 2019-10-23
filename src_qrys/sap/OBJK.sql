@@ -1,0 +1,21 @@
+select
+	 [MANDT] = isNull(quotename([MANDT], char(34)), '\N'),
+	 [OBKNR] = isNull(quotename([OBKNR], char(34)), '\N'),
+	 [OBZAE] = isNull(quotename([OBZAE], char(34)), '\N'),
+	 [EQUNR] = isNull(quotename([EQUNR], char(34)), '\N'),
+	 [IHNUM] = isNull(quotename([IHNUM], char(34)), '\N'),
+	 [BAUTL] = isNull(quotename([BAUTL], char(34)), '\N'),
+	 [ILOAN] = isNull(quotename([ILOAN], char(34)), '\N'),
+	 [SORTF] = isNull(quotename([SORTF], char(34)), '\N'),
+	 [BEARB] = isNull(quotename([BEARB], char(34)), '\N'),
+	 [OBJVW] = isNull(quotename([OBJVW], char(34)), '\N'),
+	 [SERNR] = isNull(quotename([SERNR], char(34)), '\N'),
+	 [MATNR] = isNull(quotename([MATNR], char(34)), '\N'),
+	 [DATUM] = isNull(convert(varchar(50), [DATUM], 21), '\N'),
+	 [EQSNR] = isNull(quotename([EQSNR], char(34)), '\N'),
+	 [TASER] = isNull(quotename([TASER], char(34)), '\N'),
+	 [UII] = isNull(quotename([UII], char(34)), '\N'),
+	 [ETL_DATA_SOURCE] = isNull(quotename([ETL_DATA_SOURCE], char(34)), '\N'),
+	 [ETL_PROCESS_ID] = isNull(quotename([ETL_PROCESS_ID], char(34)), '\N'),
+	 [ETL_LOAD_DATE] = isNull(convert(varchar(50), [ETL_LOAD_DATE], 21), '\N')
+from SAP_Production.dbo.OBJK

@@ -1,0 +1,23 @@
+select
+	 [MANDT] = isNull(quotename([MANDT], char(34)), '\N'),
+	 [OTYPE] = isNull(quotename([OTYPE], char(34)), '\N'),
+	 [PLANS] = isNull(quotename([PLANS], char(34)), '\N'),
+	 [ENDDA] = isNull(convert(varchar(50), [ENDDA], 21), '\N'),
+	 [BEGDA] = isNull(convert(varchar(50), [BEGDA], 21), '\N'),
+	 [MOLGA] = isNull(quotename([MOLGA], char(34)), '\N'),
+	 [TRFAR] = isNull(quotename([TRFAR], char(34)), '\N'),
+	 [TRFGB] = isNull(quotename([TRFGB], char(34)), '\N'),
+	 [TRFKZ] = isNull(quotename([TRFKZ], char(34)), '\N'),
+	 [TRFGR] = isNull(quotename([TRFGR], char(34)), '\N'),
+	 [TRFST] = isNull(quotename([TRFST], char(34)), '\N'),
+	 [ARBWS] = isNull(quotename([ARBWS], char(34)), '\N'),
+	 [AWTGR] = isNull(quotename([AWTGR], char(34)), '\N'),
+	 [GESCH] = isNull(quotename([GESCH], char(34)), '\N'),
+	 [STELL] = isNull(quotename([STELL], char(34)), '\N'),
+	 [SCHWA] = isNull(quotename([SCHWA], char(34)), '\N'),
+	 [MAINT] = isNull(quotename([MAINT], char(34)), '\N'),
+	 [ORGEH] = isNull(quotename([ORGEH], char(34)), '\N'),
+	 [ETL_DATA_SOURCE] = isNull(quotename([ETL_DATA_SOURCE], char(34)), '\N'),
+	 [ETL_PROCESS_ID] = isNull(quotename([ETL_PROCESS_ID], char(34)), '\N'),
+	 [ETL_LOAD_DATE] = isNull(quotename([ETL_LOAD_DATE], char(34)), '\N')
+from SAP_Production.dbo.T528B

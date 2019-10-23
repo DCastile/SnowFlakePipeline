@@ -1,0 +1,2 @@
+select
+from SinglePoint.dbo.Warehouse_Shift_Users

@@ -96,9 +96,11 @@ if __name__ == '__main__':
 
     sources: List[Source] = []
     for source in source_names:
+        dbs = source_database_map[(source, server)]
         # TODO have defaults for this
-        tmp = Source(source, server, source_database_map[(source, server)], 'dbo', user=user, password=password)
-        sources.append(tmp)
+        for db in dbs:
+            tmp = Source(source, server, db, 'dbo', user=user, password=password)
+            sources.append(tmp)
 
 
     source_table_batches: List[SourceTableBatch] = []
@@ -107,10 +109,11 @@ if __name__ == '__main__':
         print_run_info(args)
         raise NotImplemented('Batch level runs have not been implemented')  # TODO not implementing this quite yet
     elif table_names:
+        # raise NotImplemented('Table level runs have not been implemented')
         print_run_info(args)
         # should only ever be 1 if we are specifying a table
         for source in sources:
-            source_tables = filter(lambda x: x.table in table_names,source.get_source_tables())
+            source_tables = filter(lambda x: x.table in table_names, source.get_source_tables())
             for source_table in source_tables:
                 tmp = source_table.get_source_table_batches()
                 source_table_batches.extend(tmp)
