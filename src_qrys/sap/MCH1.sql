@@ -1,8 +1,8 @@
 select
-	 [MATERIAL] = isNull(quotename([MATERIAL], char(34)), '\N'),
-	 [BATCH] = isNull(quotename([BATCH], char(34)), '\N'),
-	 [LASTGOODSRECEIPT] = isNull(quotename([LASTGOODSRECEIPT], char(34)), '\N'),
-	 [ETL_DATA_SOURCE] = isNull(quotename([ETL_DATA_SOURCE], char(34)), '\N'),
-	 [ETL_PROCESS_ID] = isNull(quotename([ETL_PROCESS_ID], char(34)), '\N'),
-	 [ETL_LOAD_DATE] = isNull(quotename([ETL_LOAD_DATE], char(34)), '\N')
+	 [MATERIAL] = quotename([MATERIAL], char(34)),
+	 [BATCH] = quotename([BATCH], char(34)),
+	 [LASTGOODSRECEIPT] = quotename([LASTGOODSRECEIPT], char(34)),
+	 [ETL_DATA_SOURCE] = quotename([ETL_DATA_SOURCE], char(34)),
+	 [ETL_PROCESS_ID] = quotename([ETL_PROCESS_ID], char(34)),
+	 [ETL_LOAD_DATE] = quotename([ETL_LOAD_DATE], char(34))
 from SAP_Production.dbo.MCH1

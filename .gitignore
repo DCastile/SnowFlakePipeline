@@ -5,6 +5,7 @@ logs/
 
 
 __pycache__/
+venv/
 
 
 # temp and may also contain sensitive info

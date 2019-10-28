@@ -1,6 +1,6 @@
-import pyodbc
 from typing import List, Dict
 
+import pyodbc
 
 conn = {}
 

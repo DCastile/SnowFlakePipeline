@@ -1,10 +1,10 @@
 select
-	 [PLANT] = isNull(quotename([PLANT], char(34)), '\N'),
-	 [STORAGELOCATION] = isNull(quotename([STORAGELOCATION], char(34)), '\N'),
-	 [ZONE] = isNull(quotename([ZONE], char(34)), '\N'),
-	 [SLOC1] = isNull(quotename([SLOC1], char(34)), '\N'),
-	 [SLOC2] = isNull(quotename([SLOC2], char(34)), '\N'),
-	 [ETL_DATA_SOURCE] = isNull(quotename([ETL_DATA_SOURCE], char(34)), '\N'),
-	 [ETL_PROCESS_ID] = isNull(quotename([ETL_PROCESS_ID], char(34)), '\N'),
-	 [ETL_LOAD_DATE] = isNull(quotename([ETL_LOAD_DATE], char(34)), '\N')
+	 [PLANT] = quotename([PLANT], char(34)),
+	 [STORAGELOCATION] = quotename([STORAGELOCATION], char(34)),
+	 [ZONE] = quotename([ZONE], char(34)),
+	 [SLOC1] = quotename([SLOC1], char(34)),
+	 [SLOC2] = quotename([SLOC2], char(34)),
+	 [ETL_DATA_SOURCE] = quotename([ETL_DATA_SOURCE], char(34)),
+	 [ETL_PROCESS_ID] = quotename([ETL_PROCESS_ID], char(34)),
+	 [ETL_LOAD_DATE] = quotename([ETL_LOAD_DATE], char(34))
 from SAP_Production.dbo.ZTT_ZONE

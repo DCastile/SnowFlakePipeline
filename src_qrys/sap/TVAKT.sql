@@ -1,7 +1,7 @@
 select
-	 [MANDT] = isNull(quotename([MANDT], char(34)), '\N'),
-	 [SPRAS] = isNull(quotename([SPRAS], char(34)), '\N'),
-	 [AUART] = isNull(quotename([AUART], char(34)), '\N'),
-	 [BEZEI] = isNull(quotename([BEZEI], char(34)), '\N'),
-	 [TXT_BUTTON] = isNull(quotename([TXT_BUTTON], char(34)), '\N')
+	 [MANDT] = quotename([MANDT], char(34)),
+	 [SPRAS] = quotename([SPRAS], char(34)),
+	 [AUART] = quotename([AUART], char(34)),
+	 [BEZEI] = quotename([BEZEI], char(34)),
+	 [TXT_BUTTON] = quotename([TXT_BUTTON], char(34))
 from SAP_Production.dbo.TVAKT

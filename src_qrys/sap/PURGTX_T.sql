@@ -1,6 +1,6 @@
 select
-	 [MANDT] = isNull(quotename([MANDT], char(34)), '\N'),
-	 [SPRAS] = isNull(quotename([SPRAS], char(34)), '\N'),
-	 [PRIO_URG] = isNull(quotename([PRIO_URG], char(34)), '\N'),
-	 [PRIO_URGTX] = isNull(quotename([PRIO_URGTX], char(34)), '\N')
+	 [MANDT] = quotename([MANDT], char(34)),
+	 [SPRAS] = quotename([SPRAS], char(34)),
+	 [PRIO_URG] = quotename([PRIO_URG], char(34)),
+	 [PRIO_URGTX] = quotename([PRIO_URGTX], char(34))
 from SAP_Production.dbo.PURGTX_T
