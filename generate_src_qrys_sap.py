@@ -17,11 +17,11 @@ get_src_qry = r'''
     -- 	SnowFlakeDataType,
         ORDINAL_POSITION,
         '"' + COLUMN_NAME + '"' + ' ' + SnowFlakeDataType + IIF(num_columns = ordinal_position, '', ',') SnowFlakeCreate,
-        ' [' + COLUMN_NAME + '] = ' + 'isNull(' +
+        ' [' + COLUMN_NAME + '] = ' + 
         case data_type
             when 'datetime' then 'convert(varchar(50), [' + column_name + '], 21)'
             else 'quotename([' + COLUMN_NAME + '], char(34))'
-        end + ', ''\N'')' +  IIF(num_columns = ordinal_position, '', ',') SqlServerViewCreate
+        end +  IIF(num_columns = ordinal_position, '', ',') SqlServerViewCreate
     from (
         select
             TABLE_NAME,
@@ -56,13 +56,14 @@ get_tables_qry = '''
     where TABLE_TYPE = 'BASE TABLE' and TABLE_SCHEMA = 'DBO'
 '''
 
-table_data = connection_manager.execute_query(get_tables_qry, None, server, db)
-tables = [row['TABLE_NAME'] for row in table_data]
+# table_data = connection_manager.execute_query(get_tables_qry, None, server, db, user= 'datapipeline', password='datareader99$')
+# tables = [row['TABLE_NAME'] for row in table_data]
+tables = set(['AFKO', 'LFM1', 'MSKA', 'CSKS', 'OBJK', 'TCURX', 'T156', 'VBAP', 'LFA1', 'BKPF', 'EKPO', 'PA0105', 'TVAPT', 'KNA1', 'MBEW_LC', 'EBAN', 'BSEG_LC', 'T001W', 'PTRV_SHDR', 'CSKT', 'LIPS', 'COBK', 'ZTT_ZONE', 'AUSP', 'PMSDO', 'BSAK', 'T003O', 'T024', 'COAS', 'RSEG', 'BSIS_BSAS_LC', 'RBKP', 'T151', 'VBKD', 'T527X', 'SKAT', 'T528T', 'MCH1', 'T158W', 'T528B', 'VBFA', 'BSID', 'TVAK', 'EQKT', 'MCHB', 'KONDDP', 'PTRV_SREC', 'SER01', 'T179T', 'KONDD', 'VBRP_LC', 'COEP_LC', 'COST', 'SER03', 'VBREVE', 'SER02', 'PA0001', 'KOTD001', 'MARA', 'MAKT', 'T156T', 'WYT3', 'MARC', 'VBPA', 'EKBE', 'ZSMSCONTA', 'CATSDB', 'T161T', 'MARD', 'IHPA', 'BSIK', 'VBRK', 'MKPF', 'T003T', 'EQUI', 'EKKO', 'TVAKT', 'T001', 'EKKN', 'BSAD', 'HRP1001', 'PURGTX_T', 'AFPO', 'AUFK', 'KNVP', 'T003', 'HRP1000', 'PTRV_SCOS', 'AFIH', 'PA0041', 'VBAK', 'LFB1', 'VEDA', 'LIKP', 'KNB1', 'EKET', 'KLAH', 'FPLA', 'CABNT', 'T001L', 'TVLVT', 'AUFM', 'MSEG', 'KNVV', 'FPLT', 'T151T', 'CABN', 'EQBS', 'EQUZ', 'KSML'])
 src_qrys = []
 snowflake_creates = []
 
 for table in tables:
-    tmp = connection_manager.execute_query(get_src_qry, [table], server, db)
+    tmp = connection_manager.execute_query(get_src_qry, [table], server, db, user= 'datapipeline', password='datareader99$')
     src_qry = 'select'
     snowflake_create = 'create or replace table repo.sap.{table} ('.format(table=table)
     for idx, row in enumerate(tmp):
@@ -76,14 +77,13 @@ for table in tables:
     src_qrys.append(src_qry)
     snowflake_creates.append(snowflake_create)
 
-# path = 'src_qrys/sap/'
-# for table, src_qry in zip(tables, src_qrys):
-#     with open(path + table + '.sql', 'w') as f:
-#         f.write(src_qry)
+path = 'src_qrys/sap/'
+for table, src_qry in zip(tables, src_qrys):
+    with open(path + table + '.sql', 'w') as f:
+        f.write(src_qry)
 
-tables_to_create = os.listdir('src_qrys/sap/')
-tables_to_create = set([table.replace('.sql', '') for table in tables_to_create])
-sf_conn = connect(**snowflake_connection_properties)
-for table, create_table in zip(tables, snowflake_creates):
-    if table in tables_to_create:
-        sf_conn.execute_string(create_table)
+
+# sf_conn = connect(**snowflake_connection_properties)
+# for table, create_table in zip(tables, snowflake_creates):
+#     if table in tables_to_create:
+#         sf_conn.execute_string(create_table)
