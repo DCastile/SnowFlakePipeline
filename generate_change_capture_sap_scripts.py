@@ -82,7 +82,6 @@ create table {db}.change.{table}_changes (
     pk_column_text = ', '.join(['prod.{column}'.format(column=col) for col in columns])
     update_hashes_script = '''
 create or alter procedure change.Calculate_{table}_Changes as
-begin
 merge into {db}.change.{table}_changes change
 using {db}.dbo.{table} prod
 on
@@ -98,10 +97,9 @@ when matched then update
         change.update_date = GetDate(),
         change.hash = checksum(*)
 ;
-end;
     '''.format(db=db, table=table_name, pk_join_condition= pk_join_condition, pk_list_text=pk_column_text)
     print(update_hashes_script)
-    connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
     connection_manager.execute_query(update_hashes_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
     print('\n\n\n\n')
 
