@@ -9,7 +9,14 @@ pk_qry = '''
             tab.name                   table_name,
             col.column_id              column_id,
             col.name                   column_name,
-            CONCAT(DATA_TYPE, '(', COALESCE(CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, DATETIME_PRECISION, ''), IIF(NUMERIC_SCALE <> 0, CONCAT(', ', NUMERIC_SCALE), ''), ')', IIF(info_col.IS_NULLABLE = 'YES', ' null', ' not null')) data_type,
+            CONCAT(
+                DATA_TYPE,
+                case
+                    when data_type like '%date%' or data_type like '%int%' then null
+                    else concat('(', COALESCE(CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, DATETIME_PRECISION, ''), IIF(NUMERIC_SCALE <> 0, CONCAT(', ', NUMERIC_SCALE), ''), ')')
+                end,
+                IIF(info_col.IS_NULLABLE = 'YES', ' null', ' not null')
+            ) data_type,
             cast(IIF(ic.object_id is null, 0, 1) as bit) part_of_pk
         from sys.tables tab
          inner join sys.columns col
@@ -61,20 +68,25 @@ for table_name, table_meta in table_data.items():
         columns.append(column_name)
 
     create_table_script = '''
+drop table if exists {db}.change.{table}_changes;
+
 create table {db}.change.{table}_changes (
 {pk_text}
     update_date datetime not null default getdate(),
     hash int not null
-    );
-    '''.format(db=db, schema='change', table=table_name, pk_text=pk_text)
+);
 
-    pk_join_condition = ',\n'.join(['\tchange.{col} = prod.{col}'.format(col=col) for col in columns])
+    '''.format(db=db, schema='change', table=table_name, pk_text=pk_text)
+    print(create_table_script)
+    pk_join_condition = '\nand'.join(['\tchange.{col} = prod.{col}'.format(col=col) for col in columns])
     pk_column_text = ', '.join(['prod.{column}'.format(column=col) for col in columns])
     update_hashes_script = '''
+create or alter procedure change.Calculate_{table}_Changes as
+begin
 merge into {db}.change.{table}_changes change
 using {db}.dbo.{table} prod
 on
-    {pk_join_condition}
+{pk_join_condition}
     and change.hash != checksum(*)
 when not matched by target then insert values ({pk_list_text}, GetDate(), checksum(*))
 when not matched by source then update
@@ -85,9 +97,13 @@ when matched then update
     set
         change.update_date = GetDate(),
         change.hash = checksum(*)
+;
+end;
     '''.format(db=db, table=table_name, pk_join_condition= pk_join_condition, pk_list_text=pk_column_text)
     print(update_hashes_script)
-
+    connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    connection_manager.execute_query(update_hashes_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    print('\n\n\n\n')
 
 ### sample
 '''

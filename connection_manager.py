@@ -22,15 +22,19 @@ def get_connection(server, database, user=None, password=None) -> pyodbc.Connect
         return conn[conn_prop]
 
 
-def execute_query(qry: str, params: List, server, database, user=None, password=None) -> List[Dict]:
+def execute_query(qry: str, params: List, server, database, user=None, password=None, results=True) -> List[Dict]:
     conn = get_connection(server, database, user, password)
     curs: pyodbc.Cursor = conn.cursor()
     if params:
         curs.execute(qry, params)
     else:
         curs.execute(qry)
-    columns = [key[0] for key in curs.description]
-    return rows_to_json(curs.fetchall(), columns)
+    if results:
+        columns = [key[0] for key in curs.description]
+        return rows_to_json(curs.fetchall(), columns)
+    else:
+        curs.commit()
+        return None
 
 
 def rows_to_json(rows: List[pyodbc.Row], columns) -> List[Dict]:
