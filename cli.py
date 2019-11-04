@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
     parser.add_argument('-t', '--type', choices=['incremental_cdc', 'incremental_bods', 'full'], type=str, default='incremental',
                         help='Define the data transfer type (Incremental or Full)')
-    parser.add_argument('--start', type=datetime.date, default=datetime.date.today() - datetime.timedelta(DEFAULT_INCREMENTAL_DAYS),
+    parser.add_argument('--start', type=lambda s: datetime.datetime.strptime(s, '%Y-%m-%d'), default=datetime.date.today() - datetime.timedelta(DEFAULT_INCREMENTAL_DAYS),
                         help='Define the start date for incrementals loads')
     parser.add_argument('-s', '--sources', choices=source_choices, type=str, nargs='+',
                         help='Define the sources to transfer')

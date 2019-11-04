@@ -251,7 +251,9 @@ class SourceTableBatch:
         where_clause = '''
         join SAP_Production.change.{table_name}_changes changes
             on {join_condition}
-        '''.format(table_name= self.source_table.table, join_condition=join_condition)
+        where
+            changes.update_date >= '{start_date}'
+        '''.format(table_name= self.source_table.table, join_condition=join_condition, start_date=self.source.incremental_start_time)
         self.qry = self.source_table.base_qry + where_clause
 
 
