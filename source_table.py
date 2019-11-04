@@ -181,7 +181,7 @@ class SourceTable:
         elif self.source.load_type == 'incremental_bods':
             self.total_batches = 1
         else:
-            rows_in_batch: float = 3e6
+            rows_in_batch: float = 20e6
             self.total_batches = ceil(self.row_count / rows_in_batch)
 
     def get_source_table_batches(self):
