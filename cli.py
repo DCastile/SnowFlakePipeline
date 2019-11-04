@@ -1,6 +1,7 @@
 import argparse
 import socket
 from typing import List
+import datetime
 
 from job import Job
 from config import source_database_map, sql_server_login_map
@@ -10,6 +11,9 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+DEFAULT_INCREMENTAL_DAYS = 3
 
 
 def check_for_args_errors(args):
@@ -69,6 +73,8 @@ if __name__ == '__main__':
 
     parser.add_argument('-t', '--type', choices=['incremental_cdc', 'incremental_bods', 'full'], type=str, default='incremental',
                         help='Define the data transfer type (Incremental or Full)')
+    parser.add_argument('--start', type=datetime.date, default=datetime.date.today() - datetime.timedelta(DEFAULT_INCREMENTAL_DAYS),
+                        help='Define the start date for incrementals loads')
     parser.add_argument('-s', '--sources', choices=source_choices, type=str, nargs='+',
                         help='Define the sources to transfer')
     parser.add_argument('-S', '--server', choices=server_choices, type=str,
@@ -91,6 +97,7 @@ if __name__ == '__main__':
     check_for_args_errors(args)
     (source_names, server, table_names) = setup_parameters_from_args(args)
     load_type = args.type
+    start_date = args.start
 
     user, password = get_login_info(server)
 
@@ -99,7 +106,7 @@ if __name__ == '__main__':
         dbs = source_database_map[(source, server)]
         # TODO have defaults for this
         for db in dbs:
-            tmp = Source(source, server, db, 'dbo', user=user, password=password)
+            tmp = Source(source, server, db, 'dbo', user=user, password=password, load_type=load_type, incremental_start_time=start_date)
             sources.append(tmp)
 
 

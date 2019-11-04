@@ -179,7 +179,7 @@ class SourceTable:
         if self.source.load_type == 'incremental_cdc':
             self.total_batches = 1
         elif self.source.load_type == 'incremental_bods':
-            raise NotImplemented('Incremental strategy for bods not yet implemented')
+            self.total_batches = 1
         else:
             rows_in_batch: float = 3e6
             self.total_batches = ceil(self.row_count / rows_in_batch)
@@ -228,7 +228,7 @@ class SourceTableBatch:
         if self.source.load_type == 'incremental_cdc':
             self.set_qry_incremental_cdc()
         elif self.source.load_type == 'incremental_bods':
-            raise NotImplemented('Incremental BODs strategy not yes implemented')
+            self.set_qry_incremental_bods()
         else:
             self.set_qry_full()
 
@@ -244,6 +244,16 @@ class SourceTableBatch:
         cdc_fq_object = "{db}.cdc.fn_cdc_get_net_changes_{schema}_{table}{cdc_params}".format(**params)
         self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object)
         self.qry = self.qry.replace('select', 'select IIF( __$operation = 1, 1, 0) deleted,')
+
+    def set_qry_incremental_bods(self):
+        join_lines = ['{table_name}.{column} = changes.{column}\n'.format(table_name=self.source_table.table, column=col) for col in self.source_table.primary_keys]
+        join_condition = 'and '.join(join_lines)
+        where_clause = '''
+        join SAP_Production.change.{table_name}_changes changes
+            on {join_condition}
+        '''.format(table_name= self.source_table.table, join_condition=join_condition)
+        self.qry = self.source_table.base_qry + where_clause
+
 
 
     def set_qry_full(self):
