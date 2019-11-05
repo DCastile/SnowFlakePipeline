@@ -254,15 +254,16 @@ class SourceTableBatch:
         where
             changes.update_date >= '{start_date}'
         '''.format(table_name= self.source_table.table, join_condition=join_condition, start_date=self.source.incremental_start_time)
-        self.qry = self.source_table.base_qry + where_clause
-        self.qry = self.qry.replace('select', 'select IIF(changes.hash is null, 1, 0) deleted,')
         new_qry = []
-        for line in self.qry.split('\n'):
+        for line in self.source_table.base_qry.split('\n'):
             for pk in self.source_table.primary_keys:
                 if pk in line:
                     line = line.replace(self.source_table.table, 'changes')
             new_qry.append(line)
         self.qry = '\n'.join(new_qry)
+
+        self.qry = self.qry + where_clause
+        self.qry = self.qry.replace('select', 'select IIF(changes.hash is null, 1, 0) deleted,')
 
 
 
