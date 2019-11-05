@@ -249,7 +249,7 @@ class SourceTableBatch:
         join_lines = ['{table_name}.{column} = changes.{column}\n'.format(table_name=self.source_table.table, column=col) for col in self.source_table.primary_keys]
         join_condition = 'and '.join(join_lines)
         where_clause = '''
-        join SAP_Production.change.{table_name}_changes changes
+        right join SAP_Production.change.{table_name}_changes changes
             on {join_condition}
         where
             changes.update_date >= '{start_date}'
