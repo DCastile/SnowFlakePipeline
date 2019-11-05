@@ -43,7 +43,7 @@ pk_qry = '''
 server = '10.61.95.22'
 db = 'SAP_Production'
 
-tables = set(['AFKO', 'LFM1', 'MSKA', 'CSKS', 'OBJK', 'TCURX', 'T156', 'VBAP', 'LFA1', 'BKPF', 'EKPO', 'PA0105', 'TVAPT', 'KNA1', 'MBEW_LC', 'EBAN', 'BSEG_LC', 'T001W', 'PTRV_SHDR', 'CSKT', 'LIPS', 'COBK', 'ZTT_ZONE', 'AUSP', 'PMSDO', 'BSAK', 'T003O', 'T024', 'COAS', 'RSEG', 'RBKP', 'T151', 'VBKD', 'T527X', 'SKAT', 'T528T', 'MCH1', 'T158W', 'T528B', 'VBFA', 'BSID', 'TVAK', 'EQKT', 'MCHB', 'KONDDP', 'PTRV_SREC', 'SER01', 'T179T', 'KONDD', 'VBRP_LC', 'COEP_LC', 'COST', 'SER03', 'VBREVE', 'SER02', 'PA0001', 'KOTD001', 'MARA', 'MAKT', 'T156T', 'WYT3', 'MARC', 'VBPA', 'EKBE', 'ZSMSCONTA', 'CATSDB', 'T161T', 'MARD', 'IHPA', 'BSIK', 'VBRK', 'MKPF', 'T003T', 'EQUI', 'EKKO', 'TVAKT', 'T001', 'EKKN', 'BSAD', 'HRP1001', 'PURGTX_T', 'AFPO', 'AUFK', 'KNVP', 'T003', 'HRP1000', 'PTRV_SCOS', 'AFIH', 'PA0041', 'VBAK', 'LFB1', 'VEDA', 'LIKP', 'KNB1', 'EKET', 'KLAH', 'FPLA', 'CABNT', 'T001L', 'TVLVT', 'AUFM', 'MSEG', 'KNVV', 'FPLT', 'T151T', 'CABN', 'EQBS', 'EQUZ', 'KSML'])
+tables = set(['AFIH', 'AFKO', 'AFPO', 'AUFK', 'AUFM', 'AUSP', 'BKPF', 'BSAD', 'BSAK', 'BSEG_LC', 'BSID', 'BSIK', 'CABN', 'CABNT', 'CATSDB', 'COAS', 'COBK', 'COEP_LC', 'COST', 'CSKS', 'CSKT', 'EBAN', 'EKBE', 'EKET', 'EKKN', 'EKKO', 'EKPO', 'EQBS', 'EQKT', 'EQUI', 'EQUZ', 'FPLA', 'FPLT', 'HRP1000', 'HRP1001', 'IHPA', 'KLAH', 'KNA1', 'KNB1', 'KNVP', 'KNVV', 'KONDD', 'KONDDP', 'KOTD001', 'KSML', 'LFA1', 'LFB1', 'LFM1', 'LIKP', 'LIPS', 'MAKT', 'MARA', 'MARC', 'MARD', 'MBEW_LC', 'MCH1', 'MCHB', 'MKPF', 'MSEG', 'MSKA', 'OBJK', 'PA0001', 'PA0041', 'PA0105', 'PMSDO', 'PTRV_SCOS', 'PTRV_SHDR', 'PTRV_SREC', 'PURGTX_T', 'RBKP', 'RSEG', 'SER01', 'SER02', 'SER03', 'SKAT', 'T001', 'T001L', 'T001W', 'T003', 'T003O', 'T003T', 'T024', 'T151', 'T151T', 'T156', 'T156T', 'T158W', 'T161T', 'T179T', 'T527X', 'T528B', 'T528T', 'TCURX', 'TVAK', 'TVAKT', 'TVAPT', 'TVLVT', 'VBAK', 'VBAP', 'VBFA', 'VBKD', 'VBPA', 'VBREVE', 'VBRK', 'VBRP_LC', 'VEDA', 'WYT3', 'ZSMSCONTA', 'ZTT_ZONE'])
 
 data = connection_manager.execute_query(pk_qry, None, server, db, user= 'datapipeline', password='datareader99$')
 
@@ -97,7 +97,7 @@ when not matched by source then update
     set
         update_date = GetDate(),
         change.hash = null
-when matched and change.hash != prod.prod_hash then update
+when matched and change.hash != prod.prod_hash or change.hash is null then update
     set
         change.update_date = GetDate(),
         change.hash = prod.prod_hash
