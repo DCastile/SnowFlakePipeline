@@ -255,6 +255,7 @@ class SourceTableBatch:
             changes.update_date >= '{start_date}'
         '''.format(table_name= self.source_table.table, join_condition=join_condition, start_date=self.source.incremental_start_time)
         self.qry = self.source_table.base_qry + where_clause
+        self.qry = self.qry.replace('select', 'select 0 deleted,')
 
 
 
