@@ -7,6 +7,37 @@ server = '10.61.95.22'
 db = 'SAP_Production'
 
 get_src_qry = r'''
+    with table_columns as (
+        select
+            schema_name(tab.schema_id) schema_name,
+            tab.name                   table_name,
+            col.column_id              column_id,
+            col.name                   column_name,
+            CONCAT(
+                DATA_TYPE,
+                case
+                    when data_type like '%date%' or data_type like '%int%' then null
+                    else concat('(', COALESCE(CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, DATETIME_PRECISION, ''), IIF(NUMERIC_SCALE <> 0, CONCAT(', ', NUMERIC_SCALE), ''), ')')
+                end,
+                IIF(info_col.IS_NULLABLE = 'YES', ' null', ' not null')
+            ) data_type,
+            cast(IIF(ic.object_id is null, 0, 1) as bit) part_of_pk
+        from sys.tables tab
+         inner join sys.columns col
+                    on tab.object_id = col.object_id
+         inner join sys.indexes pk
+                    on tab.object_id = pk.object_id
+                        and pk.is_primary_key = 1
+        left join sys.index_columns ic
+                    on ic.object_id = pk.object_id
+                        and ic.index_id = pk.index_id
+                        and ic.column_id = col.column_id
+        left join INFORMATION_SCHEMA.COLUMNS info_col
+            on schema_name(tab.schema_id) = info_col.TABLE_SCHEMA
+               and tab.name = info_col.TABLE_NAME
+                and col.name = info_col.COLUMN_NAME
+        where schema_name(tab.schema_id) = 'dbo'
+    )
     select 0 ordinal_position, 'deleted int,' SnowFlakeCreate, null SqlServerViewCreate
     union
     select
@@ -19,16 +50,17 @@ get_src_qry = r'''
         '"' + COLUMN_NAME + '"' + ' ' + SnowFlakeDataType + IIF(num_columns = ordinal_position, '', ',') SnowFlakeCreate,
         ' [' + COLUMN_NAME + '] = ' + 
         case data_type
-            when 'datetime' then 'convert(varchar(50), ' + TABLE_NAME + '.' + '[' + column_name + '], 21)'
-            else 'quotename(' + TABLE_NAME + '.' + '[' + COLUMN_NAME + '], char(34))'
+            when 'datetime' then 'convert(varchar(50), [' + TABLE_NAME + '].' + '[' + column_name + '], 21)'
+            else 'quotename([' + TABLE_NAME + '].' + '[' + COLUMN_NAME + '], char(34))'
         end +  IIF(num_columns = ordinal_position, '', ',') SqlServerViewCreate
     from (
         select
-            TABLE_NAME,
-            ORDINAL_POSITION,
-            COLUMN_NAME,
-            DATA_TYPE,
-            case DATA_TYPE
+            col.TABLE_NAME,
+            IIF(part_of_pk = 1, 'change', col.table_name) fq_table_to_use,
+            col.ORDINAL_POSITION,
+            col.COLUMN_NAME,
+            col.DATA_TYPE,
+            case col.DATA_TYPE
                 when 'varchar' then 'string'
                 when 'nvarchar' then 'string'
                 when 'datetime' then 'datetime'
@@ -38,14 +70,15 @@ get_src_qry = r'''
                 when 'numeric' then 'numeric'
                 when 'bit' then 'boolean'
                 when 'uniqueidentifier' then 'string'
-                else DATA_TYPE
+                else col.DATA_TYPE
             end SnowFlakeDataType,
-            max(ORDINAL_POSITION) over(partition by TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME) num_columns
+            max(col.ORDINAL_POSITION) over(partition by TABLE_CATALOG, col.TABLE_SCHEMA, col.TABLE_NAME) num_columns
     
         from INFORMATION_SCHEMA.COLUMNS col
+        left join table_columns tc on col.TABLE_NAME = tc.table_name and col.COLUMN_NAME = tc.column_name
         where
             TABLE_SCHEMA = 'dbo'
-            and TABLE_NAME  = ?
+            and col.TABLE_NAME  = ?
     ) a
     order by ORDINAL_POSITION
 '''
