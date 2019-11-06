@@ -260,7 +260,7 @@ class SourceTableBatch:
             line_tokens = set(re.split(r'\W', line))
             for pk in self.source_table.primary_keys:
                 if pk in line_tokens:
-                    line = line.replace(self.source_table.table, 'changes')
+                    line = line.replace('[' + self.source_table.table + ']', 'changes')
                     break
             new_qry.append(line)
         self.qry = '\n'.join(new_qry)
