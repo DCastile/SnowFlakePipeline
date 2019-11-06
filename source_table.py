@@ -255,10 +255,13 @@ class SourceTableBatch:
             changes.update_date >= '{start_date}'
         '''.format(table_name= self.source_table.table, join_condition=join_condition, start_date=self.source.incremental_start_time)
         new_qry = []
+
         for line in self.source_table.base_qry.split('\n'):
+            line_tokens = set(re.split(r'\W', line))
             for pk in self.source_table.primary_keys:
-                if pk in line:
+                if pk in line_tokens:
                     line = line.replace(self.source_table.table, 'changes')
+                    break
             new_qry.append(line)
         self.qry = '\n'.join(new_qry)
 
