@@ -44,7 +44,7 @@ server = '10.61.95.22'
 db = 'SAP_Production'
 
 # tables = set(['AFIH', 'AFKO', 'AFPO', 'AUFK', 'AUFM', 'AUSP', 'BKPF', 'BSAD', 'BSAK', 'BSEG_LC', 'BSID', 'BSIK', 'CABN', 'CABNT', 'CATSDB', 'COAS', 'COBK', 'COEP_LC', 'COST', 'CSKS', 'CSKT', 'EBAN', 'EKBE', 'EKET', 'EKKN', 'EKKO', 'EKPO', 'EQBS', 'EQKT', 'EQUI', 'EQUZ', 'FPLA', 'FPLT', 'HRP1000', 'HRP1001', 'IHPA', 'KLAH', 'KNA1', 'KNB1', 'KNVP', 'KNVV', 'KONDD', 'KONDDP', 'KOTD001', 'KSML', 'LFA1', 'LFB1', 'LFM1', 'LIKP', 'LIPS', 'MAKT', 'MARA', 'MARC', 'MARD', 'MBEW_LC', 'MCH1', 'MCHB', 'MKPF', 'MSEG', 'MSKA', 'OBJK', 'PA0001', 'PA0041', 'PA0105', 'PMSDO', 'PTRV_SCOS', 'PTRV_SHDR', 'PTRV_SREC', 'PURGTX_T', 'RBKP', 'RSEG', 'SER01', 'SER02', 'SER03', 'SKAT', 'T001', 'T001L', 'T001W', 'T003', 'T003O', 'T003T', 'T024', 'T151', 'T151T', 'T156', 'T156T', 'T158W', 'T161T', 'T179T', 'T527X', 'T528B', 'T528T', 'TCURX', 'TVAK', 'TVAKT', 'TVAPT', 'TVLVT', 'VBAK', 'VBAP', 'VBFA', 'VBKD', 'VBPA', 'VBREVE', 'VBRK', 'VBRP_LC', 'VEDA', 'WYT3', 'ZSMSCONTA', 'ZTT_ZONE', 'T002T', 'ADRC'])
-tables = set(['T002T', 'ADRC'])
+tables = set(['EQUZ'])
 
 data = connection_manager.execute_query(pk_qry, None, server, db, user= 'datapipeline', password='datareader99$')
 
@@ -82,7 +82,12 @@ create table {db}.change.{table}_changes (
     hash int not null
 );
 
-    '''.format(db=db, schema='change', table=table_name, pk_text=pk_text)
+alter table change.{table}_changes
+     	add constraint {table}_change_pk
+     		primary key clustered ({primary_keys})
+;
+    '''.format(db=db, schema='change', table=table_name, pk_text=pk_text, primary_keys=','.join(pk_columns))
+
     print(create_table_script)
     pk_join_condition = '\nand'.join(['\tchange.{col} = prod.{col}'.format(col=col) for col in pk_columns])
     pk_column_text = ', '.join(['prod.{column}'.format(column=col) for col in pk_columns])
