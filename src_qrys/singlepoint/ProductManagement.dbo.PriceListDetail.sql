@@ -1,8 +1,7 @@
 select
-	 [IncidentID] = isNull(quotename([IncidentID], char(34)), '\N'),
-	 [IncidentKey] = isNull(quotename([IncidentKey], char(34)), '\N'),
-	 [Date] = isNull(convert(varchar(50), [Date], 21), '\N'),
-	 [Action] = isNull(quotename([Action], char(34)), '\N'),
-	 [BatchID] = isNull(quotename([BatchID], char(34)), '\N'),
-	 [CreateDate] = isNull(convert(varchar(50), [CreateDate], 21), '\N')
-from SinglePoint.dbo.AsyncIncidents
+	 [ManagerUserID] = quotename([OrgChart].[ManagerUserID], char(34)),
+	 [SubordinateUserID] = quotename([OrgChart].[SubordinateUserID], char(34)),
+	 [ReportingTypeID] = quotename([OrgChart].[ReportingTypeID], char(34)),
+	 [CreatedByUserID] = quotename([OrgChart].[CreatedByUserID], char(34)),
+	 [CreatedDate] = convert(varchar(50), [OrgChart].[CreatedDate], 21)
+from SinglePoint.dbo.OrgChart

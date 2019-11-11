@@ -1,8 +1,6 @@
 select
-	 [ContractTypeID] = isNull(quotename([ContractTypeID], char(34)), '\N'),
-	 [ContractType] = isNull(quotename([ContractType], char(34)), '\N'),
-	 [DESCRIPTION] = isNull(quotename([DESCRIPTION], char(34)), '\N'),
-	 [createdate] = isNull(convert(varchar(50), [createdate], 21), '\N'),
-	 [isAssetRequired] = isNull(quotename([isAssetRequired], char(34)), '\N'),
-	 [Oracle_Contract_Type] = isNull(quotename([Oracle_Contract_Type], char(34)), '\N')
-from SinglePoint.dbo.Contract_Type
+	 [Country_a2] = quotename([CountryRegions].[Country_a2], char(34)),
+	 [Region] = quotename([CountryRegions].[Region], char(34)),
+	 [Description] = quotename([CountryRegions].[Description], char(34)),
+	 [ID] = quotename([CountryRegions].[ID], char(34))
+from SinglePoint.dbo.CountryRegions

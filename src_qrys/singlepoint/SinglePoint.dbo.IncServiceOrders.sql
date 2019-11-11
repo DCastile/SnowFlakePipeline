@@ -1,2 +1,0 @@
-select
-from SinglePoint.dbo.IncServiceOrders

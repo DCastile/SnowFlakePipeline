@@ -1,13 +1,13 @@
 select
-	 [AssetHeaderID] = isNull(quotename([AssetHeaderID], char(34)), '\N'),
-	 [AssetTagNumber] = isNull(quotename([AssetTagNumber], char(34)), '\N'),
-	 [Room] = isNull(quotename([Room], char(34)), '\N'),
-	 [Row] = isNull(quotename([Row], char(34)), '\N'),
-	 [Rack] = isNull(quotename([Rack], char(34)), '\N'),
-	 [Elevation] = isNull(quotename([Elevation], char(34)), '\N'),
-	 [SiteAuditID] = isNull(quotename([SiteAuditID], char(34)), '\N'),
-	 [UpdatedByUserID] = isNull(quotename([UpdatedByUserID], char(34)), '\N'),
-	 [UpdatedDateTime] = isNull(convert(varchar(50), [UpdatedDateTime], 21), '\N'),
-	 [Building] = isNull(quotename([Building], char(34)), '\N'),
-	 [Floor] = isNull(quotename([Floor], char(34)), '\N')
+	 [AssetHeaderID] = quotename([AssetLocation].[AssetHeaderID], char(34)),
+	 [AssetTagNumber] = quotename([AssetLocation].[AssetTagNumber], char(34)),
+	 [Room] = quotename([AssetLocation].[Room], char(34)),
+	 [Row] = quotename([AssetLocation].[Row], char(34)),
+	 [Rack] = quotename([AssetLocation].[Rack], char(34)),
+	 [Elevation] = quotename([AssetLocation].[Elevation], char(34)),
+	 [SiteAuditID] = quotename([AssetLocation].[SiteAuditID], char(34)),
+	 [UpdatedByUserID] = quotename([AssetLocation].[UpdatedByUserID], char(34)),
+	 [UpdatedDateTime] = convert(varchar(50), [AssetLocation].[UpdatedDateTime], 21),
+	 [Building] = quotename([AssetLocation].[Building], char(34)),
+	 [Floor] = quotename([AssetLocation].[Floor], char(34))
 from SinglePoint.dbo.AssetLocation

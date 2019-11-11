@@ -1,2 +1,20 @@
 select
-from SinglePoint.dbo.Addresses
+	 [IncidentID] = quotename([IncidentDates].[IncidentID], char(34)),
+	 [Created] = convert(varchar(50), [IncidentDates].[Created], 21),
+	 [Assigned] = convert(varchar(50), [IncidentDates].[Assigned], 21),
+	 [Callback] = convert(varchar(50), [IncidentDates].[Callback], 21),
+	 [FollowUp] = convert(varchar(50), [IncidentDates].[FollowUp], 21),
+	 [OnSite] = convert(varchar(50), [IncidentDates].[OnSite], 21),
+	 [OnSiteWithParts] = convert(varchar(50), [IncidentDates].[OnSiteWithParts], 21),
+	 [OnSiteWithoutParts] = convert(varchar(50), [IncidentDates].[OnSiteWithoutParts], 21),
+	 [CustomerDefered] = convert(varchar(50), [IncidentDates].[CustomerDefered], 21),
+	 [CustomerDeferedUntil] = convert(varchar(50), [IncidentDates].[CustomerDeferedUntil], 21),
+	 [Scheduled] = convert(varchar(50), [IncidentDates].[Scheduled], 21),
+	 [ScheduledFor] = convert(varchar(50), [IncidentDates].[ScheduledFor], 21),
+	 [Resolved] = convert(varchar(50), [IncidentDates].[Resolved], 21),
+	 [Closed] = convert(varchar(50), [IncidentDates].[Closed], 21),
+	 [LastUpdateEvent] = convert(varchar(50), [IncidentDates].[LastUpdateEvent], 21),
+	 [LastSlaImpactingEvent] = convert(varchar(50), [IncidentDates].[LastSlaImpactingEvent], 21),
+	 [LastOnSite] = convert(varchar(50), [IncidentDates].[LastOnSite], 21),
+	 [LastCustomerDeferred] = convert(varchar(50), [IncidentDates].[LastCustomerDeferred], 21)
+from SinglePoint.dbo.IncidentDates

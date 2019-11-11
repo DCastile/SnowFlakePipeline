@@ -1,5 +1,5 @@
 select
-	 [WorkstreamSlaID] = isNull(quotename([WorkstreamSlaID], char(34)), '\N'),
-	 [Display] = isNull(quotename([Display], char(34)), '\N'),
-	 [Description] = isNull(quotename([Description], char(34)), '\N')
-from SinglePoint.dbo.IncWorkstreamSla
+	 [WorkstreamID] = quotename([IncWorkstream].[WorkstreamID], char(34)),
+	 [Display] = quotename([IncWorkstream].[Display], char(34)),
+	 [Description] = quotename([IncWorkstream].[Description], char(34))
+from SinglePoint.dbo.IncWorkstream

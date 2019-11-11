@@ -1,5 +1,6 @@
 select
-	 [PlatformID] = isNull(quotename([PlatformID], char(34)), '\N'),
-	 [Platform] = isNull(quotename([Platform], char(34)), '\N'),
-	 [FamilyID] = isNull(quotename([FamilyID], char(34)), '\N')
-from SinglePoint.dbo.tqoItem_Platform
+	 [CountryCategoryID] = quotename([Country_Categories].[CountryCategoryID], char(34)),
+	 [Name] = quotename([Country_Categories].[Name], char(34)),
+	 [Description] = quotename([Country_Categories].[Description], char(34)),
+	 [InActive] = quotename([Country_Categories].[InActive], char(34))
+from SinglePoint.dbo.Country_Categories

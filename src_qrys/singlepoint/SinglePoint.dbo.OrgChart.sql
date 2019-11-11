@@ -1,7 +1,7 @@
 select
-	 [ManagerUserID] = isNull(quotename([ManagerUserID], char(34)), '\N'),
-	 [SubordinateUserID] = isNull(quotename([SubordinateUserID], char(34)), '\N'),
-	 [ReportingTypeID] = isNull(quotename([ReportingTypeID], char(34)), '\N'),
-	 [CreatedByUserID] = isNull(quotename([CreatedByUserID], char(34)), '\N'),
-	 [CreatedDate] = isNull(convert(varchar(50), [CreatedDate], 21), '\N')
+	 [ManagerUserID] = quotename([OrgChart].[ManagerUserID], char(34)),
+	 [SubordinateUserID] = quotename([OrgChart].[SubordinateUserID], char(34)),
+	 [ReportingTypeID] = quotename([OrgChart].[ReportingTypeID], char(34)),
+	 [CreatedByUserID] = quotename([OrgChart].[CreatedByUserID], char(34)),
+	 [CreatedDate] = convert(varchar(50), [OrgChart].[CreatedDate], 21)
 from SinglePoint.dbo.OrgChart

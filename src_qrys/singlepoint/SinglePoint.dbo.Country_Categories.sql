@@ -1,6 +1,6 @@
 select
-	 [CountryCategoryID] = isNull(quotename([CountryCategoryID], char(34)), '\N'),
-	 [Name] = isNull(quotename([Name], char(34)), '\N'),
-	 [Description] = isNull(quotename([Description], char(34)), '\N'),
-	 [InActive] = isNull(quotename([InActive], char(34)), '\N')
+	 [CountryCategoryID] = quotename([Country_Categories].[CountryCategoryID], char(34)),
+	 [Name] = quotename([Country_Categories].[Name], char(34)),
+	 [Description] = quotename([Country_Categories].[Description], char(34)),
+	 [InActive] = quotename([Country_Categories].[InActive], char(34))
 from SinglePoint.dbo.Country_Categories

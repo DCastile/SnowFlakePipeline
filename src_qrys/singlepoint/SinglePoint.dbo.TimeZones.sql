@@ -1,2 +1,25 @@
 select
-from SinglePoint.dbo.TimeZones
+	 [DispatchID] = quotename([IncDispatch].[DispatchID], char(34)),
+	 [IncidentID] = quotename([IncDispatch].[IncidentID], char(34)),
+	 [ProblemSummary] = quotename([IncDispatch].[ProblemSummary], char(34)),
+	 [SiteIdentifier] = quotename([IncDispatch].[SiteIdentifier], char(34)),
+	 [FieldEngineerName] = quotename([IncDispatch].[FieldEngineerName], char(34)),
+	 [ScheduledAppointment] = convert(varchar(50), [IncDispatch].[ScheduledAppointment], 21),
+	 [SiteVisitDate] = convert(varchar(50), [IncDispatch].[SiteVisitDate], 21),
+	 [NumberOfVisits] = quotename([IncDispatch].[NumberOfVisits], char(34)),
+	 [ExtendedTimeReason] = quotename([IncDispatch].[ExtendedTimeReason], char(34)),
+	 [WorkstreamID] = quotename([IncDispatch].[WorkstreamID], char(34)),
+	 [WorkstreamSlaID] = quotename([IncDispatch].[WorkstreamSlaID], char(34)),
+	 [isCustomerDefered] = quotename([IncDispatch].[isCustomerDefered], char(34)),
+	 [isSlaWaived] = quotename([IncDispatch].[isSlaWaived], char(34)),
+	 [isSlaMissed_SMS] = quotename([IncDispatch].[isSlaMissed_SMS], char(34)),
+	 [isSlaMissed_Customer] = quotename([IncDispatch].[isSlaMissed_Customer], char(34)),
+	 [isCancelled_Billable] = quotename([IncDispatch].[isCancelled_Billable], char(34)),
+	 [isCancelled_NonBillable] = quotename([IncDispatch].[isCancelled_NonBillable], char(34)),
+	 [CreateDate] = convert(varchar(50), [IncDispatch].[CreateDate], 21),
+	 [CreateUserID] = quotename([IncDispatch].[CreateUserID], char(34)),
+	 [LastUpdateDate] = convert(varchar(50), [IncDispatch].[LastUpdateDate], 21),
+	 [LastUpdateUserID] = quotename([IncDispatch].[LastUpdateUserID], char(34)),
+	 [StatusCodeID] = quotename([IncDispatch].[StatusCodeID], char(34)),
+	 [ReScheduledAppointment] = convert(varchar(50), [IncDispatch].[ReScheduledAppointment], 21)
+from SinglePoint.dbo.IncDispatch

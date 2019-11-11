@@ -1,8 +1,22 @@
 select
-	 [ContractHeaderID] = isNull(quotename([ContractHeaderID], char(34)), '\N'),
-	 [ContractID] = isNull(quotename([ContractID], char(34)), '\N'),
-	 [CustomerName] = isNull(quotename([CustomerName], char(34)), '\N'),
-	 [PartnerName] = isNull(quotename([PartnerName], char(34)), '\N'),
-	 [DeleteDate] = isNull(convert(varchar(50), [DeleteDate], 21), '\N'),
-	 [CreateDate] = isNull(convert(varchar(50), [CreateDate], 21), '\N')
-from SinglePoint.dbo.ContractDeletes
+	 [AddressID] = quotename([AddressDetails].[AddressID], char(34)),
+	 [WarehouseID] = quotename([AddressDetails].[WarehouseID], char(34)),
+	 [SalesTerritoryID] = quotename([AddressDetails].[SalesTerritoryID], char(34)),
+	 [TaxScheduleID] = quotename([AddressDetails].[TaxScheduleID], char(34)),
+	 [DefaultContactID] = quotename([AddressDetails].[DefaultContactID], char(34)),
+	 [ChangedByID] = quotename([AddressDetails].[ChangedByID], char(34)),
+	 [SalesPersonID] = quotename([AddressDetails].[SalesPersonID], char(34)),
+	 [LastChanged] = convert(varchar(50), [AddressDetails].[LastChanged], 21),
+	 [DrivingDistance_Miles] = quotename([AddressDetails].[DrivingDistance_Miles], char(34)),
+	 [DrivingTime_Minutes] = quotename([AddressDetails].[DrivingTime_Minutes], char(34)),
+	 [Driving_UpdateRequired] = quotename([AddressDetails].[Driving_UpdateRequired], char(34)),
+	 [AsyncStatus] = quotename([AddressDetails].[AsyncStatus], char(34)),
+	 [AsyncError] = quotename([AddressDetails].[AsyncError], char(34)),
+	 [CreateDate] = convert(varchar(50), [AddressDetails].[CreateDate], 21),
+	 [ServiceWarehouseID] = quotename([AddressDetails].[ServiceWarehouseID], char(34)),
+	 [TaxClass] = quotename([AddressDetails].[TaxClass], char(34)),
+	 [GenericAddressFlag] = quotename([AddressDetails].[GenericAddressFlag], char(34)),
+	 [GenericContactFlag] = quotename([AddressDetails].[GenericContactFlag], char(34)),
+	 [WarehouseCalculation_Method] = quotename([AddressDetails].[WarehouseCalculation_Method], char(34)),
+	 [WarehouseCalculation_Date] = convert(varchar(50), [AddressDetails].[WarehouseCalculation_Date], 21)
+from SinglePoint.dbo.AddressDetails

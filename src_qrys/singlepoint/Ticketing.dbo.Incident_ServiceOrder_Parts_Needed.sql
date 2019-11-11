@@ -1,13 +1,12 @@
 select
-	 [ContractHeaderID] = isNull(quotename([ContractHeaderID], char(34)), '\N'),
-	 [TotalContractValue] = isNull(quotename([TotalContractValue], char(34)), '\N'),
-	 [AvailableAmount] = isNull(quotename([AvailableAmount], char(34)), '\N'),
-	 [TotalContractConsumed] = isNull(quotename([TotalContractConsumed], char(34)), '\N'),
-	 [Currency] = isNull(quotename([Currency], char(34)), '\N'),
-	 [RHPriceListID] = isNull(quotename([RHPriceListID], char(34)), '\N'),
-	 [CreateByID] = isNull(quotename([CreateByID], char(34)), '\N'),
-	 [CreateDate] = isNull(convert(varchar(50), [CreateDate], 21), '\N'),
-	 [ChangeByID] = isNull(quotename([ChangeByID], char(34)), '\N'),
-	 [ChangeDate] = isNull(convert(varchar(50), [ChangeDate], 21), '\N'),
-	 [BillStatus] = isNull(quotename([BillStatus], char(34)), '\N')
-from SinglePoint.dbo.ContractHeaders_RemoteHands
+	 [UserRoleID] = quotename([UserRoles].[UserRoleID], char(34)),
+	 [UserRole] = quotename([UserRoles].[UserRole], char(34)),
+	 [Comment] = quotename([UserRoles].[Comment], char(34)),
+	 [SMSRoleFlag] = quotename([UserRoles].[SMSRoleFlag], char(34)),
+	 [CreateDate] = convert(varchar(50), [UserRoles].[CreateDate], 21),
+	 [RoleCode] = quotename([UserRoles].[RoleCode], char(34)),
+	 [EditorGroupID] = quotename([UserRoles].[EditorGroupID], char(34)),
+	 [CustomerID] = quotename([UserRoles].[CustomerID], char(34)),
+	 [InactiveFlag] = quotename([UserRoles].[InactiveFlag], char(34)),
+	 [CustomerUsageType] = quotename([UserRoles].[CustomerUsageType], char(34))
+from SinglePoint.dbo.UserRoles

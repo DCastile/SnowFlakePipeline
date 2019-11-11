@@ -1,12 +1,12 @@
 select
-	 [UserRoleID] = isNull(quotename([UserRoleID], char(34)), '\N'),
-	 [UserRole] = isNull(quotename([UserRole], char(34)), '\N'),
-	 [Comment] = isNull(quotename([Comment], char(34)), '\N'),
-	 [SMSRoleFlag] = isNull(quotename([SMSRoleFlag], char(34)), '\N'),
-	 [CreateDate] = isNull(convert(varchar(50), [CreateDate], 21), '\N'),
-	 [RoleCode] = isNull(quotename([RoleCode], char(34)), '\N'),
-	 [EditorGroupID] = isNull(quotename([EditorGroupID], char(34)), '\N'),
-	 [CustomerID] = isNull(quotename([CustomerID], char(34)), '\N'),
-	 [InactiveFlag] = isNull(quotename([InactiveFlag], char(34)), '\N'),
-	 [CustomerUsageType] = isNull(quotename([CustomerUsageType], char(34)), '\N')
+	 [UserRoleID] = quotename([UserRoles].[UserRoleID], char(34)),
+	 [UserRole] = quotename([UserRoles].[UserRole], char(34)),
+	 [Comment] = quotename([UserRoles].[Comment], char(34)),
+	 [SMSRoleFlag] = quotename([UserRoles].[SMSRoleFlag], char(34)),
+	 [CreateDate] = convert(varchar(50), [UserRoles].[CreateDate], 21),
+	 [RoleCode] = quotename([UserRoles].[RoleCode], char(34)),
+	 [EditorGroupID] = quotename([UserRoles].[EditorGroupID], char(34)),
+	 [CustomerID] = quotename([UserRoles].[CustomerID], char(34)),
+	 [InactiveFlag] = quotename([UserRoles].[InactiveFlag], char(34)),
+	 [CustomerUsageType] = quotename([UserRoles].[CustomerUsageType], char(34))
 from SinglePoint.dbo.UserRoles

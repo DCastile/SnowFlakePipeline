@@ -1,6 +1,6 @@
 select
-	 [WarehouseID] = isNull(quotename([WarehouseID], char(34)), '\N'),
-	 [FieldEngineerID] = isNull(quotename([FieldEngineerID], char(34)), '\N'),
-	 [CreatedByID] = isNull(quotename([CreatedByID], char(34)), '\N'),
-	 [CreatedDate] = isNull(convert(varchar(50), [CreatedDate], 21), '\N')
+	 [WarehouseID] = quotename([Warehouse_FieldEngineers].[WarehouseID], char(34)),
+	 [FieldEngineerID] = quotename([Warehouse_FieldEngineers].[FieldEngineerID], char(34)),
+	 [CreatedByID] = quotename([Warehouse_FieldEngineers].[CreatedByID], char(34)),
+	 [CreatedDate] = convert(varchar(50), [Warehouse_FieldEngineers].[CreatedDate], 21)
 from SinglePoint.dbo.Warehouse_FieldEngineers

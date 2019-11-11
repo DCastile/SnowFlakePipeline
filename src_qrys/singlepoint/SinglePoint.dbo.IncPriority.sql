@@ -1,6 +1,6 @@
 select
-	 [PriorityID] = isNull(quotename([PriorityID], char(34)), '\N'),
-	 [PriorityCodeKey] = isNull(quotename([PriorityCodeKey], char(34)), '\N'),
-	 [PriorityCodeID] = isNull(quotename([PriorityCodeID], char(34)), '\N'),
-	 [Description] = isNull(quotename([Description], char(34)), '\N')
+	 [PriorityID] = quotename([IncPriority].[PriorityID], char(34)),
+	 [PriorityCodeKey] = quotename([IncPriority].[PriorityCodeKey], char(34)),
+	 [PriorityCodeID] = quotename([IncPriority].[PriorityCodeID], char(34)),
+	 [Description] = quotename([IncPriority].[Description], char(34))
 from SinglePoint.dbo.IncPriority
