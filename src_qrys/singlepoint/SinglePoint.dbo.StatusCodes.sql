@@ -1,8 +1,12 @@
 select
-	 [ID] = quotename([Country_Mapping].[ID], char(34)),
-	 [CountryCategoryID] = quotename([Country_Mapping].[CountryCategoryID], char(34)),
-	 [CountryGroupID] = quotename([Country_Mapping].[CountryGroupID], char(34)),
-	 [Category] = quotename([Country_Mapping].[Category], char(34)),
-	 [Group] = quotename([Country_Mapping].[Group], char(34)),
-	 [Country] = quotename([Country_Mapping].[Country], char(34))
-from SinglePoint.dbo.Country_Mapping
+	 [StatusCodeID] = quotename([StatusCodes].[StatusCodeID], char(34)),
+	 [StatusTypeID] = quotename([StatusCodes].[StatusTypeID], char(34)),
+	 [StatusCode] = quotename([StatusCodes].[StatusCode], char(34)),
+	 [StatusDescription] = quotename([StatusCodes].[StatusDescription], char(34)),
+	 [seq] = quotename([StatusCodes].[seq], char(34)),
+	 [InactiveFlag] = quotename([StatusCodes].[InactiveFlag], char(34)),
+	 [ChangedByID] = quotename([StatusCodes].[ChangedByID], char(34)),
+	 [LastChanged] = convert(varchar(50), [StatusCodes].[LastChanged], 21),
+	 [SSStatCodeKey] = quotename([StatusCodes].[SSStatCodeKey], char(34)),
+	 [ParentID] = quotename([StatusCodes].[ParentID], char(34))
+from SinglePoint.dbo.StatusCodes

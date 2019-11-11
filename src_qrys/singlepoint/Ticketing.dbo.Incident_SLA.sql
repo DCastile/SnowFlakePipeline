@@ -1,5 +1,20 @@
 select
-	 [UserID] = quotename([User_UserRoles_XREF].[UserID], char(34)),
-	 [UserRoleID] = quotename([User_UserRoles_XREF].[UserRoleID], char(34)),
-	 [CreateDate] = convert(varchar(50), [User_UserRoles_XREF].[CreateDate], 21)
-from SinglePoint.dbo.User_UserRoles_XREF
+	 [IncidentSlaID] = quotename([Incident_SLA].[IncidentSlaID], char(34)),
+	 [IncidentID] = quotename([Incident_SLA].[IncidentID], char(34)),
+	 [SlaTermID] = quotename([Incident_SLA].[SlaTermID], char(34)),
+	 [SlaCallProfileID] = quotename([Incident_SLA].[SlaCallProfileID], char(34)),
+	 [SlaServiceProfileID] = quotename([Incident_SLA].[SlaServiceProfileID], char(34)),
+	 [SlaStartTime] = convert(varchar(50), [Incident_SLA].[SlaStartTime], 21),
+	 [SlaDeadline] = convert(varchar(50), [Incident_SLA].[SlaDeadline], 21),
+	 [SlaStatus] = quotename([Incident_SLA].[SlaStatus], char(34)),
+	 [SlaTotalTimeDurationAllowed_Minutes] = quotename([Incident_SLA].[SlaTotalTimeDurationAllowed_Minutes], char(34)),
+	 [SlaTimeDurationForClosedActivities_Minutes] = quotename([Incident_SLA].[SlaTimeDurationForClosedActivities_Minutes], char(34)),
+	 [SlaDisposition] = quotename([Incident_SLA].[SlaDisposition], char(34)),
+	 [SlaDispositionDeterminationDateTime] = convert(varchar(50), [Incident_SLA].[SlaDispositionDeterminationDateTime], 21),
+	 [SlaRequiredTravelStartTime] = convert(varchar(50), [Incident_SLA].[SlaRequiredTravelStartTime], 21),
+	 [SlaJeopordyStartTime] = convert(varchar(50), [Incident_SLA].[SlaJeopordyStartTime], 21),
+	 [SlaServiceCommitment] = quotename([Incident_SLA].[SlaServiceCommitment], char(34)),
+	 [SlaAcceptanceDateTime] = convert(varchar(50), [Incident_SLA].[SlaAcceptanceDateTime], 21),
+	 [SlaTimeZoneKey] = quotename([Incident_SLA].[SlaTimeZoneKey], char(34)),
+	 [SlaDisposition_Actual] = quotename([Incident_SLA].[SlaDisposition_Actual], char(34))
+from Ticketing.dbo.Incident_SLA

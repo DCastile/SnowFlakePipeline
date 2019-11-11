@@ -1,22 +1,12 @@
 select
-	 [BOMGuid] = quotename([tqoBOM].[BOMGuid], char(34)),
-	 [ItemGuid] = quotename([tqoBOM].[ItemGuid], char(34)),
-	 [ParentID] = quotename([tqoBOM].[ParentID], char(34)),
-	 [EvenCountFlag] = quotename([tqoBOM].[EvenCountFlag], char(34)),
-	 [MinQty] = quotename([tqoBOM].[MinQty], char(34)),
-	 [MaxQty] = quotename([tqoBOM].[MaxQty], char(34)),
-	 [StandardQty] = quotename([tqoBOM].[StandardQty], char(34)),
-	 [StandardFlag] = quotename([tqoBOM].[StandardFlag], char(34)),
-	 [RootItemGuid] = quotename([tqoBOM].[RootItemGuid], char(34)),
-	 [MASCompKey] = quotename([tqoBOM].[MASCompKey], char(34)),
-	 [MASParentKey] = quotename([tqoBOM].[MASParentKey], char(34)),
-	 [ChangedByID] = quotename([tqoBOM].[ChangedByID], char(34)),
-	 [LastChanged] = convert(varchar(50), [tqoBOM].[LastChanged], 21),
-	 [CreateByID] = quotename([tqoBOM].[CreateByID], char(34)),
-	 [CreateDate] = convert(varchar(50), [tqoBOM].[CreateDate], 21),
-	 [Source] = quotename([tqoBOM].[Source], char(34)),
-	 [SourceFKID] = quotename([tqoBOM].[SourceFKID], char(34)),
-	 [SparesKit] = quotename([tqoBOM].[SparesKit], char(34)),
-	 [SourceProc] = quotename([tqoBOM].[SourceProc], char(34)),
-	 [FromSiteAudit] = quotename([tqoBOM].[FromSiteAudit], char(34))
-from SinglePoint.dbo.tqoBOM
+	 [ID] = quotename([Queue_Warehouse_Incidents].[ID], char(34)),
+	 [WarehouseID] = quotename([Queue_Warehouse_Incidents].[WarehouseID], char(34)),
+	 [IncidentID] = quotename([Queue_Warehouse_Incidents].[IncidentID], char(34)),
+	 [CreatedByID] = quotename([Queue_Warehouse_Incidents].[CreatedByID], char(34)),
+	 [CreatedDate] = convert(varchar(50), [Queue_Warehouse_Incidents].[CreatedDate], 21),
+	 [QueueStartTime] = convert(varchar(50), [Queue_Warehouse_Incidents].[QueueStartTime], 21),
+	 [QueueEndTime] = convert(varchar(50), [Queue_Warehouse_Incidents].[QueueEndTime], 21),
+	 [StartEventID] = quotename([Queue_Warehouse_Incidents].[StartEventID], char(34)),
+	 [EndEventID] = quotename([Queue_Warehouse_Incidents].[EndEventID], char(34)),
+	 [AssignmentTimerStart] = convert(varchar(50), [Queue_Warehouse_Incidents].[AssignmentTimerStart], 21)
+from Ticketing.dbo.Queue_Warehouse_Incidents

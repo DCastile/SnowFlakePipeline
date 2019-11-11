@@ -82,6 +82,7 @@ snowflake_creates = []
 
 dbs = ['SinglePoint', 'Ticketing', 'ProductManagement']
 tables_to_create = set(['SinglePoint.dbo.Departments', 'SinglePoint.dbo.tqoQuoteTypes', 'SinglePoint.dbo.SiteAudits', 'SinglePoint.dbo.ContractChgRequests', 'SinglePoint.dbo.IncidentDates', 'SinglePoint.dbo.IncDispatch', 'SinglePoint.dbo.Customer_BillingProfile', 'SinglePoint.dbo.incReasons', 'SinglePoint.dbo.TimeZones', 'SinglePoint.dbo.tqoCompany', 'SinglePoint.dbo.Country_Categories', 'SinglePoint.dbo.SLATerms', 'SinglePoint.dbo.CountryMultipliers', 'SinglePoint.dbo.Warehouses', 'SinglePoint.dbo.tqoRateSLA', 'SinglePoint.dbo.tqoSync', 'SinglePoint.dbo.Warehouse_Shifts', 'SinglePoint.dbo.Incidents', 'SinglePoint.dbo.Warehouse_Shift_Users', 'Ticketing.dbo.Incident_PendingCustomerResponse', 'SinglePoint.dbo.NotesGeneric', 'ProductManagement.dbo.PriceList', 'ProductManagement.dbo.PriceListDetail', 'SinglePoint.dbo.Groups', 'SinglePoint.dbo.AssetConfigs', 'SinglePoint.dbo.UserRoles', 'SinglePoint.dbo.User_UserRoles_XREF', 'Ticketing.dbo.Incident_SLA_ServiceProfiles', 'SinglePoint.dbo.CallHomeProviders', 'SinglePoint.dbo.AddressDetails', 'Ticketing.dbo.Incident_RemoteHands_Details', 'SinglePoint.dbo.MfgCodes', 'SinglePoint.dbo.Customers_Users_XREF', 'SinglePoint.dbo.PurchaseRequisition_Lines', 'SinglePoint.dbo.Contacts', 'SinglePoint.dbo.PurchaseRequisition', 'SinglePoint.dbo.PurchaseRequisition_UrgencyCodes', 'SinglePoint.dbo.SalesReps_ContractHeaders_Xref', 'SinglePoint.dbo.Coordinates', 'SinglePoint.dbo.AssetHeaders_UnitSwap_Log', 'SinglePoint.dbo.IncPriority', 'SinglePoint.dbo.IncWorkstream', 'SinglePoint.dbo.IncAppointments', 'SinglePoint.dbo.IncWorkstreamSla', 'SinglePoint.dbo.StatusCodes', 'SinglePoint.dbo.tqoQuote_ClearView_Extended_Import', 'SinglePoint.dbo.ContractBillCycles', 'SinglePoint.dbo.Customer_PartiesInvolved', 'SinglePoint.dbo.AssetLocation', 'SinglePoint.dbo.AssetTypes', 'SinglePoint.dbo.OrgChart', 'SinglePoint.dbo.tqoQuoteStatusHistory', 'SinglePoint.dbo.PartiesInvolved', 'SinglePoint.dbo.Contract_Type', 'SinglePoint.dbo.Users', 'Ticketing.dbo.Incident_SLA', 'SinglePoint.dbo.SalesReps', 'SinglePoint.dbo.tqoBOM', 'SinglePoint.dbo.tqoUnit', 'SinglePoint.dbo.Customers', 'SinglePoint.dbo.IncServiceOrders', 'SinglePoint.dbo.PurchaseOrders', 'SinglePoint.dbo.Customers', 'SinglePoint.dbo.OrgChart_ReportingTypes', 'SinglePoint.dbo.polygon_geography', 'SinglePoint.dbo.Users', 'SinglePoint.dbo.WarehouseDetails', 'SinglePoint.dbo.Country_Groups', 'SinglePoint.dbo.tqoSrvDealers', 'SinglePoint.dbo.Country_Mapping', 'SinglePoint.dbo.MethodOfContact', 'SinglePoint.dbo.incEvents', 'SinglePoint.quoter.tqoProblems_WarehouseDriveDistance_Xref', 'SinglePoint.dbo.Warehouse_FSL', 'SinglePoint.dbo.incCodes', 'SinglePoint.dbo.Activity_ExtendedData', 'SinglePoint.dbo.Warehouse_FieldEngineers', 'Ticketing.dbo.Queue_Users', 'Ticketing.dbo.Queue_Incidents', 'SinglePoint.dbo.IncidentDatesDeferals', 'Ticketing.dbo.Queue_Warehouse_Incidents', 'Ticketing.dbo.Incident_Metric_Details', 'Ticketing.dbo.Incident_ServiceOrder_Parts_Reservations', 'Ticketing.dbo.Incident_ServiceOrder_Parts_Needed', 'SinglePoint.dbo.ContractHeaders', 'SinglePoint.dbo.SroTypes', 'Ticketing.dbo.Incident_ServiceOrder_Header', 'SinglePoint.dbo.AssetHeaders', 'SinglePoint.dbo.CountryCodes', 'SinglePoint.dbo.ContractLines', 'SinglePoint.dbo.CountryRegions', 'SinglePoint.dbo.tqoItem', 'SinglePoint.dbo.SroHeader', 'SinglePoint.dbo.Addresses', 'SinglePoint.dbo.tqoQuoteHeader', 'SinglePoint.dbo.tqoQuoteLine', 'SinglePoint.dbo.Currency_PriceList_Xref', 'SinglePoint.dbo.tqoQuote'])
+table_names = []
 
 for db in dbs:
     table_data = connection_manager.execute_query(get_tables_qry, None, server, db, user=user, password=password)
@@ -98,26 +99,26 @@ for db in dbs:
                 continue
             snowflake_create += '\tdeleted int,'
             for idx, row in enumerate(tmp):
-                if row['SqlServerViewCreate']:
-                    src_qry += '\n\t' + row['SqlServerViewCreate']
+                src_qry += '\n\t' + row['SqlServerViewCreate']
                 snowflake_create += '\n\t' + row['SnowFlakeCreate']
 
             src_qry += '\n' + 'from {db}.dbo.{table}'.format(db=db, table=table)
             snowflake_create += '\n)'
 
+            table_names.append(fq_table_name)
             src_qrys.append(src_qry)
             snowflake_creates.append(snowflake_create)
 
 
     path = 'src_qrys/{source}/'.format(source=source)
-    for table, src_qry in zip(tables, src_qrys):
-        file_name = '{db}.dbo.{table}.sql'.format(db=db, table=table)
+    for table, src_qry in zip(table_names, src_qrys):
+        file_name = '{table}.sql'.format(table=table)
         with open(path + file_name, 'w') as f:
             f.write(src_qry)
 
 
     sf_conn = connect(**snowflake_connection_properties)
-    for table, create_table in zip(tables, snowflake_creates):
+    for table, create_table in zip(table_names, snowflake_creates):
         try:
             sf_conn.execute_string(create_table)
         except Exception as e:

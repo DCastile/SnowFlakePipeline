@@ -1,14 +1,16 @@
 select
-	 [AppointmentID] = quotename([IncAppointments].[AppointmentID], char(34)),
-	 [IncidentID] = quotename([IncAppointments].[IncidentID], char(34)),
-	 [OnSiteDateTime] = convert(varchar(50), [IncAppointments].[OnSiteDateTime], 21),
-	 [OffsiteDateTime] = convert(varchar(50), [IncAppointments].[OffsiteDateTime], 21),
-	 [FEName] = quotename([IncAppointments].[FEName], char(34)),
-	 [Comments] = quotename([IncAppointments].[Comments], char(34)),
-	 [CreateDate] = convert(varchar(50), [IncAppointments].[CreateDate], 21),
-	 [CreateUserID] = quotename([IncAppointments].[CreateUserID], char(34)),
-	 [LastUpdateDate] = convert(varchar(50), [IncAppointments].[LastUpdateDate], 21),
-	 [LastUpdateUserID] = quotename([IncAppointments].[LastUpdateUserID], char(34)),
-	 [UTC_OnSiteDateTime] = convert(varchar(50), [IncAppointments].[UTC_OnSiteDateTime], 21),
-	 [UTC_OffSiteDateTime] = convert(varchar(50), [IncAppointments].[UTC_OffSiteDateTime], 21)
-from SinglePoint.dbo.IncAppointments
+	 [SalesRepID] = quotename([SalesReps].[SalesRepID], char(34)),
+	 [UserID] = quotename([SalesReps].[UserID], char(34)),
+	 [SMSSperKey] = quotename([SalesReps].[SMSSperKey], char(34)),
+	 [WarehouseID] = quotename([SalesReps].[WarehouseID], char(34)),
+	 [ParentID] = quotename([SalesReps].[ParentID], char(34)),
+	 [CreateByID] = quotename([SalesReps].[CreateByID], char(34)),
+	 [CreateDate] = convert(varchar(50), [SalesReps].[CreateDate], 21),
+	 [SiteAuditEmailFlag] = quotename([SalesReps].[SiteAuditEmailFlag], char(34)),
+	 [SMSSperID] = quotename([SalesReps].[SMSSperID], char(34)),
+	 [EntFlag] = quotename([SalesReps].[EntFlag], char(34)),
+	 [SAP_Salesperson_Key] = quotename([SalesReps].[SAP_Salesperson_Key], char(34)),
+	 [ChangeByID] = quotename([SalesReps].[ChangeByID], char(34)),
+	 [ChangeDate] = convert(varchar(50), [SalesReps].[ChangeDate], 21),
+	 [Active] = quotename([SalesReps].[Active], char(34))
+from SinglePoint.dbo.SalesReps

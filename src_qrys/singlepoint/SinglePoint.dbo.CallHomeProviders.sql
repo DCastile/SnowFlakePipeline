@@ -1,8 +1,7 @@
 select
-	 [QuoteTypeID] = quotename([tqoQuoteTypes].[QuoteTypeID], char(34)),
-	 [QuoteType] = quotename([tqoQuoteTypes].[QuoteType], char(34)),
-	 [CreateDate] = convert(varchar(50), [tqoQuoteTypes].[CreateDate], 21),
-	 [allowLineEdits] = quotename([tqoQuoteTypes].[allowLineEdits], char(34)),
-	 [allowHeaderEdits] = quotename([tqoQuoteTypes].[allowHeaderEdits], char(34)),
-	 [showOnSearch] = quotename([tqoQuoteTypes].[showOnSearch], char(34))
-from SinglePoint.dbo.tqoQuoteTypes
+	 [CallHomeProviderID] = quotename([CallHomeProviders].[CallHomeProviderID], char(34)),
+	 [CallHomeProviderName] = quotename([CallHomeProviders].[CallHomeProviderName], char(34)),
+	 [ServiceDealerID] = quotename([CallHomeProviders].[ServiceDealerID], char(34)),
+	 [CreateDate] = convert(varchar(50), [CallHomeProviders].[CreateDate], 21),
+	 [CreateByID] = quotename([CallHomeProviders].[CreateByID], char(34))
+from SinglePoint.dbo.CallHomeProviders

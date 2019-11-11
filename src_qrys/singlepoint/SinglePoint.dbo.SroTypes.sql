@@ -1,23 +1,10 @@
 select
-	 [WarehouseID] = quotename([WarehouseDetails].[WarehouseID], char(34)),
-	 [SegmentID] = quotename([WarehouseDetails].[SegmentID], char(34)),
-	 [WhseKey] = quotename([WarehouseDetails].[WhseKey], char(34)),
-	 [WhseID] = quotename([WarehouseDetails].[WhseID], char(34)),
-	 [WhseDescription] = quotename([WarehouseDetails].[WhseDescription], char(34)),
-	 [InvtGLAcctKey] = quotename([WarehouseDetails].[InvtGLAcctKey], char(34)),
-	 [Location] = quotename([WarehouseDetails].[Location], char(34)),
-	 [Region] = quotename([WarehouseDetails].[Region], char(34)),
-	 [RSM] = quotename([WarehouseDetails].[RSM], char(34)),
-	 [Territory] = quotename([WarehouseDetails].[Territory], char(34)),
-	 [EmailSMS] = quotename([WarehouseDetails].[EmailSMS], char(34)),
-	 [EmailMobile] = quotename([WarehouseDetails].[EmailMobile], char(34)),
-	 [GM] = quotename([WarehouseDetails].[GM], char(34)),
-	 [EmailGM] = quotename([WarehouseDetails].[EmailGM], char(34)),
-	 [EMailContracts] = quotename([WarehouseDetails].[EMailContracts], char(34)),
-	 [EmailRegionalMgr] = quotename([WarehouseDetails].[EmailRegionalMgr], char(34)),
-	 [RegionalMgr] = quotename([WarehouseDetails].[RegionalMgr], char(34)),
-	 [RSMPartnerID] = quotename([WarehouseDetails].[RSMPartnerID], char(34)),
-	 [RSMPartnerKey] = quotename([WarehouseDetails].[RSMPartnerKey], char(34)),
-	 [CreateDate] = convert(varchar(50), [WarehouseDetails].[CreateDate], 21),
-	 [EmailDirMobile] = quotename([WarehouseDetails].[EmailDirMobile], char(34))
-from SinglePoint.dbo.WarehouseDetails
+	 [SroTypeID] = quotename([SroTypes].[SroTypeID], char(34)),
+	 [SroTypeKey] = quotename([SroTypes].[SroTypeKey], char(34)),
+	 [Code] = quotename([SroTypes].[Code], char(34)),
+	 [Description] = quotename([SroTypes].[Description], char(34)),
+	 [InactiveFlag] = quotename([SroTypes].[InactiveFlag], char(34)),
+	 [SroTemplateID] = quotename([SroTypes].[SroTemplateID], char(34)),
+	 [Billable] = quotename([SroTypes].[Billable], char(34)),
+	 [CreateDate] = convert(varchar(50), [SroTypes].[CreateDate], 21)
+from SinglePoint.dbo.SroTypes

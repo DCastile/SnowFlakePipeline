@@ -1,7 +1,6 @@
 select
-	 [DepartmentID] = quotename([Departments].[DepartmentID], char(34)),
-	 [DepartmentKey] = quotename([Departments].[DepartmentKey], char(34)),
-	 [Code] = quotename([Departments].[Code], char(34)),
-	 [Description] = quotename([Departments].[Description], char(34)),
-	 [CreateDate] = convert(varchar(50), [Departments].[CreateDate], 21)
-from SinglePoint.dbo.Departments
+	 [CurrencyID] = quotename([Currency_PriceList_Xref].[CurrencyID], char(34)),
+	 [PriceListID] = quotename([Currency_PriceList_Xref].[PriceListID], char(34)),
+	 [Currency] = quotename([Currency_PriceList_Xref].[Currency], char(34)),
+	 [Active] = quotename([Currency_PriceList_Xref].[Active], char(34))
+from SinglePoint.dbo.Currency_PriceList_Xref

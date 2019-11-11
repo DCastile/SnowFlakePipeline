@@ -1,7 +1,25 @@
 select
-	 [ManagerUserID] = quotename([OrgChart].[ManagerUserID], char(34)),
-	 [SubordinateUserID] = quotename([OrgChart].[SubordinateUserID], char(34)),
-	 [ReportingTypeID] = quotename([OrgChart].[ReportingTypeID], char(34)),
-	 [CreatedByUserID] = quotename([OrgChart].[CreatedByUserID], char(34)),
-	 [CreatedDate] = convert(varchar(50), [OrgChart].[CreatedDate], 21)
-from SinglePoint.dbo.OrgChart
+	 [PriceListDetailID] = quotename([PriceListDetail].[PriceListDetailID], char(34)),
+	 [PriceListID] = quotename([PriceListDetail].[PriceListID], char(34)),
+	 [ItemID] = quotename([PriceListDetail].[ItemID], char(34)),
+	 [Type] = quotename([PriceListDetail].[Type], char(34)),
+	 [CalculatedFromPriceListID] = quotename([PriceListDetail].[CalculatedFromPriceListID], char(34)),
+	 [CalculatedExchangeRate] = quotename([PriceListDetail].[CalculatedExchangeRate], char(34)),
+	 [CalculatedDate] = convert(varchar(50), [PriceListDetail].[CalculatedDate], 21),
+	 [Rate] = quotename([PriceListDetail].[Rate], char(34)),
+	 [WarrantyRate] = quotename([PriceListDetail].[WarrantyRate], char(34)),
+	 [IsQuotable] = quotename([PriceListDetail].[IsQuotable], char(34)),
+	 [IsSupported] = quotename([PriceListDetail].[IsSupported], char(34)),
+	 [IsPricingReviewRequired] = quotename([PriceListDetail].[IsPricingReviewRequired], char(34)),
+	 [IsBomRequired] = quotename([PriceListDetail].[IsBomRequired], char(34)),
+	 [IsConfigPriced] = quotename([PriceListDetail].[IsConfigPriced], char(34)),
+	 [OEMSupportEndDate] = convert(varchar(50), [PriceListDetail].[OEMSupportEndDate], 21),
+	 [OEMSupportCost] = quotename([PriceListDetail].[OEMSupportCost], char(34)),
+	 [IsBandedPricing] = quotename([PriceListDetail].[IsBandedPricing], char(34)),
+	 [PriceBandID] = quotename([PriceListDetail].[PriceBandID], char(34)),
+	 [IsExcludedFromBulkPriceUpdates] = quotename([PriceListDetail].[IsExcludedFromBulkPriceUpdates], char(34)),
+	 [PriceListItemMultiplier] = quotename([PriceListDetail].[PriceListItemMultiplier], char(34)),
+	 [LastUpdatedBy] = quotename([PriceListDetail].[LastUpdatedBy], char(34)),
+	 [LastUpdated] = convert(varchar(50), [PriceListDetail].[LastUpdated], 21),
+	 [LastUpdatedByID] = quotename([PriceListDetail].[LastUpdatedByID], char(34))
+from ProductManagement.dbo.PriceListDetail

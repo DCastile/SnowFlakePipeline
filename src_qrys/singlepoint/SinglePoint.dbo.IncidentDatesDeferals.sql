@@ -1,20 +1,12 @@
 select
-	 [ForwardStockingLocationID] = quotename([Warehouse_FSL].[ForwardStockingLocationID], char(34)),
-	 [Name] = quotename([Warehouse_FSL].[Name], char(34)),
-	 [Description] = quotename([Warehouse_FSL].[Description], char(34)),
-	 [AddressID] = quotename([Warehouse_FSL].[AddressID], char(34)),
-	 [Status] = quotename([Warehouse_FSL].[Status], char(34)),
-	 [MonthlyCost] = quotename([Warehouse_FSL].[MonthlyCost], char(34)),
-	 [CreatedDate] = convert(varchar(50), [Warehouse_FSL].[CreatedDate], 21),
-	 [CreatedByUserID] = quotename([Warehouse_FSL].[CreatedByUserID], char(34)),
-	 [LastUpdatedDate] = convert(varchar(50), [Warehouse_FSL].[LastUpdatedDate], 21),
-	 [LastUpdatedByUserID] = quotename([Warehouse_FSL].[LastUpdatedByUserID], char(34)),
-	 [Oracle_InventoryOrg_ID] = quotename([Warehouse_FSL].[Oracle_InventoryOrg_ID], char(34)),
-	 [Oracle_InventoryOrg_Code] = quotename([Warehouse_FSL].[Oracle_InventoryOrg_Code], char(34)),
-	 [Oracle_InventoryOrg_Name] = quotename([Warehouse_FSL].[Oracle_InventoryOrg_Name], char(34)),
-	 [ForwardStockingLocationKey] = quotename([Warehouse_FSL].[ForwardStockingLocationKey], char(34)),
-	 [VendorName] = quotename([Warehouse_FSL].[VendorName], char(34)),
-	 [VendorLocation_ID] = quotename([Warehouse_FSL].[VendorLocation_ID], char(34)),
-	 [Radius] = quotename([Warehouse_FSL].[Radius], char(34)),
-	 [Type] = quotename([Warehouse_FSL].[Type], char(34))
-from SinglePoint.dbo.Warehouse_FSL
+	 [IncidentID] = quotename([IncidentDatesDeferals].[IncidentID], char(34)),
+	 [EventID] = quotename([IncidentDatesDeferals].[EventID], char(34)),
+	 [DeferalStart] = convert(varchar(50), [IncidentDatesDeferals].[DeferalStart], 21),
+	 [DeferalEnd] = convert(varchar(50), [IncidentDatesDeferals].[DeferalEnd], 21),
+	 [CreateDate] = convert(varchar(50), [IncidentDatesDeferals].[CreateDate], 21),
+	 [ReasonID] = quotename([IncidentDatesDeferals].[ReasonID], char(34)),
+	 [ReasonCode] = quotename([IncidentDatesDeferals].[ReasonCode], char(34)),
+	 [FollowUpDate] = convert(varchar(50), [IncidentDatesDeferals].[FollowUpDate], 21),
+	 [ScheduledDate] = convert(varchar(50), [IncidentDatesDeferals].[ScheduledDate], 21),
+	 [FollowUpNotificationSent] = quotename([IncidentDatesDeferals].[FollowUpNotificationSent], char(34))
+from SinglePoint.dbo.IncidentDatesDeferals
