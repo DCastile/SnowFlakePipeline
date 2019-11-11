@@ -63,7 +63,7 @@ def get_login_info(server):
 if __name__ == '__main__':
 
     source_choices = ['sap', 'singlepoint']
-    server_choices = ['10.4.1.100', '10.61.95.22', 'c18n3588.c18n.c.vtscloud.io']
+    server_choices = ['10.4.1.100', '10.61.95.22', 'c18n3588.c18n.c.vtscloud.io', '10.61.95.15']
 
     parser = argparse.ArgumentParser(description='A CLI for moving data to SnowFlake')
 
