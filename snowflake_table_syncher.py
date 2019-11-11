@@ -115,7 +115,7 @@ class SnowFlakeTableSyncher:
         insert_values: str = ','.join(
             map(lambda x: '${numb}'.format(numb=x), range(1, 1 + len(self.source_table.columns))))
         return '''
-            merge into {table} target
+            merge into "{table}" target
             using {staged_file} source
                 on {join_columns_str}
             when matched then update set
