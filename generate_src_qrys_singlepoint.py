@@ -32,7 +32,7 @@ get_src_qry = r'''
         CdcEnabled,
         '"' + COLUMN_NAME + '"' + ' ' + SnowFlakeDataType + IIF(num_columns = ordinal_position, '', ',') SnowFlakeCreate,
         ' [' + COLUMN_NAME + '] = ' +
-        case data_type
+        case SNOWFLAKEDATATYPE
             when 'datetime' then 'convert(varchar(50), [' + TABLE_NAME + '].' + '[' + column_name + '], 21)'
             else 'quotename([' + TABLE_NAME + '].' + '[' + COLUMN_NAME + '], char(34))'
         end +  IIF(num_columns = ordinal_position, '', ',') SqlServerViewCreate
