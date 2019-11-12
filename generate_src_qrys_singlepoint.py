@@ -68,6 +68,7 @@ get_src_qry = r'''
             and col.TABLE_SCHEMA = 'dbo'
             and col.TABLE_NAME = ?
     ) a
+    order by table_name, ORDINAL_POSITION
 '''
 
 get_tables_qry = '''
