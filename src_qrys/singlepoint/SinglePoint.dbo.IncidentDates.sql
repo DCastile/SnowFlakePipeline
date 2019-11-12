@@ -1,5 +1,5 @@
 select
-	 [IncidentID] = concat(char(34), isNull(cast([IncidentDates].[IncidentID] as nvarchar(max)), '\N'), char(34)),
+	 [IncidentID] = concat(char(34), isNull(replace(cast([IncidentDates].[IncidentID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Created] = isNull(convert(varchar(50), [IncidentDates].[Created], 21), '\N'),
 	 [Assigned] = isNull(convert(varchar(50), [IncidentDates].[Assigned], 21), '\N'),
 	 [Callback] = isNull(convert(varchar(50), [IncidentDates].[Callback], 21), '\N'),
