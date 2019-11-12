@@ -7,6 +7,7 @@ from subprocess import run, CompletedProcess
 from os import getpid
 import logging
 from threading import current_thread
+import traceback
 
 import re
 
@@ -40,6 +41,7 @@ class SourceTableExtractor:
         tmp.update(self.source_table_batch.dict())
         return tmp
 
+
     def run(self):
         # logger.info('Starting bcp <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch}>'.format(pid=getpid(), thread=current_thread().getName(),
         #                                                                                                 source=self.source.source,
@@ -48,10 +50,14 @@ class SourceTableExtractor:
         self.start_time = datetime.now()
 
         self.command = self.build_bcp_command()
-        completed: CompletedProcess = run(self.command)
-        completed_message: Dict = {}
+        try:
+            completed: CompletedProcess = run(self.command)
+            completed_message: Dict = {}
+            self.source_table_batch.row_count = parse_bcp_log(self.log_file)
 
-        self.source_table_batch.row_count = parse_bcp_log(self.log_file)
+        except Exception as e:
+            logger.error('Error with snowflake put for table:', self.source_table_batch)
+            traceback.print_exc()
 
         self.end_time = datetime.now()
         logger.info('Finished bcp <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(pid=getpid(), thread=current_thread().getName(),

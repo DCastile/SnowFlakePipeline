@@ -10,6 +10,8 @@ from os import getpid
 import logging
 from threading import current_thread
 
+import traceback
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -63,16 +65,18 @@ class SnowFlakeTableSyncher:
         #         source=self.source.source,
         #         table=self.source_table.table,
         #         batch=self.source_table_batch.batch_number))
+        try:
+            self.put_command = self.build_snowflake_put_command()
 
-        self.put_command = self.build_snowflake_put_command()
+            conn.execute_string(self.put_command)
+            completed: Dict = {}
 
-        conn.execute_string(self.put_command)
-        completed: Dict = {}
-
-        # remove the temp file
-        if os.path.exists(self.file_location):
-            os.remove(self.file_location)
-
+            # remove the temp file
+            if os.path.exists(self.file_location):
+                os.remove(self.file_location)
+        except Exception as e:
+            logger.error('Error with snowflake put for table:', self.source_table_batch)
+            traceback.print_exc()
         logger.info(
             'Finished snowflake put <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(
                 pid=getpid(),
@@ -89,10 +93,13 @@ class SnowFlakeTableSyncher:
         #         source=self.source.source,
         #         table=self.source_table.table,
         #         batch=self.source_table_batch.batch_number))
-
-        self.merge_command = self.build_snowflake_merge_command()
-        conn.execute_string(self.merge_command)
-        completed: Dict = {}
+        try:
+            self.merge_command = self.build_snowflake_merge_command()
+            conn.execute_string(self.merge_command)
+            completed: Dict = {}
+        except Exception as e:
+            logger.error('Error with snowflake merge for table:', self.source_table_batch)
+            traceback.print_exc()
 
         logger.info(
             'Finished snowflake merge <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(
