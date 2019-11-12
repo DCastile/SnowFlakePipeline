@@ -240,7 +240,7 @@ class SourceTableBatch:
         format_dates = lambda x: x.strftime(sql_date_format)
         start, end = map(format_dates, [self.source.incremental_start_time, self.source.incremental_end_time])
 
-        cdc_params = "(sys.fn_cdc_get_min_lsn('{schema}_{table}'), sys.fn_cdc_get_max_lsn(), 'all')".format(**params)
+        cdc_params = "({db}.sys.fn_cdc_get_min_lsn('{schema}_{table}'), {db}.sys.fn_cdc_get_max_lsn(), 'all')".format(**params)
         params.update({'cdc_params': cdc_params})
         cdc_fq_object = "{db}.cdc.fn_cdc_get_net_changes_{schema}_{table}{cdc_params} [{table}]".format(**params)
         self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object)
