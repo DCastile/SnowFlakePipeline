@@ -234,14 +234,15 @@ class SourceTableBatch:
 
     def set_qry_incremental_cdc(self):
 
-        params = {'db': self.source.database, 'schema': self.source.schema, 'table': self.source_table.table}
-        fq_table_name = '{db}.{schema}.{table}'.format(**params)
+        true_table_name = self.source_table.table.split('.')[2]
+        params = {'db': self.source.database, 'schema': self.source.schema, 'table': true_table_name}
+        fq_table_name = '{db}.{schema}.{table}'.format(**params) # table names are already fully qualified for singlePoint
         format_dates = lambda x: x.strftime(sql_date_format)
         start, end = map(format_dates, [self.source.incremental_start_time, self.source.incremental_end_time])
 
-        cdc_params = "(sys.fn_cdc_map_time_to_lsn('smallest greater than', '{}'), sys.fn_cdc_map_time_to_lsn('largest less than or equal', '{}'), 'all')".format(start, end)
+        cdc_params = "(sys.fn_cdc_get_min_lsn('{schema}_{table}'), sys.fn_cdc_get_max_lsn(), 'all')".format(**params)
         params.update({'cdc_params': cdc_params})
-        cdc_fq_object = "{db}.cdc.fn_cdc_get_net_changes_{schema}_{table}{cdc_params}".format(**params)
+        cdc_fq_object = "{db}.cdc.fn_cdc_get_net_changes_{schema}_{table}{cdc_params} [{table}]".format(**params)
         self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object)
         self.qry = self.qry.replace('select', 'select IIF( __$operation = 1, 1, 0) deleted,')
 
