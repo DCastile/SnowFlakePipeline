@@ -1,5 +1,5 @@
 select
-	 [IncidentID] = concat('"', [IncidentDates].[IncidentID], '"'),
+	 [IncidentID] = concat(char(34), [IncidentDates].[IncidentID], char(34)),
 	 [Created] = convert(varchar(50), [IncidentDates].[Created], 21),
 	 [Assigned] = convert(varchar(50), [IncidentDates].[Assigned], 21),
 	 [Callback] = convert(varchar(50), [IncidentDates].[Callback], 21),

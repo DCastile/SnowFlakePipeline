@@ -34,7 +34,7 @@ get_src_qry = r'''
         ' [' + COLUMN_NAME + '] = ' +
         case SNOWFLAKEDATATYPE
             when 'datetime' then 'convert(varchar(50), [' + TABLE_NAME + '].' + '[' + column_name + '], 21)'
-            else 'concat(''"'', [' + TABLE_NAME + '].' + '[' + COLUMN_NAME + '], ''"'')'
+            else 'concat(char(34), [' + TABLE_NAME + '].' + '[' + COLUMN_NAME + '], char(34))'
         end +  IIF(num_columns = ordinal_position, '', ',') SqlServerViewCreate
     from (
         select

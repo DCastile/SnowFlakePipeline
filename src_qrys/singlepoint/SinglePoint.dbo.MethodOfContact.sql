@@ -1,13 +1,13 @@
 select
-	 [ID] = concat('"', [MethodOfContact].[ID], '"'),
-	 [Address] = concat('"', [MethodOfContact].[Address], '"'),
-	 [FKID] = concat('"', [MethodOfContact].[FKID], '"'),
-	 [TechTypeID] = concat('"', [MethodOfContact].[TechTypeID], '"'),
-	 [SubTypeID] = concat('"', [MethodOfContact].[SubTypeID], '"'),
-	 [ServicerProvider] = concat('"', [MethodOfContact].[ServicerProvider], '"'),
-	 [CreatedByID] = concat('"', [MethodOfContact].[CreatedByID], '"'),
+	 [ID] = concat(char(34), [MethodOfContact].[ID], char(34)),
+	 [Address] = concat(char(34), [MethodOfContact].[Address], char(34)),
+	 [FKID] = concat(char(34), [MethodOfContact].[FKID], char(34)),
+	 [TechTypeID] = concat(char(34), [MethodOfContact].[TechTypeID], char(34)),
+	 [SubTypeID] = concat(char(34), [MethodOfContact].[SubTypeID], char(34)),
+	 [ServicerProvider] = concat(char(34), [MethodOfContact].[ServicerProvider], char(34)),
+	 [CreatedByID] = concat(char(34), [MethodOfContact].[CreatedByID], char(34)),
 	 [CreatedDate] = convert(varchar(50), [MethodOfContact].[CreatedDate], 21),
-	 [LastChangedByID] = concat('"', [MethodOfContact].[LastChangedByID], '"'),
+	 [LastChangedByID] = concat(char(34), [MethodOfContact].[LastChangedByID], char(34)),
 	 [LastChangedDate] = convert(varchar(50), [MethodOfContact].[LastChangedDate], 21),
-	 [IsActive] = concat('"', [MethodOfContact].[IsActive], '"')
+	 [IsActive] = concat(char(34), [MethodOfContact].[IsActive], char(34))
 from SinglePoint.dbo.MethodOfContact
