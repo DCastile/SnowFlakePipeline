@@ -1,5 +1,5 @@
 select
-	 [WorkstreamSlaID] = quotename([IncWorkstreamSla].[WorkstreamSlaID], char(34)),
-	 [Display] = quotename([IncWorkstreamSla].[Display], char(34)),
-	 [Description] = quotename([IncWorkstreamSla].[Description], char(34))
+	 [WorkstreamSlaID] = concat('"', [IncWorkstreamSla].[WorkstreamSlaID], '"'),
+	 [Display] = concat('"', [IncWorkstreamSla].[Display], '"'),
+	 [Description] = concat('"', [IncWorkstreamSla].[Description], '"')
 from SinglePoint.dbo.IncWorkstreamSla

@@ -1,13 +1,13 @@
 select
-	 [ContBillingCycleID] = quotename([ContractBillCycles].[ContBillingCycleID], char(34)),
-	 [CycleName] = quotename([ContractBillCycles].[CycleName], char(34)),
-	 [Description] = quotename([ContractBillCycles].[Description], char(34)),
-	 [NumMonths] = quotename([ContractBillCycles].[NumMonths], char(34)),
-	 [PeriodName] = quotename([ContractBillCycles].[PeriodName], char(34)),
-	 [MASBillingFreq] = quotename([ContractBillCycles].[MASBillingFreq], char(34)),
-	 [SAP_Billing_Type] = quotename([ContractBillCycles].[SAP_Billing_Type], char(34)),
-	 [InactiveFlag] = quotename([ContractBillCycles].[InactiveFlag], char(34)),
-	 [MAS_ServiceTypeKey] = quotename([ContractBillCycles].[MAS_ServiceTypeKey], char(34)),
-	 [Oracle_BillingSchedule_ID] = quotename([ContractBillCycles].[Oracle_BillingSchedule_ID], char(34)),
-	 [Oracle_code] = quotename([ContractBillCycles].[Oracle_code], char(34))
+	 [ContBillingCycleID] = concat('"', [ContractBillCycles].[ContBillingCycleID], '"'),
+	 [CycleName] = concat('"', [ContractBillCycles].[CycleName], '"'),
+	 [Description] = concat('"', [ContractBillCycles].[Description], '"'),
+	 [NumMonths] = concat('"', [ContractBillCycles].[NumMonths], '"'),
+	 [PeriodName] = concat('"', [ContractBillCycles].[PeriodName], '"'),
+	 [MASBillingFreq] = concat('"', [ContractBillCycles].[MASBillingFreq], '"'),
+	 [SAP_Billing_Type] = concat('"', [ContractBillCycles].[SAP_Billing_Type], '"'),
+	 [InactiveFlag] = concat('"', [ContractBillCycles].[InactiveFlag], '"'),
+	 [MAS_ServiceTypeKey] = concat('"', [ContractBillCycles].[MAS_ServiceTypeKey], '"'),
+	 [Oracle_BillingSchedule_ID] = concat('"', [ContractBillCycles].[Oracle_BillingSchedule_ID], '"'),
+	 [Oracle_code] = concat('"', [ContractBillCycles].[Oracle_code], '"')
 from SinglePoint.dbo.ContractBillCycles

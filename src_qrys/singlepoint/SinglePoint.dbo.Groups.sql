@@ -1,11 +1,11 @@
 select
-	 [GroupID] = quotename([Groups].[GroupID], char(34)),
-	 [CustomerID] = quotename([Groups].[CustomerID], char(34)),
-	 [Name] = quotename([Groups].[Name], char(34)),
-	 [DisplayName] = quotename([Groups].[DisplayName], char(34)),
-	 [Description] = quotename([Groups].[Description], char(34)),
-	 [InactiveFlag] = quotename([Groups].[InactiveFlag], char(34)),
-	 [EditorGroupID] = quotename([Groups].[EditorGroupID], char(34)),
+	 [GroupID] = concat('"', [Groups].[GroupID], '"'),
+	 [CustomerID] = concat('"', [Groups].[CustomerID], '"'),
+	 [Name] = concat('"', [Groups].[Name], '"'),
+	 [DisplayName] = concat('"', [Groups].[DisplayName], '"'),
+	 [Description] = concat('"', [Groups].[Description], '"'),
+	 [InactiveFlag] = concat('"', [Groups].[InactiveFlag], '"'),
+	 [EditorGroupID] = concat('"', [Groups].[EditorGroupID], '"'),
 	 [CreateDate] = convert(varchar(50), [Groups].[CreateDate], 21),
-	 [CustomerUsageType] = quotename([Groups].[CustomerUsageType], char(34))
+	 [CustomerUsageType] = concat('"', [Groups].[CustomerUsageType], '"')
 from SinglePoint.dbo.Groups

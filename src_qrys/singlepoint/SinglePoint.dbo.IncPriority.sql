@@ -1,6 +1,6 @@
 select
-	 [PriorityCodeKey] = quotename([IncPriority].[PriorityCodeKey], char(34)),
-	 [PriorityID] = quotename([IncPriority].[PriorityID], char(34)),
-	 [PriorityCodeID] = quotename([IncPriority].[PriorityCodeID], char(34)),
-	 [Description] = quotename([IncPriority].[Description], char(34))
+	 [PriorityID] = concat('"', [IncPriority].[PriorityID], '"'),
+	 [PriorityCodeKey] = concat('"', [IncPriority].[PriorityCodeKey], '"'),
+	 [PriorityCodeID] = concat('"', [IncPriority].[PriorityCodeID], '"'),
+	 [Description] = concat('"', [IncPriority].[Description], '"')
 from SinglePoint.dbo.IncPriority

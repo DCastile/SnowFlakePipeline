@@ -1,7 +1,7 @@
 select
-	 [CallHomeProviderID] = quotename([CallHomeProviders].[CallHomeProviderID], char(34)),
-	 [CallHomeProviderName] = quotename([CallHomeProviders].[CallHomeProviderName], char(34)),
-	 [ServiceDealerID] = quotename([CallHomeProviders].[ServiceDealerID], char(34)),
+	 [CallHomeProviderID] = concat('"', [CallHomeProviders].[CallHomeProviderID], '"'),
+	 [CallHomeProviderName] = concat('"', [CallHomeProviders].[CallHomeProviderName], '"'),
+	 [ServiceDealerID] = concat('"', [CallHomeProviders].[ServiceDealerID], '"'),
 	 [CreateDate] = convert(varchar(50), [CallHomeProviders].[CreateDate], 21),
-	 [CreateByID] = quotename([CallHomeProviders].[CreateByID], char(34))
+	 [CreateByID] = concat('"', [CallHomeProviders].[CreateByID], '"')
 from SinglePoint.dbo.CallHomeProviders

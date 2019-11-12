@@ -1,10 +1,10 @@
 select
-	 [PriceListID] = quotename([PriceList].[PriceListID], char(34)),
-	 [Name] = quotename([PriceList].[Name], char(34)),
-	 [Currency] = quotename([PriceList].[Currency], char(34)),
-	 [EditorSecurityGroup] = quotename([PriceList].[EditorSecurityGroup], char(34)),
-	 [CreatedBy] = quotename([PriceList].[CreatedBy], char(34)),
+	 [PriceListID] = concat('"', [PriceList].[PriceListID], '"'),
+	 [Name] = concat('"', [PriceList].[Name], '"'),
+	 [Currency] = concat('"', [PriceList].[Currency], '"'),
+	 [EditorSecurityGroup] = concat('"', [PriceList].[EditorSecurityGroup], '"'),
+	 [CreatedBy] = concat('"', [PriceList].[CreatedBy], '"'),
 	 [CreatedDate] = convert(varchar(50), [PriceList].[CreatedDate], 21),
-	 [PriceListMultiplier] = quotename([PriceList].[PriceListMultiplier], char(34)),
-	 [Inactive] = quotename([PriceList].[Inactive], char(34))
+	 [PriceListMultiplier] = concat('"', [PriceList].[PriceListMultiplier], '"'),
+	 [Inactive] = concat('"', [PriceList].[Inactive], '"')
 from ProductManagement.dbo.PriceList

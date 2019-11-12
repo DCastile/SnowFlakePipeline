@@ -1,8 +1,8 @@
 select
-	 [QuoteTypeID] = quotename([tqoQuoteTypes].[QuoteTypeID], char(34)),
-	 [QuoteType] = quotename([tqoQuoteTypes].[QuoteType], char(34)),
+	 [QuoteTypeID] = concat('"', [tqoQuoteTypes].[QuoteTypeID], '"'),
+	 [QuoteType] = concat('"', [tqoQuoteTypes].[QuoteType], '"'),
 	 [CreateDate] = convert(varchar(50), [tqoQuoteTypes].[CreateDate], 21),
-	 [allowLineEdits] = quotename([tqoQuoteTypes].[allowLineEdits], char(34)),
-	 [allowHeaderEdits] = quotename([tqoQuoteTypes].[allowHeaderEdits], char(34)),
-	 [showOnSearch] = quotename([tqoQuoteTypes].[showOnSearch], char(34))
+	 [allowLineEdits] = concat('"', [tqoQuoteTypes].[allowLineEdits], '"'),
+	 [allowHeaderEdits] = concat('"', [tqoQuoteTypes].[allowHeaderEdits], '"'),
+	 [showOnSearch] = concat('"', [tqoQuoteTypes].[showOnSearch], '"')
 from SinglePoint.dbo.tqoQuoteTypes

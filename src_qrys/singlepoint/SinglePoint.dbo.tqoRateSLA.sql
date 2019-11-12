@@ -1,12 +1,12 @@
 select
-	 [SLATermID] = quotename([tqoRateSLA].[SLATermID], char(34)),
-	 [RateMultiplier] = quotename([tqoRateSLA].[RateMultiplier], char(34)),
-	 [ChangedByID] = quotename([tqoRateSLA].[ChangedByID], char(34)),
+	 [SLATermID] = concat('"', [tqoRateSLA].[SLATermID], '"'),
+	 [RateMultiplier] = concat('"', [tqoRateSLA].[RateMultiplier], '"'),
+	 [ChangedByID] = concat('"', [tqoRateSLA].[ChangedByID], '"'),
 	 [LastChanged] = convert(varchar(50), [tqoRateSLA].[LastChanged], 21),
-	 [WrtyFlag] = quotename([tqoRateSLA].[WrtyFlag], char(34)),
+	 [WrtyFlag] = concat('"', [tqoRateSLA].[WrtyFlag], '"'),
 	 [CreateDate] = convert(varchar(50), [tqoRateSLA].[CreateDate], 21),
-	 [LaborRequired] = quotename([tqoRateSLA].[LaborRequired], char(34)),
-	 [PartsRequired] = quotename([tqoRateSLA].[PartsRequired], char(34)),
-	 [SameDay] = quotename([tqoRateSLA].[SameDay], char(34)),
-	 [NextDay] = quotename([tqoRateSLA].[NextDay], char(34))
+	 [LaborRequired] = concat('"', [tqoRateSLA].[LaborRequired], '"'),
+	 [PartsRequired] = concat('"', [tqoRateSLA].[PartsRequired], '"'),
+	 [SameDay] = concat('"', [tqoRateSLA].[SameDay], '"'),
+	 [NextDay] = concat('"', [tqoRateSLA].[NextDay], '"')
 from SinglePoint.dbo.tqoRateSLA

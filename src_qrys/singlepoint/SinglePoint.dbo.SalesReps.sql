@@ -1,16 +1,16 @@
 select
-	 [SalesRepID] = quotename([SalesReps].[SalesRepID], char(34)),
-	 [UserID] = quotename([SalesReps].[UserID], char(34)),
-	 [SMSSperKey] = quotename([SalesReps].[SMSSperKey], char(34)),
-	 [WarehouseID] = quotename([SalesReps].[WarehouseID], char(34)),
-	 [ParentID] = quotename([SalesReps].[ParentID], char(34)),
-	 [CreateByID] = quotename([SalesReps].[CreateByID], char(34)),
+	 [SalesRepID] = concat('"', [SalesReps].[SalesRepID], '"'),
+	 [UserID] = concat('"', [SalesReps].[UserID], '"'),
+	 [SMSSperKey] = concat('"', [SalesReps].[SMSSperKey], '"'),
+	 [WarehouseID] = concat('"', [SalesReps].[WarehouseID], '"'),
+	 [ParentID] = concat('"', [SalesReps].[ParentID], '"'),
+	 [CreateByID] = concat('"', [SalesReps].[CreateByID], '"'),
 	 [CreateDate] = convert(varchar(50), [SalesReps].[CreateDate], 21),
-	 [SiteAuditEmailFlag] = quotename([SalesReps].[SiteAuditEmailFlag], char(34)),
-	 [SMSSperID] = quotename([SalesReps].[SMSSperID], char(34)),
-	 [EntFlag] = quotename([SalesReps].[EntFlag], char(34)),
-	 [SAP_Salesperson_Key] = quotename([SalesReps].[SAP_Salesperson_Key], char(34)),
-	 [ChangeByID] = quotename([SalesReps].[ChangeByID], char(34)),
+	 [SiteAuditEmailFlag] = concat('"', [SalesReps].[SiteAuditEmailFlag], '"'),
+	 [SMSSperID] = concat('"', [SalesReps].[SMSSperID], '"'),
+	 [EntFlag] = concat('"', [SalesReps].[EntFlag], '"'),
+	 [SAP_Salesperson_Key] = concat('"', [SalesReps].[SAP_Salesperson_Key], '"'),
+	 [ChangeByID] = concat('"', [SalesReps].[ChangeByID], '"'),
 	 [ChangeDate] = convert(varchar(50), [SalesReps].[ChangeDate], 21),
-	 [Active] = quotename([SalesReps].[Active], char(34))
+	 [Active] = concat('"', [SalesReps].[Active], '"')
 from SinglePoint.dbo.SalesReps

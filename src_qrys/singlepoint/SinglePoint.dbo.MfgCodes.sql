@@ -1,8 +1,8 @@
 select
-	 [MfgCodeID] = quotename([MfgCodes].[MfgCodeID], char(34)),
-	 [MfgName] = quotename([MfgCodes].[MfgName], char(34)),
-	 [InactiveFlag] = quotename([MfgCodes].[InactiveFlag], char(34)),
-	 [ChangedByID] = quotename([MfgCodes].[ChangedByID], char(34)),
+	 [MfgCodeID] = concat('"', [MfgCodes].[MfgCodeID], '"'),
+	 [MfgName] = concat('"', [MfgCodes].[MfgName], '"'),
+	 [InactiveFlag] = concat('"', [MfgCodes].[InactiveFlag], '"'),
+	 [ChangedByID] = concat('"', [MfgCodes].[ChangedByID], '"'),
 	 [LastChanged] = convert(varchar(50), [MfgCodes].[LastChanged], 21),
-	 [SAPVendorKey] = quotename([MfgCodes].[SAPVendorKey], char(34))
+	 [SAPVendorKey] = concat('"', [MfgCodes].[SAPVendorKey], '"')
 from SinglePoint.dbo.MfgCodes
