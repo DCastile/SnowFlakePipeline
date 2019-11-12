@@ -3,7 +3,6 @@ select
 	 [FKID] = quotename([NotesGeneric].[FKID], char(34)),
 	 [ObjectType] = quotename([NotesGeneric].[ObjectType], char(34)),
 	 [Title] = quotename([NotesGeneric].[Title], char(34)),
-	 [Body] = quotename([NotesGeneric].[Body], char(34)),
 	 [Audiance] = quotename([NotesGeneric].[Audiance], char(34)),
 	 [EffectiveDate] = convert(varchar(50), [NotesGeneric].[EffectiveDate], 21),
 	 [ExpirationDate] = convert(varchar(50), [NotesGeneric].[ExpirationDate], 21),

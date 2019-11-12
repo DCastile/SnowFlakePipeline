@@ -63,7 +63,7 @@ get_src_qry = r'''
         left join cdc a on col.TABLE_SCHEMA = a.schema_name and col.TABLE_NAME = a.table_name and col.COLUMN_NAME = a.column_name
         where
             tab.TABLE_TYPE = 'BASE TABLE'
-            and col.DATA_TYPE not in ('binary', 'image', 'geography', 'varbinary')
+            and col.DATA_TYPE not in ('binary', 'image', 'geography', 'varbinary', 'text')
             and a.column_id is not null -- cdc must be enabled (sort kinda we can change this later on)
             and col.TABLE_SCHEMA = 'dbo'
             and col.TABLE_NAME = ?

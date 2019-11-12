@@ -5,8 +5,6 @@ select
 	 [ReasonSpecID] = quotename([incReasons].[ReasonSpecID], char(34)),
 	 [ResolutionGenID] = quotename([incReasons].[ResolutionGenID], char(34)),
 	 [ResolutionSpecID] = quotename([incReasons].[ResolutionSpecID], char(34)),
-	 [ReasonNotes] = quotename([incReasons].[ReasonNotes], char(34)),
-	 [ResolutionNotes] = quotename([incReasons].[ResolutionNotes], char(34)),
 	 [CreateByID] = quotename([incReasons].[CreateByID], char(34)),
 	 [CreateDate] = convert(varchar(50), [incReasons].[CreateDate], 21),
 	 [ChangedByID] = quotename([incReasons].[ChangedByID], char(34)),
