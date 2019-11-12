@@ -31,10 +31,10 @@ get_src_qry = r'''
         num_columns,
         CdcEnabled,
         '"' + COLUMN_NAME + '"' + ' ' + SnowFlakeDataType + IIF(num_columns = ordinal_position, '', ',') SnowFlakeCreate,
-        ' [' + COLUMN_NAME + '] = ' +
+        ' [' + COLUMN_NAME + '] = ' + '' +
         case SNOWFLAKEDATATYPE
-            when 'datetime' then 'convert(varchar(50), [' + TABLE_NAME + '].' + '[' + column_name + '], 21)'
-            else 'concat(char(34), [' + TABLE_NAME + '].' + '[' + COLUMN_NAME + '], char(34))'
+            when 'datetime' then 'isNull(convert(varchar(50), [' + TABLE_NAME + '].' + '[' + column_name + '], 21), ''\N'')'
+            else 'concat(char(34), isNull(cast([' + TABLE_NAME + '].[' + COLUMN_NAME + '] as nvarchar(max)), ''\N''), char(34))'
         end +  IIF(num_columns = ordinal_position, '', ',') SqlServerViewCreate
     from (
         select
@@ -57,7 +57,7 @@ get_src_qry = r'''
             end SnowFlakeDataType,
             max(ORDINAL_POSITION) over(partition by col.TABLE_CATALOG, col.TABLE_SCHEMA, col.TABLE_NAME) num_columns,
             IIF(a.column_id is null, 0, 1) CdcEnabled
-    
+
         from INFORMATION_SCHEMA.COLUMNS col
         join INFORMATION_SCHEMA.tables tab on col.TABLE_SCHEMA = tab.TABLE_SCHEMA and col.TABLE_NAME = tab.TABLE_NAME
         left join cdc a on col.TABLE_SCHEMA = a.schema_name and col.TABLE_NAME = a.table_name and col.COLUMN_NAME = a.column_name
