@@ -71,9 +71,14 @@ class SourceTableExtractor:
         out_file = util.get_file_path(self.source_table_batch)
         self.log_file = util.get_log_path(self.source_table_batch)
         # bcp "SELECT * from SAP_Production.dbo.TCURX" queryout .\tcurx.csv -t, -c -T -S 10.61.95.22
-        return 'bcp.exe "{qry}" queryout {out_file} -t "|" -c -C 65001 -T -S {server} -o {log_file}'.format(
-            qry=qry, out_file=out_file, server=self.source.server, log_file=self.log_file
-        )
+        if self.source.user:
+            return 'bcp.exe "{qry}" queryout {out_file} -t "|" -c -C 65001 -T -S {server} -o {log_file} -U {user} -P {password}'.format(
+                qry=qry, out_file=out_file, server=self.source.server, log_file=self.log_file, user=self.source.user, password = self.source.password
+            )
+        else:
+            return 'bcp.exe "{qry}" queryout {out_file} -t "|" -c -C 65001 -T -S {server} -o {log_file}'.format(
+                qry=qry, out_file=out_file, server=self.source.server, log_file=self.log_file
+            )
 
 
 
