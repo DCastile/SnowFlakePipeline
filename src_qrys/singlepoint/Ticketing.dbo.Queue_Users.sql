@@ -5,4 +5,4 @@ select
 	 [Role] = concat(char(34), isNull(replace(cast([Queue_Users].[Role] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [CreateByID] = concat(char(34), isNull(replace(cast([Queue_Users].[CreateByID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [CreatedDateTime] = isNull(convert(varchar(50), [Queue_Users].[CreatedDateTime], 21), '\N')
-from Ticketing.dbo.Queue_Users
+from Ticketing.dbo.Queue_Users with(nolock)

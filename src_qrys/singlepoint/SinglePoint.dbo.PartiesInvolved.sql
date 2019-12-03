@@ -21,4 +21,4 @@ select
 	 [IsNotificationRecipient] = concat(char(34), isNull(replace(cast([PartiesInvolved].[IsNotificationRecipient] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [UserID] = concat(char(34), isNull(replace(cast([PartiesInvolved].[UserID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [PartyTypeID] = concat(char(34), isNull(replace(cast([PartiesInvolved].[PartyTypeID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.PartiesInvolved
+from SinglePoint.dbo.PartiesInvolved with(nolock)

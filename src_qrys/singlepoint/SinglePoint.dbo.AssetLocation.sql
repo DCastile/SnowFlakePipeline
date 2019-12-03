@@ -10,4 +10,4 @@ select
 	 [UpdatedDateTime] = isNull(convert(varchar(50), [AssetLocation].[UpdatedDateTime], 21), '\N'),
 	 [Building] = concat(char(34), isNull(replace(cast([AssetLocation].[Building] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Floor] = concat(char(34), isNull(replace(cast([AssetLocation].[Floor] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.AssetLocation
+from SinglePoint.dbo.AssetLocation with(nolock)

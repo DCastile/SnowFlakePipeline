@@ -8,4 +8,4 @@ select
 	 [ValueID] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[ValueID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ValueDateTime] = isNull(convert(varchar(50), [Activity_ExtendedData].[ValueDateTime], 21), '\N'),
 	 [ValueMoney] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[ValueMoney] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.Activity_ExtendedData
+from SinglePoint.dbo.Activity_ExtendedData with(nolock)

@@ -13,4 +13,4 @@ select
 	 [UpdateDate] = isNull(convert(varchar(50), [Incident_ServiceOrder_Parts_Needed].[UpdateDate], 21), '\N'),
 	 [Quantity_Located] = concat(char(34), isNull(replace(cast([Incident_ServiceOrder_Parts_Needed].[Quantity_Located] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Quantity_Reserved] = concat(char(34), isNull(replace(cast([Incident_ServiceOrder_Parts_Needed].[Quantity_Reserved] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from Ticketing.dbo.Incident_ServiceOrder_Parts_Needed
+from Ticketing.dbo.Incident_ServiceOrder_Parts_Needed with(nolock)

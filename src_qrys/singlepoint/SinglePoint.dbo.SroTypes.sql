@@ -7,4 +7,4 @@ select
 	 [SroTemplateID] = concat(char(34), isNull(replace(cast([SroTypes].[SroTemplateID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Billable] = concat(char(34), isNull(replace(cast([SroTypes].[Billable] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [CreateDate] = isNull(convert(varchar(50), [SroTypes].[CreateDate], 21), '\N')
-from SinglePoint.dbo.SroTypes
+from SinglePoint.dbo.SroTypes with(nolock)

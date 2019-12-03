@@ -8,4 +8,4 @@ select
 	 [STD] = concat(char(34), isNull(replace(cast([TimeZones].[STD] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [MapID] = concat(char(34), isNull(replace(cast([TimeZones].[MapID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [DateTimeUtilTimeZoneID] = concat(char(34), isNull(replace(cast([TimeZones].[DateTimeUtilTimeZoneID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.TimeZones
+from SinglePoint.dbo.TimeZones with(nolock)

@@ -10,4 +10,4 @@ select
 	 [MAS_ServiceTypeKey] = concat(char(34), isNull(replace(cast([ContractBillCycles].[MAS_ServiceTypeKey] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Oracle_BillingSchedule_ID] = concat(char(34), isNull(replace(cast([ContractBillCycles].[Oracle_BillingSchedule_ID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Oracle_code] = concat(char(34), isNull(replace(cast([ContractBillCycles].[Oracle_code] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.ContractBillCycles
+from SinglePoint.dbo.ContractBillCycles with(nolock)

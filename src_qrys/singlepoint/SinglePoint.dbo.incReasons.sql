@@ -21,4 +21,4 @@ select
 	 [ImportBatch] = concat(char(34), isNull(replace(cast([incReasons].[ImportBatch] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ReasonVerySpecID] = concat(char(34), isNull(replace(cast([incReasons].[ReasonVerySpecID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ResolutionVerySpecID] = concat(char(34), isNull(replace(cast([incReasons].[ResolutionVerySpecID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.incReasons
+from SinglePoint.dbo.incReasons with(nolock)

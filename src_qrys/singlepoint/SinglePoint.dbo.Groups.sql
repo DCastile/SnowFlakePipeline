@@ -8,4 +8,4 @@ select
 	 [EditorGroupID] = concat(char(34), isNull(replace(cast([Groups].[EditorGroupID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [CreateDate] = isNull(convert(varchar(50), [Groups].[CreateDate], 21), '\N'),
 	 [CustomerUsageType] = concat(char(34), isNull(replace(cast([Groups].[CustomerUsageType] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.Groups
+from SinglePoint.dbo.Groups with(nolock)

@@ -83,4 +83,4 @@ select
 	 [CostConfidence] = concat(char(34), isNull(replace(cast([tqoQuoteLine].[CostConfidence] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [serviceDealerText] = concat(char(34), isNull(replace(cast([tqoQuoteLine].[serviceDealerText] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [derivedFromContLineID] = concat(char(34), isNull(replace(cast([tqoQuoteLine].[derivedFromContLineID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoQuoteLine
+from SinglePoint.dbo.tqoQuoteLine with(nolock)

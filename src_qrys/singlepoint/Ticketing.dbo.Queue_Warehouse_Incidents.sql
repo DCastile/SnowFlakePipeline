@@ -9,4 +9,4 @@ select
 	 [StartEventID] = concat(char(34), isNull(replace(cast([Queue_Warehouse_Incidents].[StartEventID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [EndEventID] = concat(char(34), isNull(replace(cast([Queue_Warehouse_Incidents].[EndEventID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [AssignmentTimerStart] = isNull(convert(varchar(50), [Queue_Warehouse_Incidents].[AssignmentTimerStart], 21), '\N')
-from Ticketing.dbo.Queue_Warehouse_Incidents
+from Ticketing.dbo.Queue_Warehouse_Incidents with(nolock)

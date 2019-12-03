@@ -132,4 +132,4 @@ select
 	 [ContractTypeID] = concat(char(34), isNull(replace(cast([Incidents].[ContractTypeID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [flagPendingCustomerResponse] = concat(char(34), isNull(replace(cast([Incidents].[flagPendingCustomerResponse] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [InstanceID] = concat(char(34), isNull(replace(cast([Incidents].[InstanceID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.Incidents
+from SinglePoint.dbo.Incidents with(nolock)

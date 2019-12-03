@@ -32,4 +32,4 @@ select
 	 [ShowEngineerLocations] = concat(char(34), isNull(replace(cast([Warehouses].[ShowEngineerLocations] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [DefaultSecurityGroup] = concat(char(34), isNull(replace(cast([Warehouses].[DefaultSecurityGroup] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [MaxServiceRadius_Miles] = concat(char(34), isNull(replace(cast([Warehouses].[MaxServiceRadius_Miles] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.Warehouses
+from SinglePoint.dbo.Warehouses with(nolock)

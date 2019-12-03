@@ -125,4 +125,4 @@ select
 	 [endCustomerID] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[endCustomerID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Outcome] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[Outcome] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [reqQuoteType] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[reqQuoteType] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoQuote_ClearView_Extended_Import
+from SinglePoint.dbo.tqoQuote_ClearView_Extended_Import with(nolock)

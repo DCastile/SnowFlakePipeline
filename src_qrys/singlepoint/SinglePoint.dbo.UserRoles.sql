@@ -9,4 +9,4 @@ select
 	 [CustomerID] = concat(char(34), isNull(replace(cast([UserRoles].[CustomerID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [InactiveFlag] = concat(char(34), isNull(replace(cast([UserRoles].[InactiveFlag] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [CustomerUsageType] = concat(char(34), isNull(replace(cast([UserRoles].[CustomerUsageType] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.UserRoles
+from SinglePoint.dbo.UserRoles with(nolock)

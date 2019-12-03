@@ -18,4 +18,4 @@ select
 	 [Category] = concat(char(34), isNull(replace(cast([NotesGeneric].[Category] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ReferenceType] = concat(char(34), isNull(replace(cast([NotesGeneric].[ReferenceType] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ReferenceIdentifier] = concat(char(34), isNull(replace(cast([NotesGeneric].[ReferenceIdentifier] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.NotesGeneric
+from SinglePoint.dbo.NotesGeneric with(nolock)

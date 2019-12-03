@@ -15,4 +15,4 @@ select
 	 [Distance] = concat(char(34), isNull(replace(cast([Incident_RemoteHands_Details].[Distance] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [UnitOfMeasure] = concat(char(34), isNull(replace(cast([Incident_RemoteHands_Details].[UnitOfMeasure] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ExtendedTimeReason] = concat(char(34), isNull(replace(cast([Incident_RemoteHands_Details].[ExtendedTimeReason] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from Ticketing.dbo.Incident_RemoteHands_Details
+from Ticketing.dbo.Incident_RemoteHands_Details with(nolock)

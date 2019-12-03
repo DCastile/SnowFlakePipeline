@@ -40,4 +40,4 @@ select
 	 [PO_Required_ContractOrders] = concat(char(34), isNull(replace(cast([Customers].[PO_Required_ContractOrders] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [PO_Required_TM] = concat(char(34), isNull(replace(cast([Customers].[PO_Required_TM] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [InstanceID] = concat(char(34), isNull(replace(cast([Customers].[InstanceID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.Customers
+from SinglePoint.dbo.Customers with(nolock)

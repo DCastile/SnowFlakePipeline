@@ -22,4 +22,4 @@ select
 	 [LastUpdatedBy] = concat(char(34), isNull(replace(cast([PriceListDetail].[LastUpdatedBy] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [LastUpdated] = isNull(convert(varchar(50), [PriceListDetail].[LastUpdated], 21), '\N'),
 	 [LastUpdatedByID] = concat(char(34), isNull(replace(cast([PriceListDetail].[LastUpdatedByID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from ProductManagement.dbo.PriceListDetail
+from ProductManagement.dbo.PriceListDetail with(nolock)

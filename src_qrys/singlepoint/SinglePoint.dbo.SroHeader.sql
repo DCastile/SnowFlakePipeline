@@ -30,4 +30,4 @@ select
 	 [ShipToAddressID] = concat(char(34), isNull(replace(cast([SroHeader].[ShipToAddressID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [CurrencyExchangeRate] = concat(char(34), isNull(replace(cast([SroHeader].[CurrencyExchangeRate] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [UpdatedUserName] = concat(char(34), isNull(replace(cast([SroHeader].[UpdatedUserName] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.SroHeader
+from SinglePoint.dbo.SroHeader with(nolock)

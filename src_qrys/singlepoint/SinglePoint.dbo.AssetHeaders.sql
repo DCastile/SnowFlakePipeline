@@ -79,4 +79,4 @@ select
 	 [Asset_Type] = concat(char(34), isNull(replace(cast([AssetHeaders].[Asset_Type] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Item_Number] = concat(char(34), isNull(replace(cast([AssetHeaders].[Item_Number] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [EnrichmentStatus] = concat(char(34), isNull(replace(cast([AssetHeaders].[EnrichmentStatus] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.AssetHeaders
+from SinglePoint.dbo.AssetHeaders with(nolock)

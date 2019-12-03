@@ -9,4 +9,4 @@ select
 	 [PartsRequired] = concat(char(34), isNull(replace(cast([tqoRateSLA].[PartsRequired] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [SameDay] = concat(char(34), isNull(replace(cast([tqoRateSLA].[SameDay] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [NextDay] = concat(char(34), isNull(replace(cast([tqoRateSLA].[NextDay] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoRateSLA
+from SinglePoint.dbo.tqoRateSLA with(nolock)

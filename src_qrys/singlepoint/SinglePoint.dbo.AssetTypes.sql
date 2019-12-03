@@ -8,4 +8,4 @@ select
 	 [ForceProductReviewFlag] = concat(char(34), isNull(replace(cast([AssetTypes].[ForceProductReviewFlag] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [HideInQuoterFlag] = concat(char(34), isNull(replace(cast([AssetTypes].[HideInQuoterFlag] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [isTopLevel] = concat(char(34), isNull(replace(cast([AssetTypes].[isTopLevel] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.AssetTypes
+from SinglePoint.dbo.AssetTypes with(nolock)
