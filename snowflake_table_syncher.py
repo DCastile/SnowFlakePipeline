@@ -110,11 +110,11 @@ class SnowFlakeTableSyncher:
                 batch=self.source_table_batch.batch_number, duration=datetime.now() - self.start_time))
 
     def build_snowflake_put_command(self):
-        return 'put file://{file_location} {stage_name};'.format(file_location=self.file_location,
+        return 'put file://{file_location} @{stage_name};'.format(file_location=self.file_location, source=self.source.source,
                                                                  stage_name=self.stage_name)
 
     def build_snowflake_merge_command(self):
-        staged_file = '{stage_name}/{file_name}.gz'.format(stage_name=self.stage_name, file_name=self.file_name)
+        staged_file = '@{stage_name}/{file_name}.gz'.format(stage_name=self.stage_name, file_name=self.file_name)
         join_columns_str: str = self._build_join_columns_str()
         update_columns_str: str = self._build_update_columns_str()
         columns_str: str = ','.join(map(lambda x: '"{col}"'.format(col=x), self.source_table.columns))
@@ -122,7 +122,7 @@ class SnowFlakeTableSyncher:
         insert_values: str = ','.join(
             map(lambda x: '${numb}'.format(numb=x), range(1, 1 + len(self.source_table.columns))))
         return '''
-            merge into "{table}" target
+            merge into repo.{source}."{table}" target
             using {staged_file} source
                 on {join_columns_str}
             when matched then update set
@@ -130,7 +130,7 @@ class SnowFlakeTableSyncher:
             when not matched then
                 insert ({col_names})
                 values ({insert_values})
-        '''.format(table=self.source_table.table, staged_file=staged_file, join_columns_str=join_columns_str,
+        '''.format(source=self.source.source ,table=self.source_table.table, staged_file=staged_file, join_columns_str=join_columns_str,
                    update_columns_str=update_columns_str, col_names=columns_str, insert_values=insert_values)
 
     def _build_join_columns_str(self):
