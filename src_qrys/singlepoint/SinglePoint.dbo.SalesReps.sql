@@ -13,4 +13,4 @@ select
 	 [ChangeByID] = concat(char(34), isNull(replace(cast([SalesReps].[ChangeByID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ChangeDate] = isNull(convert(varchar(50), [SalesReps].[ChangeDate], 21), '\N'),
 	 [Active] = concat(char(34), isNull(replace(cast([SalesReps].[Active] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.SalesReps with(nolock)
+from SinglePoint.dbo.SalesReps

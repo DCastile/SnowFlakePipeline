@@ -26,4 +26,4 @@ select
 	 [canTransactServiceOrders] = concat(char(34), isNull(replace(cast([tqoCompany].[canTransactServiceOrders] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [BillingAddressID] = concat(char(34), isNull(replace(cast([tqoCompany].[BillingAddressID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [MirrorCompanyGuid] = concat(char(34), isNull(replace(cast([tqoCompany].[MirrorCompanyGuid] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoCompany with(nolock)
+from SinglePoint.dbo.tqoCompany

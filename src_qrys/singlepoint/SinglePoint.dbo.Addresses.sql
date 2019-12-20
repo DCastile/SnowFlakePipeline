@@ -48,4 +48,4 @@ select
 	 [Validation_Level] = concat(char(34), isNull(replace(cast([Addresses].[Validation_Level] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Validation_Date] = isNull(convert(varchar(50), [Addresses].[Validation_Date], 21), '\N'),
 	 [TimeZoneCalculation_Method] = concat(char(34), isNull(replace(cast([Addresses].[TimeZoneCalculation_Method] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.Addresses with(nolock)
+from SinglePoint.dbo.Addresses

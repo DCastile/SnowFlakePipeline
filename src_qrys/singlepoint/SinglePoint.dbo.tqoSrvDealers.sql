@@ -14,4 +14,4 @@ select
 	 [InactiveFlag] = concat(char(34), isNull(replace(cast([tqoSrvDealers].[InactiveFlag] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ServiceUsage] = concat(char(34), isNull(replace(cast([tqoSrvDealers].[ServiceUsage] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Oracle_vender_id] = concat(char(34), isNull(replace(cast([tqoSrvDealers].[Oracle_vender_id] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoSrvDealers with(nolock)
+from SinglePoint.dbo.tqoSrvDealers

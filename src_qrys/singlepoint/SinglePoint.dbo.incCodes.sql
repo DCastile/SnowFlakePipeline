@@ -15,4 +15,4 @@ select
 	 [InactiveFlag] = concat(char(34), isNull(replace(cast([incCodes].[InactiveFlag] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Sequence] = concat(char(34), isNull(replace(cast([incCodes].[Sequence] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [InternalOnly] = concat(char(34), isNull(replace(cast([incCodes].[InternalOnly] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.incCodes with(nolock)
+from SinglePoint.dbo.incCodes

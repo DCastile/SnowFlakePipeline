@@ -46,4 +46,4 @@ select
 	 [SFDC_Opportunity_ID] = concat(char(34), isNull(replace(cast([tqoQuoteHeader].[SFDC_Opportunity_ID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Sales_PO_InHand_Date] = isNull(convert(varchar(50), [tqoQuoteHeader].[Sales_PO_InHand_Date], 21), '\N'),
 	 [PaymentTermID] = concat(char(34), isNull(replace(cast([tqoQuoteHeader].[PaymentTermID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoQuoteHeader with(nolock)
+from SinglePoint.dbo.tqoQuoteHeader

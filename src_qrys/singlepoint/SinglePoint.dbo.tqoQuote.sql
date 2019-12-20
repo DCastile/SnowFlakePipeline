@@ -53,4 +53,4 @@ select
 	 [QuoteCostConfidence_Desc] = concat(char(34), isNull(replace(cast([tqoQuote].[QuoteCostConfidence_Desc] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [AssignedToUserDate] = isNull(convert(varchar(50), [tqoQuote].[AssignedToUserDate], 21), '\N'),
 	 [derivedFromQuoteGuid] = concat(char(34), isNull(replace(cast([tqoQuote].[derivedFromQuoteGuid] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoQuote with(nolock)
+from SinglePoint.dbo.tqoQuote

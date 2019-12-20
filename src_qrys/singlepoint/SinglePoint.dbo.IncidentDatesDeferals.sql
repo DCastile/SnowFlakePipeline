@@ -9,4 +9,4 @@ select
 	 [FollowUpDate] = isNull(convert(varchar(50), [IncidentDatesDeferals].[FollowUpDate], 21), '\N'),
 	 [ScheduledDate] = isNull(convert(varchar(50), [IncidentDatesDeferals].[ScheduledDate], 21), '\N'),
 	 [FollowUpNotificationSent] = concat(char(34), isNull(replace(cast([IncidentDatesDeferals].[FollowUpNotificationSent] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.IncidentDatesDeferals with(nolock)
+from SinglePoint.dbo.IncidentDatesDeferals

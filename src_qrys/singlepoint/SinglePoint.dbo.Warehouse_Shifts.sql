@@ -12,4 +12,4 @@ select
 	 [Saturday] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[Saturday] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Sunday] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[Sunday] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [IsActiveDuringHolidays] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[IsActiveDuringHolidays] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.Warehouse_Shifts with(nolock)
+from SinglePoint.dbo.Warehouse_Shifts

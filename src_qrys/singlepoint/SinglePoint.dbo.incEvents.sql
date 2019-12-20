@@ -31,4 +31,4 @@ select
 	 [Longitude] = concat(char(34), isNull(replace(cast([incEvents].[Longitude] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [InstanceID] = concat(char(34), isNull(replace(cast([incEvents].[InstanceID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Visibility_UsageType] = concat(char(34), isNull(replace(cast([incEvents].[Visibility_UsageType] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.incEvents with(nolock)
+from SinglePoint.dbo.incEvents

@@ -5,4 +5,4 @@ select
 	 [allowLineEdits] = concat(char(34), isNull(replace(cast([tqoQuoteTypes].[allowLineEdits] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [allowHeaderEdits] = concat(char(34), isNull(replace(cast([tqoQuoteTypes].[allowHeaderEdits] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [showOnSearch] = concat(char(34), isNull(replace(cast([tqoQuoteTypes].[showOnSearch] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoQuoteTypes with(nolock)
+from SinglePoint.dbo.tqoQuoteTypes

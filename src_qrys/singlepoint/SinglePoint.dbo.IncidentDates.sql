@@ -17,4 +17,4 @@ select
 	 [LastSlaImpactingEvent] = isNull(convert(varchar(50), [IncidentDates].[LastSlaImpactingEvent], 21), '\N'),
 	 [LastOnSite] = isNull(convert(varchar(50), [IncidentDates].[LastOnSite], 21), '\N'),
 	 [LastCustomerDeferred] = isNull(convert(varchar(50), [IncidentDates].[LastCustomerDeferred], 21), '\N')
-from SinglePoint.dbo.IncidentDates with(nolock)
+from SinglePoint.dbo.IncidentDates

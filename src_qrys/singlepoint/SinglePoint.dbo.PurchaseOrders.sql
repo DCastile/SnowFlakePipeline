@@ -11,4 +11,4 @@ select
 	 [Description] = concat(char(34), isNull(replace(cast([PurchaseOrders].[Description] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [CancelledDate] = concat(char(34), isNull(replace(cast([PurchaseOrders].[CancelledDate] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Status] = concat(char(34), isNull(replace(cast([PurchaseOrders].[Status] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.PurchaseOrders with(nolock)
+from SinglePoint.dbo.PurchaseOrders

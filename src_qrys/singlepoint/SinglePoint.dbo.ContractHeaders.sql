@@ -83,4 +83,4 @@ select
 	 [SAP_Order_Reason] = concat(char(34), isNull(replace(cast([ContractHeaders].[SAP_Order_Reason] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [RepricingDate] = isNull(convert(varchar(50), [ContractHeaders].[RepricingDate], 21), '\N'),
 	 [PaymentTermID] = concat(char(34), isNull(replace(cast([ContractHeaders].[PaymentTermID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.ContractHeaders with(nolock)
+from SinglePoint.dbo.ContractHeaders

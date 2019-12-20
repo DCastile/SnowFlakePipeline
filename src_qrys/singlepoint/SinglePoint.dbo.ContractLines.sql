@@ -69,4 +69,4 @@ select
 	 [PartsServiceDealerCurrency] = concat(char(34), isNull(replace(cast([ContractLines].[PartsServiceDealerCurrency] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [BacklineServiceDealerCurrency] = concat(char(34), isNull(replace(cast([ContractLines].[BacklineServiceDealerCurrency] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [RetainerServiceDealerCurrency] = concat(char(34), isNull(replace(cast([ContractLines].[RetainerServiceDealerCurrency] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.ContractLines with(nolock)
+from SinglePoint.dbo.ContractLines

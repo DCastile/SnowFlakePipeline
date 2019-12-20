@@ -12,4 +12,4 @@ select
 	 [ActivityType] = concat(char(34), isNull(replace(cast([Coordinates].[ActivityType] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ActivityTime] = isNull(convert(varchar(50), [Coordinates].[ActivityTime], 21), '\N'),
 	 [ActivityConfidence] = concat(char(34), isNull(replace(cast([Coordinates].[ActivityConfidence] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.Coordinates with(nolock)
+from SinglePoint.dbo.Coordinates

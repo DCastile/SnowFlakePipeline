@@ -39,4 +39,4 @@ select
 	 [OracleCompletedDate] = isNull(convert(varchar(50), [tqoSync].[OracleCompletedDate], 21), '\N'),
 	 [OracleFailureDate] = isNull(convert(varchar(50), [tqoSync].[OracleFailureDate], 21), '\N'),
 	 [OraclePartialDate] = isNull(convert(varchar(50), [tqoSync].[OraclePartialDate], 21), '\N')
-from SinglePoint.dbo.tqoSync with(nolock)
+from SinglePoint.dbo.tqoSync

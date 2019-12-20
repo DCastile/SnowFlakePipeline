@@ -10,4 +10,4 @@ select
 	 [LastChangedByID] = concat(char(34), isNull(replace(cast([MethodOfContact].[LastChangedByID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [LastChangedDate] = isNull(convert(varchar(50), [MethodOfContact].[LastChangedDate], 21), '\N'),
 	 [IsActive] = concat(char(34), isNull(replace(cast([MethodOfContact].[IsActive] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.MethodOfContact with(nolock)
+from SinglePoint.dbo.MethodOfContact
