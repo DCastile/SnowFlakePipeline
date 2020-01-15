@@ -244,6 +244,7 @@ class SourceTableBatch:
         params.update({'cdc_params': cdc_params})
         cdc_fq_object = "{db}.cdc.fn_cdc_get_net_changes_{schema}_{table}{cdc_params} [{table}]".format(**params)
         self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object)
+        self.qry = self.qry.replace('with(nolock)', '')
         self.qry = self.qry.replace('select', 'select IIF( __$operation = 1, 1, 0) deleted,')
 
     def set_qry_incremental_bods(self):
