@@ -134,21 +134,24 @@ class SnowFlakeTableSyncher:
                    update_columns_str=update_columns_str, col_names=columns_str, insert_values=insert_values)
 
     def _build_join_columns_str(self):
+        # qry_items = []
+        # for col_idx, col_name in enumerate(self.source_table.primary_keys, 2):
+        #     qry_items.append(
+        #         'target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
+        pk_set = set(self.source_table.primary_keys)
         qry_items = []
-        for col_idx, col_name in enumerate(self.source_table.primary_keys, 2):
-            qry_items.append(
-                'target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
+        for col_idx, col_name in enumerate(self.source_table.columns, start=1):
+            if col_name in pk_set:
+                qry_items.append( 'target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
+
         return '\n\t\t\t\tand '.join(qry_items)
 
     def _build_update_columns_str(self):
         pk_set = set(self.source_table.primary_keys)
-        columns_not_pk = [col for col in self.source_table.columns if col not in pk_set]
         qry_items = []
-        sequence = range(1, len(columns_not_pk) + 2)
-        sequence = list(filter(lambda x: x == 1 or x > len(self.source_table.primary_keys) + 1, sequence))
-        for col_idx, col_name in zip(sequence, columns_not_pk):
-            qry_items.append(
-                'target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
+        for col_idx, col_name in enumerate(self.source_table.columns, start=1):
+            if col_name not in pk_set:
+                qry_items.append('target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
         return ',\n\t\t\t\t'.join(qry_items)
 
     def get_snowflake_connection(self) -> snowflake.connector.connection:
