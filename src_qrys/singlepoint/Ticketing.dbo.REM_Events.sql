@@ -7,7 +7,6 @@ select
 	 [REM_ID] = concat(char(34), isNull(replace(cast([REM_Events].[REM_ID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [AlertDate] = isNull(convert(varchar(50), [REM_Events].[AlertDate], 21), '\N'),
 	 [AlertDescription] = concat(char(34), isNull(replace(cast([REM_Events].[AlertDescription] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [AlertInfo] = concat(char(34), isNull(replace(cast([REM_Events].[AlertInfo] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [AlertInputData] = concat(char(34), isNull(replace(cast([REM_Events].[AlertInputData] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ContractHeaderID] = concat(char(34), isNull(replace(cast([REM_Events].[ContractHeaderID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ContractLineID] = concat(char(34), isNull(replace(cast([REM_Events].[ContractLineID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
