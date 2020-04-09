@@ -1,11 +1,11 @@
 select
-	 [AssetTypeID] = concat(char(34), isNull(replace(cast([AssetTypes].[AssetTypeID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [AssetType] = concat(char(34), isNull(replace(cast([AssetTypes].[AssetType] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [InactiveFlag] = concat(char(34), isNull(replace(cast([AssetTypes].[InactiveFlag] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [ChangedByID] = concat(char(34), isNull(replace(cast([AssetTypes].[ChangedByID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
+	 [AssetTypeID] = isNull(cast([AssetTypes].[AssetTypeID] as varchar(36)), '\N'),
+	 [AssetType] = concat(char(34), isNull(replace(cast([AssetTypes].[AssetType] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
+	 [InactiveFlag] = isNull(cast([AssetTypes].[InactiveFlag] as varchar(36)), '\N'),
+	 [ChangedByID] = isNull(cast([AssetTypes].[ChangedByID] as varchar(36)), '\N'),
 	 [LastChanged] = isNull(convert(varchar(50), [AssetTypes].[LastChanged], 21), '\N'),
-	 [SMSItemClassKey] = concat(char(34), isNull(replace(cast([AssetTypes].[SMSItemClassKey] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [ForceProductReviewFlag] = concat(char(34), isNull(replace(cast([AssetTypes].[ForceProductReviewFlag] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [HideInQuoterFlag] = concat(char(34), isNull(replace(cast([AssetTypes].[HideInQuoterFlag] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [isTopLevel] = concat(char(34), isNull(replace(cast([AssetTypes].[isTopLevel] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
+	 [SMSItemClassKey] = isNull(cast([AssetTypes].[SMSItemClassKey] as varchar(36)), '\N'),
+	 [ForceProductReviewFlag] = isNull(cast([AssetTypes].[ForceProductReviewFlag] as varchar(36)), '\N'),
+	 [HideInQuoterFlag] = isNull(cast([AssetTypes].[HideInQuoterFlag] as varchar(36)), '\N'),
+	 [isTopLevel] = isNull(cast([AssetTypes].[isTopLevel] as varchar(36)), '\N')
 from SinglePoint.dbo.AssetTypes

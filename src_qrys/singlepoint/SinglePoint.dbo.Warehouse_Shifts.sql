@@ -1,15 +1,15 @@
 select
-	 [ShiftID] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[ShiftID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [WarehouseID] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[WarehouseID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [ShiftName] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[ShiftName] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [StartTime] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[StartTime] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [EndTime] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[EndTime] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Monday] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[Monday] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Tuesday] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[Tuesday] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Wednesday] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[Wednesday] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Thursday] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[Thursday] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Friday] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[Friday] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Saturday] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[Saturday] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Sunday] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[Sunday] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [IsActiveDuringHolidays] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[IsActiveDuringHolidays] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
+	 [ShiftID] = isNull(cast([Warehouse_Shifts].[ShiftID] as varchar(36)), '\N'),
+	 [WarehouseID] = isNull(cast([Warehouse_Shifts].[WarehouseID] as varchar(36)), '\N'),
+	 [ShiftName] = concat(char(34), isNull(replace(cast([Warehouse_Shifts].[ShiftName] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
+	 [StartTime] = isNull(convert(varchar(50), [Warehouse_Shifts].[StartTime], 21), '\N'),
+	 [EndTime] = isNull(convert(varchar(50), [Warehouse_Shifts].[EndTime], 21), '\N'),
+	 [Monday] = isNull(cast([Warehouse_Shifts].[Monday] as varchar(36)), '\N'),
+	 [Tuesday] = isNull(cast([Warehouse_Shifts].[Tuesday] as varchar(36)), '\N'),
+	 [Wednesday] = isNull(cast([Warehouse_Shifts].[Wednesday] as varchar(36)), '\N'),
+	 [Thursday] = isNull(cast([Warehouse_Shifts].[Thursday] as varchar(36)), '\N'),
+	 [Friday] = isNull(cast([Warehouse_Shifts].[Friday] as varchar(36)), '\N'),
+	 [Saturday] = isNull(cast([Warehouse_Shifts].[Saturday] as varchar(36)), '\N'),
+	 [Sunday] = isNull(cast([Warehouse_Shifts].[Sunday] as varchar(36)), '\N'),
+	 [IsActiveDuringHolidays] = isNull(cast([Warehouse_Shifts].[IsActiveDuringHolidays] as varchar(36)), '\N')
 from SinglePoint.dbo.Warehouse_Shifts

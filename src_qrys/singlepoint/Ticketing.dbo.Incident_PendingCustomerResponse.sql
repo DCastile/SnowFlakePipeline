@@ -1,10 +1,10 @@
 select
-	 [ID] = concat(char(34), isNull(replace(cast([Incident_PendingCustomerResponse].[ID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [IncidentID] = concat(char(34), isNull(replace(cast([Incident_PendingCustomerResponse].[IncidentID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [QueueID] = concat(char(34), isNull(replace(cast([Incident_PendingCustomerResponse].[QueueID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
+	 [ID] = isNull(cast([Incident_PendingCustomerResponse].[ID] as varchar(36)), '\N'),
+	 [IncidentID] = isNull(cast([Incident_PendingCustomerResponse].[IncidentID] as varchar(36)), '\N'),
+	 [QueueID] = isNull(cast([Incident_PendingCustomerResponse].[QueueID] as varchar(36)), '\N'),
 	 [StartTime] = isNull(convert(varchar(50), [Incident_PendingCustomerResponse].[StartTime], 21), '\N'),
 	 [EndTime] = isNull(convert(varchar(50), [Incident_PendingCustomerResponse].[EndTime], 21), '\N'),
-	 [StartEventID] = concat(char(34), isNull(replace(cast([Incident_PendingCustomerResponse].[StartEventID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [EndEventID] = concat(char(34), isNull(replace(cast([Incident_PendingCustomerResponse].[EndEventID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
+	 [StartEventID] = isNull(cast([Incident_PendingCustomerResponse].[StartEventID] as varchar(36)), '\N'),
+	 [EndEventID] = isNull(cast([Incident_PendingCustomerResponse].[EndEventID] as varchar(36)), '\N'),
 	 [LastNextActionDue] = isNull(convert(varchar(50), [Incident_PendingCustomerResponse].[LastNextActionDue], 21), '\N')
 from Ticketing.dbo.Incident_PendingCustomerResponse

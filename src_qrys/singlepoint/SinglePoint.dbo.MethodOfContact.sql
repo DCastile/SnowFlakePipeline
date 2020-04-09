@@ -1,13 +1,13 @@
 select
-	 [ID] = concat(char(34), isNull(replace(cast([MethodOfContact].[ID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Address] = concat(char(34), isNull(replace(cast([MethodOfContact].[Address] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [FKID] = concat(char(34), isNull(replace(cast([MethodOfContact].[FKID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [TechTypeID] = concat(char(34), isNull(replace(cast([MethodOfContact].[TechTypeID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [SubTypeID] = concat(char(34), isNull(replace(cast([MethodOfContact].[SubTypeID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [ServicerProvider] = concat(char(34), isNull(replace(cast([MethodOfContact].[ServicerProvider] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [CreatedByID] = concat(char(34), isNull(replace(cast([MethodOfContact].[CreatedByID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
+	 [ID] = isNull(cast([MethodOfContact].[ID] as varchar(36)), '\N'),
+	 [Address] = concat(char(34), isNull(replace(cast([MethodOfContact].[Address] as nvarchar(256)), char(34), char(0)), '\N'), char(34)),
+	 [FKID] = isNull(cast([MethodOfContact].[FKID] as varchar(36)), '\N'),
+	 [TechTypeID] = isNull(cast([MethodOfContact].[TechTypeID] as varchar(36)), '\N'),
+	 [SubTypeID] = isNull(cast([MethodOfContact].[SubTypeID] as varchar(36)), '\N'),
+	 [ServicerProvider] = isNull(cast([MethodOfContact].[ServicerProvider] as varchar(36)), '\N'),
+	 [CreatedByID] = isNull(cast([MethodOfContact].[CreatedByID] as varchar(36)), '\N'),
 	 [CreatedDate] = isNull(convert(varchar(50), [MethodOfContact].[CreatedDate], 21), '\N'),
-	 [LastChangedByID] = concat(char(34), isNull(replace(cast([MethodOfContact].[LastChangedByID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
+	 [LastChangedByID] = isNull(cast([MethodOfContact].[LastChangedByID] as varchar(36)), '\N'),
 	 [LastChangedDate] = isNull(convert(varchar(50), [MethodOfContact].[LastChangedDate], 21), '\N'),
-	 [IsActive] = concat(char(34), isNull(replace(cast([MethodOfContact].[IsActive] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
+	 [IsActive] = isNull(cast([MethodOfContact].[IsActive] as varchar(36)), '\N')
 from SinglePoint.dbo.MethodOfContact

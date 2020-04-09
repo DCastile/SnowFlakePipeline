@@ -1,7 +1,7 @@
 select
-	 [CustomerID] = concat(char(34), isNull(replace(cast([Customers_Users_XREF].[CustomerID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [UserID] = concat(char(34), isNull(replace(cast([Customers_Users_XREF].[UserID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
+	 [CustomerID] = isNull(cast([Customers_Users_XREF].[CustomerID] as varchar(36)), '\N'),
+	 [UserID] = isNull(cast([Customers_Users_XREF].[UserID] as varchar(36)), '\N'),
 	 [CreateDate] = isNull(convert(varchar(50), [Customers_Users_XREF].[CreateDate], 21), '\N'),
-	 [User_Customer_XREFID] = concat(char(34), isNull(replace(cast([Customers_Users_XREF].[User_Customer_XREFID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [CreateUserID] = concat(char(34), isNull(replace(cast([Customers_Users_XREF].[CreateUserID] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
+	 [User_Customer_XREFID] = isNull(cast([Customers_Users_XREF].[User_Customer_XREFID] as varchar(36)), '\N'),
+	 [CreateUserID] = isNull(cast([Customers_Users_XREF].[CreateUserID] as varchar(36)), '\N')
 from SinglePoint.dbo.Customers_Users_XREF

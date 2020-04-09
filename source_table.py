@@ -226,13 +226,13 @@ class SourceTableBatch:
 
     def set_qry(self):
         if self.source.load_type == 'incremental_cdc':
-            self.set_qry_incremental_cdc()
+            self.set_qry_incremental_cdc_change_table()
         elif self.source.load_type == 'incremental_bods':
             self.set_qry_incremental_bods()
         else:
             self.set_qry_full()
 
-    def set_qry_incremental_cdc(self):
+    def set_qry_incremental_cdc_tvf(self):
 
         true_table_name = self.source_table.table.split('.')[2]
         params = {'db': self.source.database, 'schema': self.source.schema, 'table': true_table_name}
@@ -246,6 +246,31 @@ class SourceTableBatch:
         self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object)
         self.qry = self.qry.replace('with(nolock)', '')
         self.qry = self.qry.replace('select', 'select IIF( __$operation = 1, 1, 0) deleted,')
+
+    def set_qry_incremental_cdc_change_table(self):
+        '''
+            where
+
+                and __$start_lsn = (select top 1 __$start_lsn from SinglePoint.cdc.dbo_tqoQuoteLine_CT inn where [tqoQuoteLine].QuoteLineGuid = inn.[QuoteLineGuid] order by inn.__$start_lsn desc)
+            -- 	and __$start_lsn = (select max(__$start_lsn) from SinglePoint.cdc.dbo_tqoQuoteLine_CT inn where [tqoQuoteLine].QuoteLineGuid = inn.[QuoteLineGuid])
+        '''
+        true_table_name = self.source_table.table.split('.')[2]
+        params = {'db': self.source.database, 'schema': self.source.schema, 'table': true_table_name}
+        fq_table_name = '{db}.{schema}.{table}'.format(**params) # table names are already fully qualified for singlePoint
+
+        # cdc_params = "({db}.sys.fn_cdc_get_min_lsn('{schema}_{table}'), {db}.sys.fn_cdc_get_max_lsn(), 'all')".format(**params)
+        # params.update({'cdc_params': cdc_params})
+
+        cdc_fq_object = "{db}.cdc.{schema}_{table}_CT [{table}]".format(**params)
+        self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object)
+        self.qry = self.qry.replace('with(nolock)', '')
+        self.qry = self.qry.replace('select', 'select IIF( __$operation = 1, 1, 0) deleted,')
+        self.qry += '\nwhere __$operation in (1,2,4) -- exclude 3, previous value from update\n'
+
+        primary_keys = ' and '.join(['[{table}].[{pk}] = inn.[{pk}]'.format(pk=pk, table=true_table_name) for pk in self.source_table.primary_keys])
+        self.qry += '\tand __$start_lsn = (select top 1 __$start_lsn from {fqtn} inn where {primary_keys} order by __$start_lsn desc)'.format(fqtn=fq_table_name, primary_keys=primary_keys)
+
+
 
     def set_qry_incremental_bods(self):
         join_lines = ['{table_name}.{column} = changes.{column}\n'.format(table_name=self.source_table.table, column=col) for col in self.source_table.primary_keys]

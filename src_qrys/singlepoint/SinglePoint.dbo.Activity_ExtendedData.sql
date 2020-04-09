@@ -1,11 +1,11 @@
 select
-	 [DataPointID] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[DataPointID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [FKID] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[FKID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [ActivityID] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[ActivityID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [FieldID] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[FieldID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Name] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[Name] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Value] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[Value] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [ValueID] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[ValueID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
+	 [DataPointID] = isNull(cast([Activity_ExtendedData].[DataPointID] as varchar(36)), '\N'),
+	 [FKID] = isNull(cast([Activity_ExtendedData].[FKID] as varchar(36)), '\N'),
+	 [ActivityID] = isNull(cast([Activity_ExtendedData].[ActivityID] as varchar(36)), '\N'),
+	 [FieldID] = isNull(cast([Activity_ExtendedData].[FieldID] as varchar(36)), '\N'),
+	 [Name] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[Name] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
+	 [Value] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[Value] as nvarchar(4000)), char(34), char(0)), '\N'), char(34)),
+	 [ValueID] = isNull(cast([Activity_ExtendedData].[ValueID] as varchar(36)), '\N'),
 	 [ValueDateTime] = isNull(convert(varchar(50), [Activity_ExtendedData].[ValueDateTime], 21), '\N'),
-	 [ValueMoney] = concat(char(34), isNull(replace(cast([Activity_ExtendedData].[ValueMoney] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
+	 [ValueMoney] = isNull(cast([Activity_ExtendedData].[ValueMoney] as varchar(36)), '\N')
 from SinglePoint.dbo.Activity_ExtendedData

@@ -1,8 +1,8 @@
 select
-	 [AssignmentID] = concat(char(34), isNull(replace(cast([Queue_Users].[AssignmentID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [QueueID] = concat(char(34), isNull(replace(cast([Queue_Users].[QueueID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [UserID] = concat(char(34), isNull(replace(cast([Queue_Users].[UserID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [Role] = concat(char(34), isNull(replace(cast([Queue_Users].[Role] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
-	 [CreateByID] = concat(char(34), isNull(replace(cast([Queue_Users].[CreateByID] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
+	 [AssignmentID] = isNull(cast([Queue_Users].[AssignmentID] as varchar(36)), '\N'),
+	 [QueueID] = isNull(cast([Queue_Users].[QueueID] as varchar(36)), '\N'),
+	 [UserID] = isNull(cast([Queue_Users].[UserID] as varchar(36)), '\N'),
+	 [Role] = concat(char(34), isNull(replace(cast([Queue_Users].[Role] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
+	 [CreateByID] = isNull(cast([Queue_Users].[CreateByID] as varchar(36)), '\N'),
 	 [CreatedDateTime] = isNull(convert(varchar(50), [Queue_Users].[CreatedDateTime], 21), '\N')
 from Ticketing.dbo.Queue_Users
