@@ -14,7 +14,7 @@ select
 	 [Oracle_SyncDate] = isNull(convert(varchar(50), [Incident_ServiceOrder_Header].[Oracle_SyncDate], 21), '\N'),
 	 [ProjectNumber] = concat(char(34), isNull(replace(cast([Incident_ServiceOrder_Header].[ProjectNumber] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [Status] = concat(char(34), isNull(replace(cast([Incident_ServiceOrder_Header].[Status] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
-	 [Error] = concat(char(34), isNull(replace(cast([Incident_ServiceOrder_Header].[Error] as nvarchar(-1)), char(34), char(0)), '\N'), char(34)),
+	 [Error] = concat(char(34), isNull(replace(cast([Incident_ServiceOrder_Header].[Error] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [CreateDate] = isNull(convert(varchar(50), [Incident_ServiceOrder_Header].[CreateDate], 21), '\N'),
 	 [HomeCurrency] = concat(char(34), isNull(replace(cast([Incident_ServiceOrder_Header].[HomeCurrency] as nvarchar(3)), char(34), char(0)), '\N'), char(34)),
 	 [LaborRate_RegularHours] = isNull(cast([Incident_ServiceOrder_Header].[LaborRate_RegularHours] as varchar(36)), '\N'),

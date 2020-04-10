@@ -5,5 +5,5 @@ select
 	 [Num_Code] = isNull(cast([CountryCodes].[Num_Code] as varchar(36)), '\N'),
 	 [Vat] = isNull(cast([CountryCodes].[Vat] as varchar(36)), '\N'),
 	 [Theater] = concat(char(34), isNull(replace(cast([CountryCodes].[Theater] as nvarchar(100)), char(34), char(0)), '\N'), char(34)),
-	 [Flag] = concat(char(34), isNull(replace(cast([CountryCodes].[Flag] as nvarchar(-1)), char(34), char(0)), '\N'), char(34))
+	 [Flag] = concat(char(34), isNull(replace(cast([CountryCodes].[Flag] as nvarchar(max)), char(34), char(0)), '\N'), char(34))
 from SinglePoint.dbo.CountryCodes

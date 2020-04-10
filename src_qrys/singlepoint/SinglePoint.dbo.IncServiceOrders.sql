@@ -19,7 +19,7 @@ select
 	 [CreateByID] = isNull(cast([IncServiceOrders].[CreateByID] as varchar(36)), '\N'),
 	 [CreateDate] = isNull(convert(varchar(50), [IncServiceOrders].[CreateDate], 21), '\N'),
 	 [Status] = concat(char(34), isNull(replace(cast([IncServiceOrders].[Status] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
-	 [StatusMessage] = concat(char(34), isNull(replace(cast([IncServiceOrders].[StatusMessage] as nvarchar(-1)), char(34), char(0)), '\N'), char(34)),
+	 [StatusMessage] = concat(char(34), isNull(replace(cast([IncServiceOrders].[StatusMessage] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [ProblemDescription] = concat(char(34), isNull(replace(cast([IncServiceOrders].[ProblemDescription] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [Requester] = concat(char(34), isNull(replace(cast([IncServiceOrders].[Requester] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [PointOfContact] = concat(char(34), isNull(replace(cast([IncServiceOrders].[PointOfContact] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),

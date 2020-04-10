@@ -30,7 +30,7 @@ select
 	 [UnitOfMeasure] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[UnitOfMeasure] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [TotalCost] = isNull(cast([PurchaseRequisition_Lines].[TotalCost] as varchar(36)), '\N'),
 	 [Currency] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[Currency] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
-	 [Notes] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[Notes] as nvarchar(-1)), char(34), char(0)), '\N'), char(34)),
+	 [Notes] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[Notes] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [AddressName] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[AddressName] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [AddressStreet] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[AddressStreet] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [AddressCity] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[AddressCity] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
