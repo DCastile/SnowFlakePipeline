@@ -2,7 +2,7 @@ import util
 from source_table import Source, SourceTable, SourceTableBatch
 
 from typing import List, Dict, Tuple
-from datetime import datetime
+from datetime import datetime, timezone
 from subprocess import run, CompletedProcess
 from os import getpid
 import logging
@@ -36,7 +36,8 @@ class SourceTableExtractor:
             'start_time': self.start_time,
             'end_time': self.end_time,
             'command': [self.command],
-            'type': 'bcp'
+            'type': 'bcp',
+            'log' : self.source_table_batch.bcp_log
         }
         tmp.update(self.source_table_batch.dict())
         return tmp
@@ -47,19 +48,21 @@ class SourceTableExtractor:
         #                                                                                                 source=self.source.source,
         #                                                                                                 table=self.source_table.table,
         #                                                                                                 batch=self.source_table_batch.batch_number))
-        self.start_time = datetime.now()
+        self.start_time = datetime.now(timezone.utc)
 
         self.command = self.build_bcp_command()
         try:
             completed: CompletedProcess = run(self.command)
             completed_message: Dict = {}
-            self.source_table_batch.row_count = parse_bcp_log(self.log_file)
+            log_txt, row_count = parse_bcp_log(self.log_file)
+            self.source_table_batch.row_count = row_count
+            self.source_table_batch.bcp_log = log_txt
 
         except Exception as e:
             logger.error('Error with snowflake put for table:', self.source_table_batch)
             traceback.print_exc()
 
-        self.end_time = datetime.now()
+        self.end_time = datetime.now(timezone.utc)
         logger.info('Finished bcp <PID:{pid} | Thread:{thread} | Source:{source} | Table:{table} | Batch:{batch} | Duration:{duration}>'.format(pid=getpid(), thread=current_thread().getName(),
                                                                                                         source=self.source,
                                                                                                         table=self.source_table.table,
@@ -83,13 +86,16 @@ class SourceTableExtractor:
 
 
 def parse_bcp_log(file_name : str):
+    file_txt = open(file_name, 'r').read()
     pattern = re.compile('\d+ rows copied.')
-    with open(file_name, 'r') as file:
-        for line in file:
-            match = pattern.match(line)
-            if match:
-                digit_match = re.compile('\d+').match(line)
-                return int(digit_match[0])
+    digit_match = [0]
+    for line in file_txt.split('\n'):
+        match = pattern.match(line)
+        if match:
+            digit_match = re.compile('\d+').match(line)
+            break
+
+    return (file_txt, int(digit_match[0]))
 
 
 

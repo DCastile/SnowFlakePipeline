@@ -3,7 +3,7 @@ import config
 from source_table import Source, SourceTable, SourceTableBatch
 
 from typing import List, Dict
-from datetime import datetime
+from datetime import datetime, timezone
 import snowflake.connector
 import os
 from os import getpid
@@ -52,11 +52,11 @@ class SnowFlakeTableSyncher:
         return tmp
 
     def run(self):
-        self.start_time = datetime.now()
+        self.start_time = datetime.now(timezone.utc)
         with self.get_snowflake_connection() as conn:
             self.run_put(conn)
             self.run_merge(conn)
-        self.end_time = datetime.now()
+        self.end_time = datetime.now(timezone.utc)
 
     def run_put(self, conn: snowflake.connector.SnowflakeConnection):
         # logger.info(
