@@ -32,6 +32,8 @@ class SnowFlakeTableSyncher:
     merge_command = None
     stage_name = None
 
+    qry_id = None
+
     def __init__(self, source_table_batch: SourceTableBatch):
         self.source_table_batch = source_table_batch
         self.source_table = source_table_batch.source_table
@@ -46,7 +48,8 @@ class SnowFlakeTableSyncher:
             'end_time': self.end_time,
             'command': [self.put_command, self.merge_command],
             'stage_name': self.stage_name,
-            'type': 'snowflake'
+            'type': 'snowflake',
+            'query_id': self.qry_id
         }
         tmp.update(self.source_table_batch.dict())
         return tmp
@@ -68,7 +71,9 @@ class SnowFlakeTableSyncher:
         try:
             self.put_command = self.build_snowflake_put_command()
 
-            conn.execute_string(self.put_command)
+            with conn.cursor() as curs:
+                curs.execute_string(self.put_command)
+                self.qry_id = curs.sfqid
             completed: Dict = {}
 
             # remove the temp file
@@ -95,7 +100,10 @@ class SnowFlakeTableSyncher:
         #         batch=self.source_table_batch.batch_number))
         try:
             self.merge_command = self.build_snowflake_merge_command()
-            conn.execute_string(self.merge_command)
+            with conn.cursor() as  curs:
+                curs.execute_string(self.merge_command)
+                self.qry_id = curs.sfqid
+
             completed: Dict = {}
         except Exception as e:
             logger.error('Error with snowflake merge for table:', self.source_table_batch)
