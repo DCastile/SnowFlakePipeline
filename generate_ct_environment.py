@@ -95,6 +95,7 @@ alter table ct.{table}
     '''.format(db=db, table=table_name, pk_text=pk_text, primary_keys=','.join(pk_columns))
 
     pk_join_condition = '\n\tand'.join(['\tsrc.{col} = tgt.{col}'.format(col=col) for col in pk_columns])
+    inner_pk_join_condition = '\n\tand'.join(['\tins.{col} = del.{col}'.format(col=col) for col in pk_columns])
     pk_column_text = ', '.join(['{column}'.format(column=col) for col in pk_columns])
     hash_columns = ', '.join(['"{col}"'.format(col=col) for col in hash_columns])
     create_triggers_script = '''
@@ -109,15 +110,13 @@ begin
         when matched then update
             set tgt.touchstamp = getdate()
         when not matched then insert
-          ({pk_list_text}, touchstamp)
-          values ({pk_list_text}, getdate());
+          ({pk_list_text})
+          values ({pk_list_text});
     
     with src as (
       select *
-      from deleted
-      except
-      select *
-      from inserted
+      from deleted del
+      where not exists(select 1 from inserted ins where {inner_pk_join_condition})
     )
     merge into ct.{table} as tgt
     using src as src
@@ -127,25 +126,25 @@ begin
             tgt.touchstamp = getdate();
 end
 ;
-    '''.format(db=db, table=table_name, pk_join_condition= pk_join_condition, pk_list_text=pk_column_text, hash_columns= hash_columns)
+    '''.format(db=db, table=table_name, pk_join_condition= pk_join_condition, inner_pk_join_condition=inner_pk_join_condition, pk_list_text=pk_column_text, hash_columns= hash_columns)
 
     print('################################################################')
 
-    # print(create_table_script)
+    print(create_table_script)
     print('Creating {table}'.format(table=table_name))
-    connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    # print(initialize_table_script)
+    print(initialize_table_script)
     print('Populating data for {table}'.format(table=table_name))
-    connection_manager.execute_query(initialize_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(initialize_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    # print(add_pk_script)
+    print(add_pk_script)
     print('Adding pk for {table}'.format(table=table_name))
-    connection_manager.execute_query(add_pk_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(add_pk_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    # print(update_hashes_script)
+    print(create_triggers_script)
     print('Creating triggers on {table}'.format(table=table_name))
-    connection_manager.execute_query(create_triggers_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(create_triggers_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
     print('Table {table} completed.'.format(table=table_name))
     print('\n\n\n\n')
 
