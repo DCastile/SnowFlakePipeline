@@ -33,7 +33,7 @@ pk_qry = '''
             on schema_name(tab.schema_id) = info_col.TABLE_SCHEMA
                and tab.name = info_col.TABLE_NAME
                 and col.name = info_col.COLUMN_NAME
-        where schema_name(tab.schema_id) = 'dbo'
+        where schema_name(tab.schema_id) = 'dbo' and not exists(select 1 from sys.tables inn where schema_name(inn.schema_id) = 'ct' and inn.name = tab.name)
     )
     select schema_name, table_name, column_id, column_name, data_type, part_of_pk
     from table_columns
@@ -58,6 +58,7 @@ for row in data:
 
 scripts = {}
 
+# out_file = open('generate_ct_environment.sql', 'w')
 for table_name, table_meta in table_data.items():
     pk_text = ''
     pk_columns = []
@@ -99,7 +100,7 @@ alter table ct.{table}
     pk_column_text = ', '.join(['{column}'.format(column=col) for col in pk_columns])
     hash_columns = ', '.join(['"{col}"'.format(col=col) for col in hash_columns])
     create_triggers_script = '''
-create or alter trigger dbo.Calculate_{table}_Changes on dbo.{table}
+create or alter trigger dbo.log_touchstamp_trigger_{table} on dbo.{table}
 after insert, update, delete as
 begin
     
@@ -130,24 +131,32 @@ end
 
     print('################################################################')
 
-    print(create_table_script)
+    # print(create_table_script)
     print('Creating {table}'.format(table=table_name))
-    # connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    print(initialize_table_script)
+    # print(initialize_table_script)
     print('Populating data for {table}'.format(table=table_name))
-    # connection_manager.execute_query(initialize_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    connection_manager.execute_query(initialize_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    print(add_pk_script)
+    # print(add_pk_script)
     print('Adding pk for {table}'.format(table=table_name))
-    # connection_manager.execute_query(add_pk_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    connection_manager.execute_query(add_pk_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    print(create_triggers_script)
+    # print(create_triggers_script)
     print('Creating triggers on {table}'.format(table=table_name))
-    # connection_manager.execute_query(create_triggers_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
-    print('Table {table} completed.'.format(table=table_name))
-    print('\n\n\n\n')
+    connection_manager.execute_query(create_triggers_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # print('Table {table} completed.'.format(table=table_name))
+    print('\n\n\n')
+    # out_file.write('------------------------------------------------------------------------------')
+    # out_file.write('-------------- {table}'.format(table=table_name))
+    # out_file.write(create_table_script)
+    # out_file.write(initialize_table_script)
+    # out_file.write(add_pk_script)
+    # out_file.write(create_triggers_script)
+    # out_file.write('\n\n')
 
+# out_file.close()
 ### sample
 '''
 merge into SAP_Production.change.T024_changes change
