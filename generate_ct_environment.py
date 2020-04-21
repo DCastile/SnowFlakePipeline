@@ -85,7 +85,9 @@ insert into ct.{table} ({primary_keys})
 select {primary_keys}
 from dbo.{table}
 order by {primary_keys};
+'''.format(db=db, table=table_name, pk_text=pk_text, primary_keys=','.join(pk_columns))
 
+    add_pk_script = '''    
 alter table ct.{table}
      	add constraint {table}_pk
      		primary key clustered ({primary_keys})
@@ -95,7 +97,7 @@ alter table ct.{table}
     pk_join_condition = '\n\tand'.join(['\tsrc.{col} = tgt.{col}'.format(col=col) for col in pk_columns])
     pk_column_text = ', '.join(['{column}'.format(column=col) for col in pk_columns])
     hash_columns = ', '.join(['"{col}"'.format(col=col) for col in hash_columns])
-    update_hashes_script = '''
+    create_triggers_script = '''
 create or alter trigger dbo.Calculate_{table}_Changes on dbo.{table}
 after insert, update, delete as
 begin
@@ -126,14 +128,24 @@ begin
 end
 ;
     '''.format(db=db, table=table_name, pk_join_condition= pk_join_condition, pk_list_text=pk_column_text, hash_columns= hash_columns)
-    print(create_table_script)
+
+    print('################################################################')
+
+    # print(create_table_script)
+    print('Creating {table}'.format(table=table_name))
     connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    print(initialize_table_script)
+    # print(initialize_table_script)
+    print('Populating data for {table}'.format(table=table_name))
     connection_manager.execute_query(initialize_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    print(update_hashes_script)
-    connection_manager.execute_query(update_hashes_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # print(add_pk_script)
+    print('Adding pk for {table}'.format(table=table_name))
+    connection_manager.execute_query(add_pk_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+
+    # print(update_hashes_script)
+    print('Creating triggers on {table}'.format(table=table_name))
+    connection_manager.execute_query(create_triggers_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
     print('Table {table} completed.'.format(table=table_name))
     print('\n\n\n\n')
 
