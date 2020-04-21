@@ -77,17 +77,17 @@ create table {db}.ct.{table} (
     touchstamp datetime not null default getdate(),
     deleted bit not null default 0
 );
-
-alter table ct.{table}
-     	add constraint {table}_pk
-     		primary key clustered ({primary_keys})
 ;
     '''.format(db=db, table=table_name, pk_text=pk_text, primary_keys=','.join(pk_columns))
 
     initialize_table_script = '''
 insert into ct.{table} ({primary_keys})
 select {primary_keys}
-from dbo.{table}
+from dbo.{table};
+
+alter table ct.{table}
+     	add constraint {table}_pk
+     		primary key non clustered ({primary_keys})
 ;
     '''.format(db=db, table=table_name, pk_text=pk_text, primary_keys=','.join(pk_columns))
 
