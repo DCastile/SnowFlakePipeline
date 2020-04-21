@@ -83,11 +83,12 @@ create table {db}.ct.{table} (
     initialize_table_script = '''
 insert into ct.{table} ({primary_keys})
 select {primary_keys}
-from dbo.{table};
+from dbo.{table}
+order by {primary_keys};
 
 alter table ct.{table}
      	add constraint {table}_pk
-     		primary key non clustered ({primary_keys})
+     		primary key clustered ({primary_keys})
 ;
     '''.format(db=db, table=table_name, pk_text=pk_text, primary_keys=','.join(pk_columns))
 
