@@ -33,7 +33,7 @@ pk_qry = '''
             on schema_name(tab.schema_id) = info_col.TABLE_SCHEMA
                and tab.name = info_col.TABLE_NAME
                 and col.name = info_col.COLUMN_NAME
-        where schema_name(tab.schema_id) = 'dbo' and not exists(select 1 from sys.tables inn where schema_name(inn.schema_id) = 'ct' and inn.name = tab.name)
+        where schema_name(tab.schema_id) = 'dbo' --and not exists(select 1 from sys.tables inn where schema_name(inn.schema_id) = 'ct' and inn.name = tab.name)
     )
     select schema_name, table_name, column_id, column_name, data_type, part_of_pk
     from table_columns
@@ -71,9 +71,9 @@ for table_name, table_meta in table_data.items():
             hash_columns.append(column_name)
 
     create_table_script = '''
-drop table if exists {db}.ct.{table};
+drop table if exists {db}_CT.dbo.{table};
 
-create table {db}.ct.{table} (
+create table {db}_CT.dbo.{table} (
 {pk_text}
     touchstamp datetime not null default getdate(),
     deleted bit not null default 0
@@ -82,14 +82,14 @@ create table {db}.ct.{table} (
     '''.format(db=db, table=table_name, pk_text=pk_text, primary_keys=','.join(pk_columns))
 
     initialize_table_script = '''
-insert into ct.{table} ({primary_keys})
+insert into {db}_CT.dbo.{table} ({primary_keys})
 select {primary_keys}
-from dbo.{table}
+from {db}.dbo.{table}
 order by {primary_keys};
 '''.format(db=db, table=table_name, pk_text=pk_text, primary_keys=','.join(pk_columns))
 
     add_pk_script = '''    
-alter table ct.{table}
+alter table {db}_CT.dbo.{table}
      	add constraint {table}_pk
      		primary key clustered ({primary_keys})
 ;
@@ -100,52 +100,93 @@ alter table ct.{table}
     pk_column_text = ', '.join(['{column}'.format(column=col) for col in pk_columns])
     hash_columns = ', '.join(['"{col}"'.format(col=col) for col in hash_columns])
     create_triggers_script = '''
-create or alter trigger dbo.log_touchstamp_trigger_{table} on dbo.{table}
-after insert, update, delete as
-begin
-    
-    merge into {db}.ct.{table} as tgt
-    using inserted as src
-        on {pk_join_condition}
-    
-        when matched then update
-            set tgt.touchstamp = getdate()
-        when not matched then insert
-          ({pk_list_text})
-          values ({pk_list_text});
-    
-    with src as (
-      select *
-      from deleted del
-      where not exists(select 1 from inserted ins where {inner_pk_join_condition})
-    )
-    merge into ct.{table} as tgt
-    using src as src
-       on {pk_join_condition}
-    when matched then update
-        set tgt.deleted = 1,
-            tgt.touchstamp = getdate();
-end
-;
-    '''.format(db=db, table=table_name, pk_join_condition= pk_join_condition, inner_pk_join_condition=inner_pk_join_condition, pk_list_text=pk_column_text, hash_columns= hash_columns)
+    create or alter trigger dbo.log_touchstamp_trigger_{table} on dbo.{table}
+    after insert, update, delete as
+    begin
+        begin try
+            insert into {db}_CT.dbo.Log (table_name, message)
+            values ('{table}', 'Triggers are working');
+                
+            -- deleted records
+            update {db}.ct.{table}
+            set
+                touchstamp = getdate(),
+                deleted = 1
+            from {db}.ct.{table} tgt
+            join deleted src
+                on {pk_join_condition}
+            
+            -- updated records
+            update {db}.ct.{table}
+            set
+                touchstamp = getdate(),
+                deleted = 0
+            from {db}.ct.{table} tgt
+            join inserted src
+                on {pk_join_condition}
+            
+            --inserted records
+            insert into {db}.ct.{table} ({pk_list_text})
+            select {pk_list_text}
+            from inserted src
+            where not exists(select 1 from inserted tgt where {pk_join_condition})
+        end try
+        begin catch
+            insert into Logging.SAP_REPO.ct.testy (table_name, message)
+            values ('{table}', ERROR_MESSAGE());
+        end catch
+    end
+    ;
+        '''.format(db=db, table=table_name, pk_join_condition=pk_join_condition,
+                   inner_pk_join_condition=inner_pk_join_condition, pk_list_text=pk_column_text,
+                   hash_columns=hash_columns)
+#     create_triggers_script = '''
+# create or alter trigger dbo.log_touchstamp_trigger_{table} on dbo.{table}
+# after insert, update, delete as
+# begin
+#
+#     merge into {db}.ct.{table} as tgt
+#     using inserted as src
+#         on {pk_join_condition}
+#
+#         when matched then update
+#             set tgt.touchstamp = getdate()
+#         when not matched then insert
+#           ({pk_list_text})
+#           values ({pk_list_text});
+#
+#     with src as (
+#       select *
+#       from deleted del
+#       where not exists(select 1 from inserted ins where {inner_pk_join_condition})
+#     )
+#     merge into ct.{table} as tgt
+#     using src as src
+#        on {pk_join_condition}
+#     when matched then update
+#         set tgt.deleted = 1,
+#             tgt.touchstamp = getdate();
+# end
+# ;
+#     '''.format(db=db, table=table_name, pk_join_condition= pk_join_condition, inner_pk_join_condition=inner_pk_join_condition, pk_list_text=pk_column_text, hash_columns= hash_columns)
 
     print('################################################################')
 
-    # print(create_table_script)
+    print(create_table_script)
     print('Creating {table}'.format(table=table_name))
-    connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(create_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    # print(initialize_table_script)
+    print(initialize_table_script)
     print('Populating data for {table}'.format(table=table_name))
-    connection_manager.execute_query(initialize_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(initialize_table_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    # print(add_pk_script)
+    print(add_pk_script)
     print('Adding pk for {table}'.format(table=table_name))
-    connection_manager.execute_query(add_pk_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(add_pk_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
 
-    # print(create_triggers_script)
+    print(create_triggers_script)
     print('Creating triggers on {table}'.format(table=table_name))
-    connection_manager.execute_query(create_triggers_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(create_triggers_script, None, server, db, user='datapipeline', password='datareader99$', results=False)
     # print('Table {table} completed.'.format(table=table_name))
     print('\n\n\n')
     # out_file.write('------------------------------------------------------------------------------')
