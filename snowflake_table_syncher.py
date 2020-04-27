@@ -72,7 +72,7 @@ class SnowFlakeTableSyncher:
             self.put_command = self.build_snowflake_put_command()
 
             with conn.cursor() as curs:
-                curs.execute_string(self.put_command)
+                curs.execute(self.put_command)
                 self.qry_id = curs.sfqid
             completed: Dict = {}
 
@@ -88,7 +88,7 @@ class SnowFlakeTableSyncher:
                 thread=current_thread().getName(),
                 source=self.source.source,
                 table=self.source_table.table,
-                batch=self.source_table_batch.batch_number, duration=datetime.now() - self.start_time))
+                batch=self.source_table_batch.batch_number, duration=datetime.now(timezone.utc) - self.start_time))
 
     def run_merge(self, conn: snowflake.connector.SnowflakeConnection):
         # logger.info(
@@ -101,7 +101,7 @@ class SnowFlakeTableSyncher:
         try:
             self.merge_command = self.build_snowflake_merge_command()
             with conn.cursor() as  curs:
-                curs.execute_string(self.merge_command)
+                curs.execute(self.merge_command)
                 self.qry_id = curs.sfqid
 
             completed: Dict = {}
@@ -115,7 +115,7 @@ class SnowFlakeTableSyncher:
                 thread=current_thread().getName(),
                 source=self.source.source,
                 table=self.source_table.table,
-                batch=self.source_table_batch.batch_number, duration=datetime.now() - self.start_time))
+                batch=self.source_table_batch.batch_number, duration=datetime.now(timezone.utc) - self.start_time))
 
     def build_snowflake_put_command(self):
         return 'put file://{file_location} @{stage_name};'.format(file_location=self.file_location, source=self.source.source,
