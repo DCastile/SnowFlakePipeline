@@ -100,6 +100,7 @@ class SnowFlakeTableSyncher:
         #         batch=self.source_table_batch.batch_number))
         try:
             self.merge_command = self.build_snowflake_merge_command()
+            print(self.merge_command)
             with conn.cursor() as  curs:
                 curs.execute(self.merge_command)
                 self.qry_id = curs.sfqid
@@ -131,14 +132,14 @@ class SnowFlakeTableSyncher:
             map(lambda x: '${numb}'.format(numb=x), range(1, 1 + len(self.source_table.columns))))
         return '''
             merge into repo.{source}."{table}" target
-            using {staged_file} source
+            using {staged_file} (file_format => {source}.{source}_FORMAT) source
                 on {join_columns_str}
             when matched then update set
                 {update_columns_str}
             when not matched then
                 insert ({col_names})
                 values ({insert_values})
-        '''.format(source=self.source.source ,table=self.source_table.table, staged_file=staged_file, join_columns_str=join_columns_str,
+        '''.format(source=self.source.source.upper() ,table=self.source_table.table, staged_file=staged_file, join_columns_str=join_columns_str,
                    update_columns_str=update_columns_str, col_names=columns_str, insert_values=insert_values)
 
     def _build_join_columns_str(self):
