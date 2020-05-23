@@ -92,7 +92,7 @@ for table in tables:
         if len(tmp) <= 1:
             print('Error on:', table, '- no columns under cdc')
             continue
-        snowflake_create += '\tdeleted boolean,'
+        snowflake_create += '\tdeleted boolean, touchstamp timestamp default current_timestamp,'
         for idx, row in enumerate(tmp):
             src_qry += '\n\t' + row['SqlServerViewCreate']
             snowflake_create += '\n\t' + row['SnowFlakeCreate']
@@ -115,7 +115,7 @@ for table, src_qry in zip(table_names, src_qrys):
 sf_conn = connect(**snowflake_connection_properties)
 for table, create_table in zip(table_names, snowflake_creates):
     try:
-        sf_conn.execute_string(create_table)
+        # sf_conn.execute_string(create_table)
         print(create_table)
     except Exception as e:
         print('Error creating', table, 'in snowflake')

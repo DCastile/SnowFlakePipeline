@@ -161,6 +161,7 @@ class SnowFlakeTableSyncher:
         for col_idx, col_name in enumerate(self.source_table.columns, start=1):
             if col_name not in pk_set:
                 qry_items.append('target."{target_column}" = source.${col_idx}'.format(target_column=col_name, col_idx=col_idx))
+        qry_items.append('target.touchstamp = current_timestamp')
         return ',\n\t\t\t\t'.join(qry_items)
 
     def get_snowflake_connection(self) -> snowflake.connector.connection:
