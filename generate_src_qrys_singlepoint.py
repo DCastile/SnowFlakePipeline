@@ -103,7 +103,7 @@ for db in dbs:
             if len(tmp) <= 1:
                 print('Error on:', fq_table_name, '- no columns under cdc')
                 continue
-            snowflake_create += '\tdeleted int,'
+            snowflake_create += '\tdeleted boolean, touchstamp timestamp default current_timestamp,'
             for idx, row in enumerate(tmp):
                 src_qry += '\n\t' + row['SqlServerViewCreate']
                 snowflake_create += '\n\t' + row['SnowFlakeCreate']
