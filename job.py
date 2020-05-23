@@ -36,6 +36,9 @@ class Job:
         self.run_from_user = getpass.getuser()
 
         self.source_table_batches = source_table_batches
+        for batch in self.source_table_batches:
+            batch.job_uuid = self.job_uuid
+
         shuffle(self.source_table_batches)  # shuffles in place
         self.batch_count = len(self.source_table_batches)
         self.task_counter = Counter()

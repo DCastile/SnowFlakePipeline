@@ -198,12 +198,14 @@ class SourceTableBatch:
     batch_number: int = None
     row_count: int = None
     qry: str = None
+    job_uuid = None
 
     def __init__(self, source_table: SourceTable, batch_number: int):
         self.source_table = source_table
         self.source = source_table.source  # Just for easy access
         self.batch_number = batch_number
         self.set_qry()
+
 
     def __repr__(self):
         return '<SourceTableBatch - {{Source:{source}|Server:{server}|{database}.{schema}.{table}|Batch#:{batch_number}}}>'.format(

@@ -2,12 +2,13 @@ from source_table import SourceTableBatch, SourceTable, Source
 
 
 def get_file_name(source_table_batch: SourceTableBatch):
-    return '{server}-{database}-{schema}-{table}-{batch_number}.csv'.format(
+    return '{server}-{table}-{batch_number}-{run_id}.csv'.format(
         server=source_table_batch.source.server,
         database=source_table_batch.source.database,
         schema=source_table_batch.source.schema,
         table=source_table_batch.source_table.table,
-        batch_number=source_table_batch.batch_number
+        batch_number=source_table_batch.batch_number,
+        run_id=source_table_batch.job_uuid
     )
 
 
