@@ -41,4 +41,4 @@ select
 	 [SAKTO] = concat(char(34), replace(cast([AUFM].[SAKTO] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [KOKRS] = concat(char(34), replace(cast([AUFM].[KOKRS] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [WTY_IND] = concat(char(34), replace(cast([AUFM].[WTY_IND] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.AUFM
+from SAP_REPO.dbo.AUFM with(nolock)

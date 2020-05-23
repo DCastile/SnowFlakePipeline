@@ -135,4 +135,4 @@ select
 	 [ZMARGIN] = cast([VBAK].[ZMARGIN] as varchar(36)),
 	 [ZCASENO] = concat(char(34), replace(cast([VBAK].[ZCASENO] as nvarchar(30)), char(34), char(0)), char(34)),
 	 [ZCOMPCAT] = concat(char(34), replace(cast([VBAK].[ZCOMPCAT] as nvarchar(20)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.VBAK
+from SAP_REPO.dbo.VBAK with(nolock)

@@ -69,4 +69,4 @@ select
 	 [ATVPL] = concat(char(34), replace(cast([CABN].[ATVPL] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [ATAUTH] = concat(char(34), replace(cast([CABN].[ATAUTH] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [COUNTRYGRP] = concat(char(34), replace(cast([CABN].[COUNTRYGRP] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.CABN
+from SAP_REPO.dbo.CABN with(nolock)

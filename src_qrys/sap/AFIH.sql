@@ -46,4 +46,4 @@ select
 	 [/ISDFPS/OBJNR] = concat(char(34), replace(cast([AFIH].[/ISDFPS/OBJNR] as nvarchar(22)), char(34), char(0)), char(34)),
 	 [/ISDFPS/MEQUI] = concat(char(34), replace(cast([AFIH].[/ISDFPS/MEQUI] as nvarchar(18)), char(34), char(0)), char(34)),
 	 [UII] = concat(char(34), replace(cast([AFIH].[UII] as nvarchar(72)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.AFIH
+from SAP_REPO.dbo.AFIH with(nolock)

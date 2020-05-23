@@ -54,4 +54,4 @@ select
 	 [ACTIVITY_PROFIL] = concat(char(34), replace(cast([LFM1].[ACTIVITY_PROFIL] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [TRANSPORT_CHAIN] = concat(char(34), replace(cast([LFM1].[TRANSPORT_CHAIN] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [STAGING_TIME] = cast([LFM1].[STAGING_TIME] as varchar(36))
-from SAP_REPO.dbo.LFM1
+from SAP_REPO.dbo.LFM1 with(nolock)

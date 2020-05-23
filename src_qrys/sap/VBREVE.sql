@@ -44,4 +44,4 @@ select
 	 [HWAER] = concat(char(34), replace(cast([VBREVE].[HWAER] as nvarchar(5)), char(34), char(0)), char(34)),
 	 [KRUEK] = concat(char(34), replace(cast([VBREVE].[KRUEK] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [COSTREC] = concat(char(34), replace(cast([VBREVE].[COSTREC] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.VBREVE
+from SAP_REPO.dbo.VBREVE with(nolock)

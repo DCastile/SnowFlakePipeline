@@ -21,4 +21,4 @@ select
 	 [MC_SHORT] = concat(char(34), replace(cast([HRP1000].[MC_SHORT] as nvarchar(12)), char(34), char(0)), char(34)),
 	 [MC_STEXT] = concat(char(34), replace(cast([HRP1000].[MC_STEXT] as nvarchar(40)), char(34), char(0)), char(34)),
 	 [MC_SEARK] = concat(char(34), replace(cast([HRP1000].[MC_SEARK] as nvarchar(52)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.HRP1000
+from SAP_REPO.dbo.HRP1000 with(nolock)

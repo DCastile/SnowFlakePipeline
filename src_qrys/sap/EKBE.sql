@@ -76,4 +76,4 @@ select
 	 [VBELP_ST] = concat(char(34), replace(cast([EKBE].[VBELP_ST] as nvarchar(6)), char(34), char(0)), char(34)),
 	 [ET_UPD] = concat(char(34), replace(cast([EKBE].[ET_UPD] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [J_SC_DIE_COMP_F] = concat(char(34), replace(cast([EKBE].[J_SC_DIE_COMP_F] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.EKBE
+from SAP_REPO.dbo.EKBE with(nolock)

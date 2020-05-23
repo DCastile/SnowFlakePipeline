@@ -15,4 +15,4 @@ select
 	 [TNEF] = concat(char(34), replace(cast([ADR6].[TNEF] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [VALID_FROM] = concat(char(34), replace(cast([ADR6].[VALID_FROM] as nvarchar(14)), char(34), char(0)), char(34)),
 	 [VALID_TO] = concat(char(34), replace(cast([ADR6].[VALID_TO] as nvarchar(14)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.ADR6
+from SAP_REPO.dbo.ADR6 with(nolock)

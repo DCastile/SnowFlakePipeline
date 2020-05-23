@@ -36,4 +36,4 @@ select
 	 [CHDLL] = concat(char(34), replace(cast([MCHB].[CHDLL] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [CHJIN] = concat(char(34), replace(cast([MCHB].[CHJIN] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [CHRUE] = concat(char(34), replace(cast([MCHB].[CHRUE] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.MCHB
+from SAP_REPO.dbo.MCHB with(nolock)

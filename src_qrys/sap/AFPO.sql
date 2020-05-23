@@ -93,4 +93,4 @@ select
 	 [MILL_OC_AUFNR_U] = concat(char(34), replace(cast([AFPO].[MILL_OC_AUFNR_U] as nvarchar(12)), char(34), char(0)), char(34)),
 	 [MILL_OC_RUMNG] = cast([AFPO].[MILL_OC_RUMNG] as varchar(36)),
 	 [MILL_OC_SORT] = concat(char(34), replace(cast([AFPO].[MILL_OC_SORT] as nvarchar(8)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.AFPO
+from SAP_REPO.dbo.AFPO with(nolock)

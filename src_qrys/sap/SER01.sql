@@ -15,4 +15,4 @@ select
 	 [VTWEG] = concat(char(34), replace(cast([SER01].[VTWEG] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [SPART] = concat(char(34), replace(cast([SER01].[SPART] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [LTSPS] = concat(char(34), replace(cast([SER01].[LTSPS] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.SER01
+from SAP_REPO.dbo.SER01 with(nolock)

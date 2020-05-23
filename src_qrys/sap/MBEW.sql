@@ -108,4 +108,4 @@ select
 	 [MBRUE] = concat(char(34), replace(cast([MBEW].[MBRUE] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [OKLAS] = concat(char(34), replace(cast([MBEW].[OKLAS] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [OIPPINV] = concat(char(34), replace(cast([MBEW].[OIPPINV] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.MBEW
+from SAP_REPO.dbo.MBEW with(nolock)

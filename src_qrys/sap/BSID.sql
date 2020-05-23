@@ -178,4 +178,4 @@ select
 	 [EGRUP] = concat(char(34), replace(cast([BSID].[EGRUP] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [BTYPE] = concat(char(34), replace(cast([BSID].[BTYPE] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [PROPMANO] = concat(char(34), replace(cast([BSID].[PROPMANO] as nvarchar(13)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.BSID
+from SAP_REPO.dbo.BSID with(nolock)

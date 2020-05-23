@@ -180,4 +180,4 @@ select
 	 [EGRUP] = concat(char(34), replace(cast([BSIK].[EGRUP] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [BTYPE] = concat(char(34), replace(cast([BSIK].[BTYPE] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [PROPMANO] = concat(char(34), replace(cast([BSIK].[PROPMANO] as nvarchar(13)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.BSIK
+from SAP_REPO.dbo.BSIK with(nolock)

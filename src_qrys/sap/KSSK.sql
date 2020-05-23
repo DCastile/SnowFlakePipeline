@@ -12,4 +12,4 @@ select
 	 [AENNR] = concat(char(34), replace(cast([KSSK].[AENNR] as nvarchar(12)), char(34), char(0)), char(34)),
 	 [DATUV] = concat(char(34), replace(cast([KSSK].[DATUV] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [LKENZ] = concat(char(34), replace(cast([KSSK].[LKENZ] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KSSK
+from SAP_REPO.dbo.KSSK with(nolock)

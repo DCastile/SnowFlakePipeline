@@ -41,16 +41,16 @@ get_src_qry = r'''
             col.DATA_TYPE,
             iif(col.character_maximum_length = -1, 'max', cast(col.character_maximum_length as varchar(10))) character_maximum_length,
             case DATA_TYPE
-                when 'varchar' then 'string'
-                when 'nvarchar' then 'string'
+                when 'varchar' then 'text'
+                when 'nvarchar' then 'text'
                 when 'datetime' then 'datetime'
                 when 'datetime2' then 'datetime'
                 when 'smalldatetime' then 'datetime'
-                when 'decimal' then 'numeric(' + cast(NUMERIC_PRECISION as varchar) + ',' + cast(NUMERIC_SCALE as varchar) + ')'
-                when 'money' then 'numeric(' + cast(NUMERIC_PRECISION as varchar) + ',' + cast(NUMERIC_SCALE as varchar) + ')'
-                when 'numeric' then 'numeric(' + cast(NUMERIC_PRECISION as varchar) + ',' + cast(NUMERIC_SCALE as varchar) + ')'
+                when 'decimal' then 'number(' + cast(NUMERIC_PRECISION as varchar) + ',' + cast(NUMERIC_SCALE as varchar) + ')'
+                when 'money' then 'number(' + cast(NUMERIC_PRECISION as varchar) + ',' + cast(NUMERIC_SCALE as varchar) + ')'
+                when 'numeric' then 'number(' + cast(NUMERIC_PRECISION as varchar) + ',' + cast(NUMERIC_SCALE as varchar) + ')'
                 when 'bit' then 'boolean'
-                when 'uniqueidentifier' then 'string'
+                when 'uniqueidentifier' then 'text'
                 else DATA_TYPE
             end SnowFlakeDataType,
             max(ORDINAL_POSITION) over(partition by col.TABLE_CATALOG, col.TABLE_SCHEMA, col.TABLE_NAME) num_columns
@@ -97,7 +97,7 @@ for table in tables:
             src_qry += '\n\t' + row['SqlServerViewCreate']
             snowflake_create += '\n\t' + row['SnowFlakeCreate']
 
-        src_qry += '\n' + 'from {db}.dbo.{table}'.format(db=db, table=table)
+        src_qry += '\n' + 'from {db}.dbo.{table} with(nolock)'.format(db=db, table=table)
         snowflake_create += '\n)'
 
         table_names.append(table)
@@ -115,7 +115,7 @@ for table, src_qry in zip(table_names, src_qrys):
 sf_conn = connect(**snowflake_connection_properties)
 for table, create_table in zip(table_names, snowflake_creates):
     try:
-        # sf_conn.execute_string(create_table)
+        sf_conn.execute_string(create_table)
         print(create_table)
     except Exception as e:
         print('Error creating', table, 'in snowflake')

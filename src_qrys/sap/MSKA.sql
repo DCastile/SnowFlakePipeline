@@ -31,4 +31,4 @@ select
 	 [ERSDA] = concat(char(34), replace(cast([MSKA].[ERSDA] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [KAJIN] = concat(char(34), replace(cast([MSKA].[KAJIN] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [KARUE] = concat(char(34), replace(cast([MSKA].[KARUE] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.MSKA
+from SAP_REPO.dbo.MSKA with(nolock)

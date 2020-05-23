@@ -14,4 +14,4 @@ select
 	 [CUOBJ] = concat(char(34), replace(cast([PMSDO].[CUOBJ] as nvarchar(18)), char(34), char(0)), char(34)),
 	 [FFPRF] = concat(char(34), replace(cast([PMSDO].[FFPRF] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [FAKTF] = concat(char(34), replace(cast([PMSDO].[FAKTF] as nvarchar(2)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.PMSDO
+from SAP_REPO.dbo.PMSDO with(nolock)

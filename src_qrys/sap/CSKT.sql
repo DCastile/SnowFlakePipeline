@@ -7,4 +7,4 @@ select
 	 [KTEXT] = concat(char(34), replace(cast([CSKT].[KTEXT] as nvarchar(20)), char(34), char(0)), char(34)),
 	 [LTEXT] = concat(char(34), replace(cast([CSKT].[LTEXT] as nvarchar(40)), char(34), char(0)), char(34)),
 	 [MCTXT] = concat(char(34), replace(cast([CSKT].[MCTXT] as nvarchar(20)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.CSKT
+from SAP_REPO.dbo.CSKT with(nolock)

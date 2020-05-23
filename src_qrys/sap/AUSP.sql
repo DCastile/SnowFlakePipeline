@@ -24,4 +24,4 @@ select
 	 [ATZIS] = concat(char(34), replace(cast([AUSP].[ATZIS] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [ATSRT] = concat(char(34), replace(cast([AUSP].[ATSRT] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [ATVGLART] = concat(char(34), replace(cast([AUSP].[ATVGLART] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.AUSP
+from SAP_REPO.dbo.AUSP with(nolock)

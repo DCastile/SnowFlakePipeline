@@ -28,4 +28,4 @@ select
 	 [INPUT] = cast([KSML].[INPUT] as varchar(36)),
 	 [AMERK] = concat(char(34), replace(cast([KSML].[AMERK] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [MKENN] = concat(char(34), replace(cast([KSML].[MKENN] as nvarchar(15)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KSML
+from SAP_REPO.dbo.KSML with(nolock)

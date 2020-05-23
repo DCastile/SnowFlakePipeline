@@ -10,4 +10,4 @@ select
 	 [TECHV] = concat(char(34), replace(cast([CABNT].[TECHV] as nvarchar(12)), char(34), char(0)), char(34)),
 	 [AENNR] = concat(char(34), replace(cast([CABNT].[AENNR] as nvarchar(12)), char(34), char(0)), char(34)),
 	 [LKENZ] = concat(char(34), replace(cast([CABNT].[LKENZ] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.CABNT
+from SAP_REPO.dbo.CABNT with(nolock)

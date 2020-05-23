@@ -49,4 +49,4 @@ select
 	 [BSKRF] = cast([MARD].[BSKRF] as varchar(36)),
 	 [MDRUE] = concat(char(34), replace(cast([MARD].[MDRUE] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [MDJIN] = concat(char(34), replace(cast([MARD].[MDJIN] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.MARD
+from SAP_REPO.dbo.MARD with(nolock)

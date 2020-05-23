@@ -250,4 +250,4 @@ select
 	 [ZWAR_PR] = cast([VBAP].[ZWAR_PR] as varchar(36)),
 	 [ZWAR_ST_DT] = concat(char(34), replace(cast([VBAP].[ZWAR_ST_DT] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [ZWAR_ED_DT] = concat(char(34), replace(cast([VBAP].[ZWAR_ED_DT] as nvarchar(8)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.VBAP
+from SAP_REPO.dbo.VBAP with(nolock)

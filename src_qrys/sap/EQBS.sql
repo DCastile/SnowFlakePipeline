@@ -12,4 +12,4 @@ select
 	 [KDPOS] = concat(char(34), replace(cast([EQBS].[KDPOS] as nvarchar(6)), char(34), char(0)), char(34)),
 	 [PS_PSP_PNR] = concat(char(34), replace(cast([EQBS].[PS_PSP_PNR] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [DISUB_OWNER] = concat(char(34), replace(cast([EQBS].[DISUB_OWNER] as nvarchar(10)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.EQBS
+from SAP_REPO.dbo.EQBS with(nolock)

@@ -181,4 +181,4 @@ select
 	 [PSOO3] = concat(char(34), replace(cast([KNA1].[PSOO3] as nvarchar(50)), char(34), char(0)), char(34)),
 	 [PSOO4] = concat(char(34), replace(cast([KNA1].[PSOO4] as nvarchar(50)), char(34), char(0)), char(34)),
 	 [PSOO5] = concat(char(34), replace(cast([KNA1].[PSOO5] as nvarchar(50)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KNA1
+from SAP_REPO.dbo.KNA1 with(nolock)

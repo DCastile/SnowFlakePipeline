@@ -164,4 +164,4 @@ select
 	 [BMEINS] = concat(char(34), replace(cast([AFKO].[BMEINS] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [BMENGE] = cast([AFKO].[BMENGE] as varchar(36)),
 	 [MILL_OC_ZUSKZ] = concat(char(34), replace(cast([AFKO].[MILL_OC_ZUSKZ] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.AFKO
+from SAP_REPO.dbo.AFKO with(nolock)

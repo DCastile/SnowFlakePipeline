@@ -155,4 +155,4 @@ select
 	 [DISUB_POSNR] = concat(char(34), replace(cast([EBAN].[DISUB_POSNR] as nvarchar(6)), char(34), char(0)), char(34)),
 	 [DISUB_OWNER] = concat(char(34), replace(cast([EBAN].[DISUB_OWNER] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [IUID_RELEVANT] = concat(char(34), replace(cast([EBAN].[IUID_RELEVANT] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.EBAN
+from SAP_REPO.dbo.EBAN with(nolock)

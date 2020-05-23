@@ -29,4 +29,4 @@ select
 	 [OBJECT_TYPE] = concat(char(34), replace(cast([PTRV_SCOS].[OBJECT_TYPE] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [BUDGET_PERIOD] = concat(char(34), replace(cast([PTRV_SCOS].[BUDGET_PERIOD] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [CATEGORY] = concat(char(34), replace(cast([PTRV_SCOS].[CATEGORY] as nvarchar(5)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.PTRV_SCOS
+from SAP_REPO.dbo.PTRV_SCOS with(nolock)

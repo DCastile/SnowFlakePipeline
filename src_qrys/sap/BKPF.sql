@@ -110,4 +110,4 @@ select
 	 [OFFSET_REFER_DAT] = concat(char(34), replace(cast([BKPF].[OFFSET_REFER_DAT] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [PENRC] = concat(char(34), replace(cast([BKPF].[PENRC] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [KNUMV] = concat(char(34), replace(cast([BKPF].[KNUMV] as nvarchar(10)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.BKPF
+from SAP_REPO.dbo.BKPF with(nolock)

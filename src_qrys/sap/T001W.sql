@@ -61,4 +61,4 @@ select
 	 [OIHCREDIPI] = concat(char(34), replace(cast([T001W].[OIHCREDIPI] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [STORETYPE] = concat(char(34), replace(cast([T001W].[STORETYPE] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [DEP_STORE] = concat(char(34), replace(cast([T001W].[DEP_STORE] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.T001W
+from SAP_REPO.dbo.T001W with(nolock)

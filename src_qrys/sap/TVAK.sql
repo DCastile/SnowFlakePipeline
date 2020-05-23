@@ -167,4 +167,4 @@ select
 	 [OISUBITEM] = concat(char(34), replace(cast([TVAK].[OISUBITEM] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [OIUSEREXIT] = concat(char(34), replace(cast([TVAK].[OIUSEREXIT] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [OIU_FKARA] = concat(char(34), replace(cast([TVAK].[OIU_FKARA] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.TVAK
+from SAP_REPO.dbo.TVAK with(nolock)

@@ -79,4 +79,4 @@ select
 	 [PBUDGET_PD] = concat(char(34), replace(cast([COEP].[PBUDGET_PD] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [PRODPER] = concat(char(34), replace(cast([COEP].[PRODPER] as nvarchar(6)), char(34), char(0)), char(34)),
 	 [ZZ_BILLABLE] = concat(char(34), replace(cast([COEP].[ZZ_BILLABLE] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.COEP
+from SAP_REPO.dbo.COEP with(nolock)

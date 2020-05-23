@@ -46,4 +46,4 @@ select
 	 [DAT11] = concat(char(34), replace(cast([PA0041].[DAT11] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [DAR12] = concat(char(34), replace(cast([PA0041].[DAR12] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [DAT12] = concat(char(34), replace(cast([PA0041].[DAT12] as nvarchar(8)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.PA0041
+from SAP_REPO.dbo.PA0041 with(nolock)

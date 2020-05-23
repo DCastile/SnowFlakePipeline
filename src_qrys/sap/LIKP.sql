@@ -177,4 +177,4 @@ select
 	 [/BEV1/RPSONST] = cast([LIKP].[/BEV1/RPSONST] as varchar(36)),
 	 [/BEV1/RPFLGNR] = concat(char(34), replace(cast([LIKP].[/BEV1/RPFLGNR] as nvarchar(5)), char(34), char(0)), char(34)),
 	 [BORGR_GRP] = concat(char(34), replace(cast([LIKP].[BORGR_GRP] as nvarchar(35)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.LIKP
+from SAP_REPO.dbo.LIKP with(nolock)

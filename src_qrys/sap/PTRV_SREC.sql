@@ -31,4 +31,4 @@ select
 	 [VAT_STATUS] = concat(char(34), replace(cast([PTRV_SREC].[VAT_STATUS] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [VAT_CHANGED_MAN] = concat(char(34), replace(cast([PTRV_SREC].[VAT_CHANGED_MAN] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [DIFF_VIOLATION] = concat(char(34), replace(cast([PTRV_SREC].[DIFF_VIOLATION] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.PTRV_SREC
+from SAP_REPO.dbo.PTRV_SREC with(nolock)

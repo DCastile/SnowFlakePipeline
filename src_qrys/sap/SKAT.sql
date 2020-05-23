@@ -6,4 +6,4 @@ select
 	 [TXT20] = concat(char(34), replace(cast([SKAT].[TXT20] as nvarchar(20)), char(34), char(0)), char(34)),
 	 [TXT50] = concat(char(34), replace(cast([SKAT].[TXT50] as nvarchar(50)), char(34), char(0)), char(34)),
 	 [MCOD1] = concat(char(34), replace(cast([SKAT].[MCOD1] as nvarchar(25)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.SKAT
+from SAP_REPO.dbo.SKAT with(nolock)

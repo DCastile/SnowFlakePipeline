@@ -138,4 +138,4 @@ select
 	 [VVFDR] = cast([CE110US].[VVFDR] as varchar(36)),
 	 [VVICC] = cast([CE110US].[VVICC] as varchar(36)),
 	 [VVICR] = cast([CE110US].[VVICR] as varchar(36))
-from SAP_REPO.dbo.CE110US
+from SAP_REPO.dbo.CE110US with(nolock)

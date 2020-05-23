@@ -58,4 +58,4 @@ select
 	 [OFKDAT] = concat(char(34), replace(cast([FPLT].[OFKDAT] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [PEROP_BEG] = concat(char(34), replace(cast([FPLT].[PEROP_BEG] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [PEROP_END] = concat(char(34), replace(cast([FPLT].[PEROP_END] as nvarchar(8)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.FPLT
+from SAP_REPO.dbo.FPLT with(nolock)

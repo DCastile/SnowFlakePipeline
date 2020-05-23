@@ -22,4 +22,4 @@ select
 	 [PD_POCKET_MON] = cast([PTRV_SHDR].[PD_POCKET_MON] as varchar(36)),
 	 [PD_PUB_TRANS] = cast([PTRV_SHDR].[PD_PUB_TRANS] as varchar(36)),
 	 [PD_LOC_TRANS] = cast([PTRV_SHDR].[PD_LOC_TRANS] as varchar(36))
-from SAP_REPO.dbo.PTRV_SHDR
+from SAP_REPO.dbo.PTRV_SHDR with(nolock)

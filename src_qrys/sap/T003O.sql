@@ -25,4 +25,4 @@ select
 	 [VRG_STSMA] = concat(char(34), replace(cast([T003O].[VRG_STSMA] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [FUNC_AREA] = concat(char(34), replace(cast([T003O].[FUNC_AREA] as nvarchar(16)), char(34), char(0)), char(34)),
 	 [EXEC_PROFILE] = concat(char(34), replace(cast([T003O].[EXEC_PROFILE] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.T003O
+from SAP_REPO.dbo.T003O with(nolock)

@@ -76,4 +76,4 @@ select
 	 [CARRIER_NOTIF] = concat(char(34), replace(cast([KNVV].[CARRIER_NOTIF] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [/BEV1/EMLGPFAND] = concat(char(34), replace(cast([KNVV].[/BEV1/EMLGPFAND] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [/BEV1/EMLGFORTS] = concat(char(34), replace(cast([KNVV].[/BEV1/EMLGFORTS] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KNVV
+from SAP_REPO.dbo.KNVV with(nolock)

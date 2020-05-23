@@ -275,4 +275,4 @@ select
 	 [PUT_BACK] = concat(char(34), replace(cast([EKPO].[PUT_BACK] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [POL_ID] = concat(char(34), replace(cast([EKPO].[POL_ID] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [CONS_ORDER] = concat(char(34), replace(cast([EKPO].[CONS_ORDER] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.EKPO
+from SAP_REPO.dbo.EKPO with(nolock)

@@ -6,4 +6,4 @@ select
 	 [DATBI] = concat(char(34), replace(cast([KOTD001].[DATBI] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [DATAB] = concat(char(34), replace(cast([KOTD001].[DATAB] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [KNUMH] = concat(char(34), replace(cast([KOTD001].[KNUMH] as nvarchar(10)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KOTD001
+from SAP_REPO.dbo.KOTD001 with(nolock)

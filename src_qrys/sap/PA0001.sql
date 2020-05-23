@@ -51,4 +51,4 @@ select
 	 [GRANT_NBR] = concat(char(34), replace(cast([PA0001].[GRANT_NBR] as nvarchar(20)), char(34), char(0)), char(34)),
 	 [SGMNT] = concat(char(34), replace(cast([PA0001].[SGMNT] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [BUDGET_PD] = concat(char(34), replace(cast([PA0001].[BUDGET_PD] as nvarchar(10)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.PA0001
+from SAP_REPO.dbo.PA0001 with(nolock)

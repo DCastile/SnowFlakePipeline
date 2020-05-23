@@ -32,4 +32,4 @@ select
 	 [FLS_RSTO] = concat(char(34), replace(cast([MKPF].[FLS_RSTO] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [MSR_ACTIVE] = concat(char(34), replace(cast([MKPF].[MSR_ACTIVE] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [KNUMV] = concat(char(34), replace(cast([MKPF].[KNUMV] as nvarchar(10)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.MKPF
+from SAP_REPO.dbo.MKPF with(nolock)

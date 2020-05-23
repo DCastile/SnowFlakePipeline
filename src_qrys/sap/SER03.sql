@@ -17,4 +17,4 @@ select
 	 [WERK] = concat(char(34), replace(cast([SER03].[WERK] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [LAGERORT] = concat(char(34), replace(cast([SER03].[LAGERORT] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [CHARGE] = concat(char(34), replace(cast([SER03].[CHARGE] as nvarchar(10)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.SER03
+from SAP_REPO.dbo.SER03 with(nolock)

@@ -44,4 +44,4 @@ select
 	 [USNAM] = concat(char(34), replace(cast([ZSMSCONTA].[USNAM] as nvarchar(12)), char(34), char(0)), char(34)),
 	 [AWTYP] = concat(char(34), replace(cast([ZSMSCONTA].[AWTYP] as nvarchar(5)), char(34), char(0)), char(34)),
 	 [AWORG] = concat(char(34), replace(cast([ZSMSCONTA].[AWORG] as nvarchar(10)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.ZSMSCONTA
+from SAP_REPO.dbo.ZSMSCONTA with(nolock)

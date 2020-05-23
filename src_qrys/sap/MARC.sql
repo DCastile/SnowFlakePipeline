@@ -219,4 +219,4 @@ select
 	 [MIN_TROC] = concat(char(34), replace(cast([MARC].[MIN_TROC] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [MAX_TROC] = concat(char(34), replace(cast([MARC].[MAX_TROC] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [TARGET_STOCK] = cast([MARC].[TARGET_STOCK] as varchar(36))
-from SAP_REPO.dbo.MARC
+from SAP_REPO.dbo.MARC with(nolock)

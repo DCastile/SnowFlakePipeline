@@ -5,4 +5,4 @@ select
 	 [ZZONE] = concat(char(34), replace(cast([ZTT_ZONE].[ZZONE] as nvarchar(20)), char(34), char(0)), char(34)),
 	 [SLOC1] = concat(char(34), replace(cast([ZTT_ZONE].[SLOC1] as nvarchar(40)), char(34), char(0)), char(34)),
 	 [SLOC2] = concat(char(34), replace(cast([ZTT_ZONE].[SLOC2] as nvarchar(40)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.ZTT_ZONE
+from SAP_REPO.dbo.ZTT_ZONE with(nolock)

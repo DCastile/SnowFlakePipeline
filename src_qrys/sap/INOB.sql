@@ -15,4 +15,4 @@ select
 	 [MATNR] = concat(char(34), replace(cast([INOB].[MATNR] as nvarchar(18)), char(34), char(0)), char(34)),
 	 [DATUV] = concat(char(34), replace(cast([INOB].[DATUV] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [TECHS] = concat(char(34), replace(cast([INOB].[TECHS] as nvarchar(12)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.INOB
+from SAP_REPO.dbo.INOB with(nolock)

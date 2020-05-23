@@ -282,4 +282,4 @@ select
 	 [KBNKZ] = concat(char(34), replace(cast([LIPS].[KBNKZ] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [SITKZ] = concat(char(34), replace(cast([LIPS].[SITKZ] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [CONS_ORDER] = concat(char(34), replace(cast([LIPS].[CONS_ORDER] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.LIPS
+from SAP_REPO.dbo.LIPS with(nolock)

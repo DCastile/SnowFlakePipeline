@@ -26,4 +26,4 @@ select
 	 [WIMID] = concat(char(34), replace(cast([VEDA].[WIMID] as nvarchar(12)), char(34), char(0)), char(34)),
 	 [VASDR] = concat(char(34), replace(cast([VEDA].[VASDR] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [VENDREG] = concat(char(34), replace(cast([VEDA].[VENDREG] as nvarchar(2)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.VEDA
+from SAP_REPO.dbo.VEDA with(nolock)

@@ -117,4 +117,4 @@ select
 	 [/ITS/VORNR] = concat(char(34), replace(cast([CATSDB].[/ITS/VORNR] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [/ITS/HOME_CCTR] = concat(char(34), replace(cast([CATSDB].[/ITS/HOME_CCTR] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [ZZ_BILLABLE] = concat(char(34), replace(cast([CATSDB].[ZZ_BILLABLE] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.CATSDB
+from SAP_REPO.dbo.CATSDB with(nolock)

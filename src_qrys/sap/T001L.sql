@@ -21,4 +21,4 @@ select
 	 [OIH_LICNO] = concat(char(34), replace(cast([T001L].[OIH_LICNO] as nvarchar(15)), char(34), char(0)), char(34)),
 	 [OIG_ITRFL] = concat(char(34), replace(cast([T001L].[OIG_ITRFL] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [OIB_TNKASSIGN] = concat(char(34), replace(cast([T001L].[OIB_TNKASSIGN] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.T001L
+from SAP_REPO.dbo.T001L with(nolock)

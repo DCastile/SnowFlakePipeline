@@ -17,4 +17,4 @@ select
 	 [SCHWA] = concat(char(34), replace(cast([T528B].[SCHWA] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [MAINT] = concat(char(34), replace(cast([T528B].[MAINT] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [ORGEH] = concat(char(34), replace(cast([T528B].[ORGEH] as nvarchar(8)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.T528B
+from SAP_REPO.dbo.T528B with(nolock)

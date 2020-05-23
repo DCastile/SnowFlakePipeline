@@ -6,4 +6,4 @@ select
 	 [SUGRD] = concat(char(34), replace(cast([KONDD].[SUGRD] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [PSDSP] = concat(char(34), replace(cast([KONDD].[PSDSP] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [LSTACS] = concat(char(34), replace(cast([KONDD].[LSTACS] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KONDD
+from SAP_REPO.dbo.KONDD with(nolock)

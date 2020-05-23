@@ -109,4 +109,4 @@ select
 	 [MNDVG] = concat(char(34), replace(cast([VBRK].[MNDVG] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [SPPAYM] = concat(char(34), replace(cast([VBRK].[SPPAYM] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [SPPORD] = concat(char(34), replace(cast([VBRK].[SPPORD] as nvarchar(10)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.VBRK
+from SAP_REPO.dbo.VBRK with(nolock)

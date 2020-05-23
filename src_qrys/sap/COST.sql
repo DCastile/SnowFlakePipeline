@@ -104,4 +104,4 @@ select
 	 [TOE014] = concat(char(34), replace(cast([COST].[TOE014] as nvarchar(5)), char(34), char(0)), char(34)),
 	 [TOE015] = concat(char(34), replace(cast([COST].[TOE015] as nvarchar(5)), char(34), char(0)), char(34)),
 	 [TOE016] = concat(char(34), replace(cast([COST].[TOE016] as nvarchar(5)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.COST
+from SAP_REPO.dbo.COST with(nolock)

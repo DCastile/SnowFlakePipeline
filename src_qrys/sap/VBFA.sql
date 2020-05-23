@@ -42,4 +42,4 @@ select
 	 [MJAHR] = concat(char(34), replace(cast([VBFA].[MJAHR] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [VBTYPEXT_V] = concat(char(34), replace(cast([VBFA].[VBTYPEXT_V] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [VBTYPEXT_N] = concat(char(34), replace(cast([VBFA].[VBTYPEXT_N] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.VBFA
+from SAP_REPO.dbo.VBFA with(nolock)

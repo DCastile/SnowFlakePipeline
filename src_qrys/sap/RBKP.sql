@@ -142,4 +142,4 @@ select
 	 [KURSX] = cast([RBKP].[KURSX] as varchar(36)),
 	 [WWERT] = concat(char(34), replace(cast([RBKP].[WWERT] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [XREF3] = concat(char(34), replace(cast([RBKP].[XREF3] as nvarchar(20)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.RBKP
+from SAP_REPO.dbo.RBKP with(nolock)

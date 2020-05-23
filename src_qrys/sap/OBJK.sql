@@ -15,4 +15,4 @@ select
 	 [EQSNR] = concat(char(34), replace(cast([OBJK].[EQSNR] as nvarchar(18)), char(34), char(0)), char(34)),
 	 [TASER] = concat(char(34), replace(cast([OBJK].[TASER] as nvarchar(5)), char(34), char(0)), char(34)),
 	 [UII] = concat(char(34), replace(cast([OBJK].[UII] as nvarchar(72)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.OBJK
+from SAP_REPO.dbo.OBJK with(nolock)

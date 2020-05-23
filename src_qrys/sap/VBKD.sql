@@ -93,4 +93,4 @@ select
 	 [PAY_TYPE] = concat(char(34), replace(cast([VBKD].[PAY_TYPE] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [SEPON] = concat(char(34), replace(cast([VBKD].[SEPON] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [MNDVG] = concat(char(34), replace(cast([VBKD].[MNDVG] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.VBKD
+from SAP_REPO.dbo.VBKD with(nolock)

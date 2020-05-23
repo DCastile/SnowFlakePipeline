@@ -193,4 +193,4 @@ select
 	 [OINAVNW] = cast([MSEG].[OINAVNW] as varchar(36)),
 	 [OICONDCOD] = concat(char(34), replace(cast([MSEG].[OICONDCOD] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [CONDI] = concat(char(34), replace(cast([MSEG].[CONDI] as nvarchar(2)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.MSEG
+from SAP_REPO.dbo.MSEG with(nolock)

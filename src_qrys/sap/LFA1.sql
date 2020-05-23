@@ -136,4 +136,4 @@ select
 	 [STAGING_TIME] = cast([LFA1].[STAGING_TIME] as varchar(36)),
 	 [SCHEDULING_TYPE] = concat(char(34), replace(cast([LFA1].[SCHEDULING_TYPE] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [SUBMI_RELEVANT] = concat(char(34), replace(cast([LFA1].[SUBMI_RELEVANT] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.LFA1
+from SAP_REPO.dbo.LFA1 with(nolock)

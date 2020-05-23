@@ -54,4 +54,4 @@ select
 	 [KATALOG] = concat(char(34), replace(cast([KLAH].[KATALOG] as nvarchar(30)), char(34), char(0)), char(34)),
 	 [KDOKAZ] = concat(char(34), replace(cast([KLAH].[KDOKAZ] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [GENRKZ] = concat(char(34), replace(cast([KLAH].[GENRKZ] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KLAH
+from SAP_REPO.dbo.KLAH with(nolock)

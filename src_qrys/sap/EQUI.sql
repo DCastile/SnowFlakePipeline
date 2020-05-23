@@ -78,4 +78,4 @@ select
 	 [EQUI_SNTYPE] = concat(char(34), replace(cast([EQUI].[EQUI_SNTYPE] as nvarchar(2)), char(34), char(0)), char(34)),
 	 [EQLB_DUTY] = concat(char(34), replace(cast([EQUI].[EQLB_DUTY] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [EQLB_HIDE] = concat(char(34), replace(cast([EQUI].[EQLB_HIDE] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.EQUI
+from SAP_REPO.dbo.EQUI with(nolock)

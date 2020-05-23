@@ -76,4 +76,4 @@ select
 	 [AD_HASH] = concat(char(34), replace(cast([KNB1].[AD_HASH] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [QLAND] = concat(char(34), replace(cast([KNB1].[QLAND] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [GMVKZD] = concat(char(34), replace(cast([KNB1].[GMVKZD] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KNB1
+from SAP_REPO.dbo.KNB1 with(nolock)

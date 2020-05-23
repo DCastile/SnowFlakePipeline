@@ -67,4 +67,4 @@ select
 	 [NOTAXCORR] = concat(char(34), replace(cast([EKKN].[NOTAXCORR] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [DIFFOPTRATE] = cast([EKKN].[DIFFOPTRATE] as varchar(36)),
 	 [HASDIFFOPTRATE] = concat(char(34), replace(cast([EKKN].[HASDIFFOPTRATE] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.EKKN
+from SAP_REPO.dbo.EKKN with(nolock)

@@ -33,4 +33,4 @@ select
 	 [CUOBJ_BM] = concat(char(34), replace(cast([MCH1].[CUOBJ_BM] as nvarchar(18)), char(34), char(0)), char(34)),
 	 [DEACT_BM] = concat(char(34), replace(cast([MCH1].[DEACT_BM] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [BATCH_TYPE] = concat(char(34), replace(cast([MCH1].[BATCH_TYPE] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.MCH1
+from SAP_REPO.dbo.MCH1 with(nolock)

@@ -12,4 +12,4 @@ select
 	 [PARNR] = concat(char(34), replace(cast([KNVP].[PARNR] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [KNREF] = concat(char(34), replace(cast([KNVP].[KNREF] as nvarchar(30)), char(34), char(0)), char(34)),
 	 [DEFPA] = concat(char(34), replace(cast([KNVP].[DEFPA] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KNVP
+from SAP_REPO.dbo.KNVP with(nolock)

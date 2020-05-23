@@ -6,4 +6,4 @@ select
 	 [BEGDA] = concat(char(34), replace(cast([T527X].[BEGDA] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [ORGTX] = concat(char(34), replace(cast([T527X].[ORGTX] as nvarchar(25)), char(34), char(0)), char(34)),
 	 [MAINT] = concat(char(34), replace(cast([T527X].[MAINT] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.T527X
+from SAP_REPO.dbo.T527X with(nolock)

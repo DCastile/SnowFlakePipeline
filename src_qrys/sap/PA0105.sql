@@ -25,4 +25,4 @@ select
 	 [USRTY] = concat(char(34), replace(cast([PA0105].[USRTY] as nvarchar(4)), char(34), char(0)), char(34)),
 	 [USRID] = concat(char(34), replace(cast([PA0105].[USRID] as nvarchar(30)), char(34), char(0)), char(34)),
 	 [USRID_LONG] = concat(char(34), replace(cast([PA0105].[USRID_LONG] as nvarchar(241)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.PA0105
+from SAP_REPO.dbo.PA0105 with(nolock)

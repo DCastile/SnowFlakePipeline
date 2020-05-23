@@ -12,4 +12,4 @@ select
 	 [DEFPA] = concat(char(34), replace(cast([WYT3].[DEFPA] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [PERNR] = concat(char(34), replace(cast([WYT3].[PERNR] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [PARNR] = concat(char(34), replace(cast([WYT3].[PARNR] as nvarchar(10)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.WYT3
+from SAP_REPO.dbo.WYT3 with(nolock)

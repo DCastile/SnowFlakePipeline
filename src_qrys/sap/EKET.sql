@@ -69,4 +69,4 @@ select
 	 [DNG_TIME] = concat(char(34), replace(cast([EKET].[DNG_TIME] as nvarchar(6)), char(34), char(0)), char(34)),
 	 [CNCL_ANCMNT_DONE] = concat(char(34), replace(cast([EKET].[CNCL_ANCMNT_DONE] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [DATESHIFT_NUMBER] = cast([EKET].[DATESHIFT_NUMBER] as varchar(36))
-from SAP_REPO.dbo.EKET
+from SAP_REPO.dbo.EKET with(nolock)

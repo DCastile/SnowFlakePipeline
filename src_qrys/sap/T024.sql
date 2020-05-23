@@ -8,4 +8,4 @@ select
 	 [TEL_NUMBER] = concat(char(34), replace(cast([T024].[TEL_NUMBER] as nvarchar(30)), char(34), char(0)), char(34)),
 	 [TEL_EXTENS] = concat(char(34), replace(cast([T024].[TEL_EXTENS] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [SMTP_ADDR] = concat(char(34), replace(cast([T024].[SMTP_ADDR] as nvarchar(241)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.T024
+from SAP_REPO.dbo.T024 with(nolock)

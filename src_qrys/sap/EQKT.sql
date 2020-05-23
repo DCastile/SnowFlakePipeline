@@ -6,4 +6,4 @@ select
 	 [KZLTX] = concat(char(34), replace(cast([EQKT].[KZLTX] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [TXASP] = concat(char(34), replace(cast([EQKT].[TXASP] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [EQKTU] = concat(char(34), replace(cast([EQKT].[EQKTU] as nvarchar(40)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.EQKT
+from SAP_REPO.dbo.EQKT with(nolock)

@@ -34,4 +34,4 @@ select
 	 [BASISWRT] = cast([FPLA].[BASISWRT] as varchar(36)),
 	 [PSPNR] = concat(char(34), replace(cast([FPLA].[PSPNR] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [AUTKOR] = concat(char(34), replace(cast([FPLA].[AUTKOR] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.FPLA
+from SAP_REPO.dbo.FPLA with(nolock)

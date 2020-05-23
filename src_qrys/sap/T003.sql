@@ -37,4 +37,4 @@ select
 	 [XPOSACC] = concat(char(34), replace(cast([T003].[XPOSACC] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [XUACPA] = concat(char(34), replace(cast([T003].[XUACPA] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [XMREF2] = concat(char(34), replace(cast([T003].[XMREF2] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.T003
+from SAP_REPO.dbo.T003 with(nolock)

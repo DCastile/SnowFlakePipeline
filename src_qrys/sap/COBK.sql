@@ -41,4 +41,4 @@ select
 	 [AWREF_REV] = concat(char(34), replace(cast([COBK].[AWREF_REV] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [AWORG_REV] = concat(char(34), replace(cast([COBK].[AWORG_REV] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [VALDT] = concat(char(34), replace(cast([COBK].[VALDT] as nvarchar(8)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.COBK
+from SAP_REPO.dbo.COBK with(nolock)

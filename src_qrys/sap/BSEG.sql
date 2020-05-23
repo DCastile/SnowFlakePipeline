@@ -330,4 +330,4 @@ select
 	 [FMXDOCLN] = concat(char(34), replace(cast([BSEG].[FMXDOCLN] as nvarchar(6)), char(34), char(0)), char(34)),
 	 [FMXZEKKN] = concat(char(34), replace(cast([BSEG].[FMXZEKKN] as nvarchar(5)), char(34), char(0)), char(34)),
 	 [PRODPER] = concat(char(34), replace(cast([BSEG].[PRODPER] as nvarchar(8)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.BSEG
+from SAP_REPO.dbo.BSEG with(nolock)

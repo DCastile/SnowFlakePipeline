@@ -111,4 +111,4 @@ select
 	 [CLAIM_CONTROL] = concat(char(34), replace(cast([AUFK].[CLAIM_CONTROL] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [UPDATE_NEEDED] = concat(char(34), replace(cast([AUFK].[UPDATE_NEEDED] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [UPDATE_CONTROL] = concat(char(34), replace(cast([AUFK].[UPDATE_CONTROL] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.AUFK
+from SAP_REPO.dbo.AUFK with(nolock)

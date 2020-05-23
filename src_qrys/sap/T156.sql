@@ -41,4 +41,4 @@ select
 	 [MILL_CPCONF] = concat(char(34), replace(cast([T156].[MILL_CPCONF] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [CO_WIPB_CPCONF] = concat(char(34), replace(cast([T156].[CO_WIPB_CPCONF] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [XWIPB] = concat(char(34), replace(cast([T156].[XWIPB] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.T156
+from SAP_REPO.dbo.T156 with(nolock)

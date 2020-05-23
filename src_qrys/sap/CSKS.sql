@@ -72,4 +72,4 @@ select
 	 [JV_JIBCL] = concat(char(34), replace(cast([CSKS].[JV_JIBCL] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [JV_JIBSA] = concat(char(34), replace(cast([CSKS].[JV_JIBSA] as nvarchar(5)), char(34), char(0)), char(34)),
 	 [FERC_IND] = concat(char(34), replace(cast([CSKS].[FERC_IND] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.CSKS
+from SAP_REPO.dbo.CSKS with(nolock)

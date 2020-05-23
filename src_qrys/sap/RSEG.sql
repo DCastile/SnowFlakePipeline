@@ -92,4 +92,4 @@ select
 	 [XCPRF] = concat(char(34), replace(cast([RSEG].[XCPRF] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [LICNO] = concat(char(34), replace(cast([RSEG].[LICNO] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [ZEILE] = concat(char(34), replace(cast([RSEG].[ZEILE] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.RSEG
+from SAP_REPO.dbo.RSEG with(nolock)

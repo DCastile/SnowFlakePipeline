@@ -124,4 +124,4 @@ select
 	 [CON_OTB_REQ] = concat(char(34), replace(cast([EKKO].[CON_OTB_REQ] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [CON_PREBOOK_LEV] = concat(char(34), replace(cast([EKKO].[CON_PREBOOK_LEV] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [CON_DISTR_LEV] = concat(char(34), replace(cast([EKKO].[CON_DISTR_LEV] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.EKKO
+from SAP_REPO.dbo.EKKO with(nolock)

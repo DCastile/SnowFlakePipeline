@@ -15,4 +15,4 @@ select
 	 [KZLOESCH] = concat(char(34), replace(cast([IHPA].[KZLOESCH] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [ADRNR] = concat(char(34), replace(cast([IHPA].[ADRNR] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [TZONSP] = concat(char(34), replace(cast([IHPA].[TZONSP] as nvarchar(6)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.IHPA
+from SAP_REPO.dbo.IHPA with(nolock)

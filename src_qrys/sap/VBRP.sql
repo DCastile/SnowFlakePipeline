@@ -208,4 +208,4 @@ select
 	 [AUFPL_OAA] = concat(char(34), replace(cast([VBRP].[AUFPL_OAA] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [APLZL_OAA] = concat(char(34), replace(cast([VBRP].[APLZL_OAA] as nvarchar(8)), char(34), char(0)), char(34)),
 	 [COMPREAS] = concat(char(34), replace(cast([VBRP].[COMPREAS] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.VBRP
+from SAP_REPO.dbo.VBRP with(nolock)

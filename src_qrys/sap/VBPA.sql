@@ -23,4 +23,4 @@ select
 	 [PARVW_FF] = concat(char(34), replace(cast([VBPA].[PARVW_FF] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [ADRNP] = concat(char(34), replace(cast([VBPA].[ADRNP] as nvarchar(10)), char(34), char(0)), char(34)),
 	 [KALE] = concat(char(34), replace(cast([VBPA].[KALE] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.VBPA
+from SAP_REPO.dbo.VBPA with(nolock)

@@ -78,4 +78,4 @@ select
 	 [PST_PER_VAR] = concat(char(34), replace(cast([T001].[PST_PER_VAR] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [XBBSC] = concat(char(34), replace(cast([T001].[XBBSC] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [FM_DERIVE_ACC] = concat(char(34), replace(cast([T001].[FM_DERIVE_ACC] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.T001
+from SAP_REPO.dbo.T001 with(nolock)

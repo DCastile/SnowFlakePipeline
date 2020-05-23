@@ -70,4 +70,4 @@ select
 	 [GMVKZK] = concat(char(34), replace(cast([LFB1].[GMVKZK] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [PREPAY_RELEVANT] = concat(char(34), replace(cast([LFB1].[PREPAY_RELEVANT] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [ASSIGN_TEST] = concat(char(34), replace(cast([LFB1].[ASSIGN_TEST] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.LFB1
+from SAP_REPO.dbo.LFB1 with(nolock)

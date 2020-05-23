@@ -6,4 +6,4 @@ select
 	 [MEINS] = concat(char(34), replace(cast([KONDDP].[MEINS] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [PSDSP] = concat(char(34), replace(cast([KONDDP].[PSDSP] as nvarchar(1)), char(34), char(0)), char(34)),
 	 [LSTACS] = concat(char(34), replace(cast([KONDDP].[LSTACS] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.KONDDP
+from SAP_REPO.dbo.KONDDP with(nolock)

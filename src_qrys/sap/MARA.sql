@@ -216,4 +216,4 @@ select
 	 [FIBER_CODE5] = concat(char(34), replace(cast([MARA].[FIBER_CODE5] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [FIBER_PART5] = concat(char(34), replace(cast([MARA].[FIBER_PART5] as nvarchar(3)), char(34), char(0)), char(34)),
 	 [FASHGRD] = concat(char(34), replace(cast([MARA].[FASHGRD] as nvarchar(4)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.MARA
+from SAP_REPO.dbo.MARA with(nolock)

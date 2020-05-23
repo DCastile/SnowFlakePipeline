@@ -97,4 +97,4 @@ select
 	 [MC_COUNTY] = concat(char(34), replace(cast([ADRC].[MC_COUNTY] as nvarchar(25)), char(34), char(0)), char(34)),
 	 [MC_TOWNSHIP] = concat(char(34), replace(cast([ADRC].[MC_TOWNSHIP] as nvarchar(25)), char(34), char(0)), char(34)),
 	 [XPCPT] = concat(char(34), replace(cast([ADRC].[XPCPT] as nvarchar(1)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.ADRC
+from SAP_REPO.dbo.ADRC with(nolock)

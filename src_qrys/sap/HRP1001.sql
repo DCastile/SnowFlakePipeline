@@ -23,4 +23,4 @@ select
 	 [SOBID] = concat(char(34), replace(cast([HRP1001].[SOBID] as nvarchar(45)), char(34), char(0)), char(34)),
 	 [PROZT] = cast([HRP1001].[PROZT] as varchar(36)),
 	 [ADATANR] = concat(char(34), replace(cast([HRP1001].[ADATANR] as nvarchar(32)), char(34), char(0)), char(34))
-from SAP_REPO.dbo.HRP1001
+from SAP_REPO.dbo.HRP1001 with(nolock)
