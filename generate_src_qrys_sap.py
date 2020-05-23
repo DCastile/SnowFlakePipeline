@@ -115,8 +115,8 @@ for table, src_qry in zip(table_names, src_qrys):
 sf_conn = connect(**snowflake_connection_properties)
 for table, create_table in zip(table_names, snowflake_creates):
     try:
-        # sf_conn.execute_string(create_table)
-        print(create_table)
+        sf_conn.execute_string(create_table)
+        # print(create_table)
     except Exception as e:
         print('Error creating', table, 'in snowflake')
         print(e)

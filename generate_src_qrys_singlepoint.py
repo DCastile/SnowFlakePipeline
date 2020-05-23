@@ -96,7 +96,8 @@ for db in dbs:
 
     for table in tables:
         fq_table_name = '{db}.dbo.{table}'.format(db=db, table=table)
-        if fq_table_name in tables_to_create:
+        # if fq_table_name in tables_to_create:
+        if True:
             tmp = connection_manager.execute_query(get_src_qry, [table], server, db, user=user, password=password)
             src_qry = 'select'
             snowflake_create = 'create or replace table repo.{source}."{db}.{schema}.{table}" (\n'.format(source=source,db=db,schema='dbo', table=table)
