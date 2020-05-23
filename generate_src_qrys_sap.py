@@ -4,83 +4,67 @@ from config import snowflake_connection_properties
 import os
 
 server = '10.61.95.22'
-db = 'SAP_Production'
+db = 'SAP_REPO'
+import connection_manager
+from snowflake.connector import connect
+from config import snowflake_connection_properties, sql_server_login_map
+
+
+# server = 'c18n3588.c18n.c.vtscloud.io' #dev
+source = 'sap'
+
+user = sql_server_login_map[server][0]
+password = sql_server_login_map[server][1]
+
 
 get_src_qry = r'''
-    with table_columns as (
-        select
-            schema_name(tab.schema_id) schema_name,
-            tab.name                   table_name,
-            col.column_id              column_id,
-            col.name                   column_name,
-            CONCAT(
-                DATA_TYPE,
-                case
-                    when data_type like '%date%' or data_type like '%int%' then null
-                    else concat('(', COALESCE(CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, DATETIME_PRECISION, ''), IIF(NUMERIC_SCALE <> 0, CONCAT(', ', NUMERIC_SCALE), ''), ')')
-                end,
-                IIF(info_col.IS_NULLABLE = 'YES', ' null', ' not null')
-            ) data_type,
-            cast(IIF(ic.object_id is null, 0, 1) as bit) part_of_pk
-        from sys.tables tab
-         inner join sys.columns col
-                    on tab.object_id = col.object_id
-         inner join sys.indexes pk
-                    on tab.object_id = pk.object_id
-                        and pk.is_primary_key = 1
-        left join sys.index_columns ic
-                    on ic.object_id = pk.object_id
-                        and ic.index_id = pk.index_id
-                        and ic.column_id = col.column_id
-        left join INFORMATION_SCHEMA.COLUMNS info_col
-            on schema_name(tab.schema_id) = info_col.TABLE_SCHEMA
-               and tab.name = info_col.TABLE_NAME
-                and col.name = info_col.COLUMN_NAME
-        where schema_name(tab.schema_id) = 'dbo'
-    )
-    select 0 ordinal_position, 'deleted int,' SnowFlakeCreate, null SqlServerViewCreate
-    union
     select
-    -- 	TABLE_NAME,
-    --     ORDINAL_POSITION,
-    -- 	COLUMN_NAME,
-    -- 	DATA_TYPE,
-    -- 	SnowFlakeDataType,
+        TABLE_NAME,
         ORDINAL_POSITION,
+        COLUMN_NAME,
+        DATA_TYPE,
+        SnowFlakeDataType,
+        num_columns,
         '"' + COLUMN_NAME + '"' + ' ' + SnowFlakeDataType + IIF(num_columns = ordinal_position, '', ',') SnowFlakeCreate,
-        ' [' + COLUMN_NAME + '] = ' + 
-        case data_type
-            when 'datetime' then 'convert(varchar(50), [' + TABLE_NAME + '].' + '[' + column_name + '], 21)'
-            else 'quotename([' + TABLE_NAME + '].' + '[' + COLUMN_NAME + '], char(34))'
+        ' [' + COLUMN_NAME + '] = ' + '' +
+        case
+            when data_type in ('datetime', 'date', 'time', 'datetime2', 'smalldatetime') then 'convert(varchar(50), [' + TABLE_NAME + '].' + '[' + column_name + '], 21)'
+            when data_type in ('int', 'smallint', 'tinyint', 'money', 'numeric', 'decimal', 'float', 'bit') then 'cast([' + TABLE_NAME + '].' + '[' + column_name + '] as varchar(36))'
+            when data_type in ('uniqueidentifier') then 'cast([' + TABLE_NAME + '].' + '[' + column_name + '] as varchar(36))'
+            else 'concat(char(34), replace(cast([' + TABLE_NAME + '].[' + COLUMN_NAME + '] as nvarchar(' + character_maximum_length + ')), char(34), char(0)), char(34))'
         end +  IIF(num_columns = ordinal_position, '', ',') SqlServerViewCreate
     from (
         select
             col.TABLE_NAME,
-            IIF(part_of_pk = 1, 'change', col.table_name) fq_table_to_use,
             col.ORDINAL_POSITION,
             col.COLUMN_NAME,
             col.DATA_TYPE,
-            case col.DATA_TYPE
+            iif(col.character_maximum_length = -1, 'max', cast(col.character_maximum_length as varchar(10))) character_maximum_length,
+            case DATA_TYPE
                 when 'varchar' then 'string'
                 when 'nvarchar' then 'string'
                 when 'datetime' then 'datetime'
                 when 'datetime2' then 'datetime'
+                when 'smalldatetime' then 'datetime'
                 when 'decimal' then 'numeric(' + cast(NUMERIC_PRECISION as varchar) + ',' + cast(NUMERIC_SCALE as varchar) + ')'
                 when 'money' then 'numeric(' + cast(NUMERIC_PRECISION as varchar) + ',' + cast(NUMERIC_SCALE as varchar) + ')'
                 when 'numeric' then 'numeric(' + cast(NUMERIC_PRECISION as varchar) + ',' + cast(NUMERIC_SCALE as varchar) + ')'
                 when 'bit' then 'boolean'
                 when 'uniqueidentifier' then 'string'
-                else col.DATA_TYPE
+                else DATA_TYPE
             end SnowFlakeDataType,
-            max(col.ORDINAL_POSITION) over(partition by TABLE_CATALOG, col.TABLE_SCHEMA, col.TABLE_NAME) num_columns
-    
+            max(ORDINAL_POSITION) over(partition by col.TABLE_CATALOG, col.TABLE_SCHEMA, col.TABLE_NAME) num_columns
+
         from INFORMATION_SCHEMA.COLUMNS col
-        left join table_columns tc on col.TABLE_NAME = tc.table_name and col.COLUMN_NAME = tc.column_name
+        join INFORMATION_SCHEMA.tables tab on col.TABLE_SCHEMA = tab.TABLE_SCHEMA and col.TABLE_NAME = tab.TABLE_NAME
         where
-            TABLE_SCHEMA = 'dbo'
-            and col.TABLE_NAME  = ?
+            tab.TABLE_TYPE = 'BASE TABLE'
+            and col.DATA_TYPE not in ('binary', 'image', 'geography', 'varbinary', 'text')
+            and col.TABLE_SCHEMA = 'dbo'
+            and col.TABLE_NAME = ?
+--             and col.TABLE_NAME = 'tqoQuoteLine'
     ) a
-    order by ORDINAL_POSITION
+    order by table_name, ORDINAL_POSITION
 '''
 
 get_tables_qry = '''
@@ -89,34 +73,51 @@ get_tables_qry = '''
     where TABLE_TYPE = 'BASE TABLE' and TABLE_SCHEMA = 'DBO'
 '''
 
-# table_data = connection_manager.execute_query(get_tables_qry, None, server, db, user= 'datapipeline', password='datareader99$')
-# tables = [row['TABLE_NAME'] for row in table_data]
-tables = set(['AFIH', 'AFKO', 'AFPO', 'AUFK', 'AUFM', 'AUSP', 'BKPF', 'BSAD', 'BSAK', 'BSEG_LC', 'BSID', 'BSIK', 'CABN', 'CABNT', 'CATSDB', 'COAS', 'COBK', 'COEP_LC', 'COST', 'CSKS', 'CSKT', 'EBAN', 'EKBE', 'EKET', 'EKKN', 'EKKO', 'EKPO', 'EQBS', 'EQKT', 'EQUI', 'EQUZ', 'FPLA', 'FPLT', 'HRP1000', 'HRP1001', 'IHPA', 'KLAH', 'KNA1', 'KNB1', 'KNVP', 'KNVV', 'KONDD', 'KONDDP', 'KOTD001', 'KSML', 'LFA1', 'LFB1', 'LFM1', 'LIKP', 'LIPS', 'MAKT', 'MARA', 'MARC', 'MARD', 'MBEW_LC', 'MCH1', 'MCHB', 'MKPF', 'MSEG', 'MSKA', 'OBJK', 'PA0001', 'PA0041', 'PA0105', 'PMSDO', 'PTRV_SCOS', 'PTRV_SHDR', 'PTRV_SREC', 'PURGTX_T', 'RBKP', 'RSEG', 'SER01', 'SER02', 'SER03', 'SKAT', 'T001', 'T001L', 'T001W', 'T003', 'T003O', 'T003T', 'T024', 'T151', 'T151T', 'T156', 'T156T', 'T158W', 'T161T', 'T179T', 'T527X', 'T528B', 'T528T', 'TCURX', 'TVAK', 'TVAKT', 'TVAPT', 'TVLVT', 'VBAK', 'VBAP', 'VBFA', 'VBKD', 'VBPA', 'VBREVE', 'VBRK', 'VBRP_LC', 'VEDA', 'WYT3', 'ZSMSCONTA', 'ZTT_ZONE', 'T002T', 'ADRC', 'TBSLT'])
-# tables = set(['TBSLT'])
+
 src_qrys = []
 snowflake_creates = []
 
+tables_to_create = set(['MCHB', 'MKPF', 'MSEG', 'MSKA', 'OBJK', 'PA0001', 'PA0041', 'PA0105', 'PMSDO', 'INOB', 'PTRV_SCOS', 'KSSK', 'PTRV_SHDR', 'PTRV_SREC', 'PURGTX_T', 'ADRC', 'RBKP', 'AFIH', 'RSEG', 'AFKO', 'VBREVE', 'SER01', 'AFPO', 'SER02', 'AUFK', 'SER03', 'AUFM', 'SKAT', 'AUSP', 'ADR6', 'T001', 'BKPF', 'T001L', 'BSAD', 'T001W', 'BSAK', 'T003', 'BSEG', 'T003O', 'BSID', 'T003T', 'BSIK', 'T024', 'CABN', 'T151', 'CABNT', 'CE110US', 'T151T', 'CATSDB', 'T156', 'COBK', 'T156T', 'COEP', 'T158W', 'COST', 'T161T', 'CSKS', 'T179T', 'CSKT', 'T527X', 'EBAN', 'T528B', 'EKBE', 'T528T', 'EKET', 'TCURX', 'EKKN', 'TVAK', 'EKKO', 'TVAKT', 'EKPO', 'TVAPT', 'EQBS', 'TVLVT', 'EQKT', 'VBAK', 'EQUI', 'VBAP', 'FPLA', 'VBFA', 'FPLT', 'VBKD', 'HRP1000', 'VBPA', 'HRP1001', 'IHPA', 'VBRK', 'KLAH', 'VBRP', 'KNA1', 'VEDA', 'KNB1', 'WYT3', 'KNVP', 'ZSMSCONTA', 'KNVV', 'ZTT_ZONE', 'KONDD', 'KONDDP', 'KOTD001', 'KSML', 'LFA1', 'LFB1', 'LFM1', 'LIKP', 'LIPS', 'MAKT', 'MARA', 'MARC', 'MARD', 'MBEW', 'MCH1'])
+table_names = []
+
+table_data = connection_manager.execute_query(get_tables_qry, None, server, db, user=user, password=password)
+# tables = [row['TABLE_NAME'] for row in table_data if '{db}.dbo.{table}'.format(db=db, table=row['TABLE_NAME']) in tables_to_create]
+tables = [row['TABLE_NAME'] for row in table_data]
+
 for table in tables:
-    tmp = connection_manager.execute_query(get_src_qry, [table], server, db, user= 'datapipeline', password='datareader99$')
-    src_qry = 'select'
-    snowflake_create = 'create or replace table repo.sap.{table} ('.format(table=table)
-    for idx, row in enumerate(tmp):
-        if row['SqlServerViewCreate']:
+    if table in tables_to_create:
+        tmp = connection_manager.execute_query(get_src_qry, [table], server, db, user=user, password=password)
+        src_qry = 'select'
+        snowflake_create = 'create or replace table repo.{source}.{table} (\n'.format(source=source,db=db,schema='dbo', table=table)
+        if len(tmp) <= 1:
+            print('Error on:', table, '- no columns under cdc')
+            continue
+        snowflake_create += '\tdeleted boolean,'
+        for idx, row in enumerate(tmp):
             src_qry += '\n\t' + row['SqlServerViewCreate']
-        snowflake_create += '\n\t' + row['SnowFlakeCreate']
+            snowflake_create += '\n\t' + row['SnowFlakeCreate']
 
-    src_qry += '\n' + 'from {db}.dbo.{table}'.format(db=db, table=table)
-    snowflake_create += '\n)'
+        src_qry += '\n' + 'from {db}.dbo.{table}'.format(db=db, table=table)
+        snowflake_create += '\n)'
 
-    src_qrys.append(src_qry)
-    snowflake_creates.append(snowflake_create)
+        table_names.append(table)
+        src_qrys.append(src_qry)
+        snowflake_creates.append(snowflake_create)
 
-path = 'src_qrys/sap/'
-for table, src_qry in zip(tables, src_qrys):
-    with open(path + table + '.sql', 'w') as f:
+
+path = 'src_qrys/{source}/'.format(source=source)
+for table, src_qry in zip(table_names, src_qrys):
+    file_name = '{table}.sql'.format(table=table)
+    with open(path + file_name, 'w') as f:
         f.write(src_qry)
 
 
 sf_conn = connect(**snowflake_connection_properties)
-for table, create_table in zip(tables, snowflake_creates):
-    sf_conn.execute_string(create_table)
+for table, create_table in zip(table_names, snowflake_creates):
+    try:
+        # sf_conn.execute_string(create_table)
+        print(create_table)
+    except Exception as e:
+        print('Error creating', table, 'in snowflake')
+        print(e)
+

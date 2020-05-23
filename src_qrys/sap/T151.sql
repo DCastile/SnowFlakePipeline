@@ -1,5 +1,5 @@
 select
-	 [MANDT] = quotename([T151].[MANDT], char(34)),
-	 [KDGRP] = quotename([T151].[KDGRP], char(34)),
-	 [BEZBG] = quotename([T151].[BEZBG], char(34))
-from SAP_Production.dbo.T151
+	 [MANDT] = concat(char(34), replace(cast([T151].[MANDT] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [KDGRP] = concat(char(34), replace(cast([T151].[KDGRP] as nvarchar(2)), char(34), char(0)), char(34)),
+	 [BEZBG] = concat(char(34), replace(cast([T151].[BEZBG] as nvarchar(1)), char(34), char(0)), char(34))
+from SAP_REPO.dbo.T151

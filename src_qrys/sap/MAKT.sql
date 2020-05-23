@@ -1,10 +1,7 @@
 select
-	 [MANDT] = quotename([MAKT].[MANDT], char(34)),
-	 [MATNR] = quotename([MAKT].[MATNR], char(34)),
-	 [SPRAS] = quotename([MAKT].[SPRAS], char(34)),
-	 [MAKTX] = quotename([MAKT].[MAKTX], char(34)),
-	 [MAKTG] = quotename([MAKT].[MAKTG], char(34)),
-	 [ETL_DATA_SOURCE] = quotename([MAKT].[ETL_DATA_SOURCE], char(34)),
-	 [ETL_PROCESS_ID] = quotename([MAKT].[ETL_PROCESS_ID], char(34)),
-	 [ETL_LOAD_DATE] = convert(varchar(50), [MAKT].[ETL_LOAD_DATE], 21)
-from SAP_Production.dbo.MAKT
+	 [MANDT] = concat(char(34), replace(cast([MAKT].[MANDT] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [MATNR] = concat(char(34), replace(cast([MAKT].[MATNR] as nvarchar(18)), char(34), char(0)), char(34)),
+	 [SPRAS] = concat(char(34), replace(cast([MAKT].[SPRAS] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [MAKTX] = concat(char(34), replace(cast([MAKT].[MAKTX] as nvarchar(40)), char(34), char(0)), char(34)),
+	 [MAKTG] = concat(char(34), replace(cast([MAKT].[MAKTG] as nvarchar(40)), char(34), char(0)), char(34))
+from SAP_REPO.dbo.MAKT

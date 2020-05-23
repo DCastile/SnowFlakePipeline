@@ -1,8 +1,24 @@
 select
-	 [PLANT] = quotename([T001L].[PLANT], char(34)),
-	 [SLOC] = quotename([T001L].[SLOC], char(34)),
-	 [SLOCDESC] = quotename([T001L].[SLOCDESC], char(34)),
-	 [ETL_DATA_SOURCE] = quotename([T001L].[ETL_DATA_SOURCE], char(34)),
-	 [ETL_PROCESS_ID] = quotename([T001L].[ETL_PROCESS_ID], char(34)),
-	 [ETL_LOAD_DATE] = quotename([T001L].[ETL_LOAD_DATE], char(34))
-from SAP_Production.dbo.T001L
+	 [MANDT] = concat(char(34), replace(cast([T001L].[MANDT] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [WERKS] = concat(char(34), replace(cast([T001L].[WERKS] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [LGORT] = concat(char(34), replace(cast([T001L].[LGORT] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [LGOBE] = concat(char(34), replace(cast([T001L].[LGOBE] as nvarchar(16)), char(34), char(0)), char(34)),
+	 [SPART] = concat(char(34), replace(cast([T001L].[SPART] as nvarchar(2)), char(34), char(0)), char(34)),
+	 [XLONG] = concat(char(34), replace(cast([T001L].[XLONG] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [XBUFX] = concat(char(34), replace(cast([T001L].[XBUFX] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [DISKZ] = concat(char(34), replace(cast([T001L].[DISKZ] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [XBLGO] = concat(char(34), replace(cast([T001L].[XBLGO] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [XRESS] = concat(char(34), replace(cast([T001L].[XRESS] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [XHUPF] = concat(char(34), replace(cast([T001L].[XHUPF] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [PARLG] = concat(char(34), replace(cast([T001L].[PARLG] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [VKORG] = concat(char(34), replace(cast([T001L].[VKORG] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [VTWEG] = concat(char(34), replace(cast([T001L].[VTWEG] as nvarchar(2)), char(34), char(0)), char(34)),
+	 [VSTEL] = concat(char(34), replace(cast([T001L].[VSTEL] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [LIFNR] = concat(char(34), replace(cast([T001L].[LIFNR] as nvarchar(10)), char(34), char(0)), char(34)),
+	 [KUNNR] = concat(char(34), replace(cast([T001L].[KUNNR] as nvarchar(10)), char(34), char(0)), char(34)),
+	 [MESBS] = concat(char(34), replace(cast([T001L].[MESBS] as nvarchar(60)), char(34), char(0)), char(34)),
+	 [MESST] = concat(char(34), replace(cast([T001L].[MESST] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [OIH_LICNO] = concat(char(34), replace(cast([T001L].[OIH_LICNO] as nvarchar(15)), char(34), char(0)), char(34)),
+	 [OIG_ITRFL] = concat(char(34), replace(cast([T001L].[OIG_ITRFL] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [OIB_TNKASSIGN] = concat(char(34), replace(cast([T001L].[OIB_TNKASSIGN] as nvarchar(1)), char(34), char(0)), char(34))
+from SAP_REPO.dbo.T001L

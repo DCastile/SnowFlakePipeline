@@ -1,12 +1,9 @@
 select
-	 [MANDT] = quotename([KOTD001].[MANDT], char(34)),
-	 [KAPPL] = quotename([KOTD001].[KAPPL], char(34)),
-	 [KSCHL] = quotename([KOTD001].[KSCHL], char(34)),
-	 [MATWA] = quotename([KOTD001].[MATWA], char(34)),
-	 [DATBI] = convert(varchar(50), [KOTD001].[DATBI], 21),
-	 [DATAB] = convert(varchar(50), [KOTD001].[DATAB], 21),
-	 [KNUMH] = quotename([KOTD001].[KNUMH], char(34)),
-	 [ETL_DATA_SOURCE] = quotename([KOTD001].[ETL_DATA_SOURCE], char(34)),
-	 [ETL_PROCESS_ID] = quotename([KOTD001].[ETL_PROCESS_ID], char(34)),
-	 [ETL_LOAD_DATE] = convert(varchar(50), [KOTD001].[ETL_LOAD_DATE], 21)
-from SAP_Production.dbo.KOTD001
+	 [MANDT] = concat(char(34), replace(cast([KOTD001].[MANDT] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [KAPPL] = concat(char(34), replace(cast([KOTD001].[KAPPL] as nvarchar(2)), char(34), char(0)), char(34)),
+	 [KSCHL] = concat(char(34), replace(cast([KOTD001].[KSCHL] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [MATWA] = concat(char(34), replace(cast([KOTD001].[MATWA] as nvarchar(18)), char(34), char(0)), char(34)),
+	 [DATBI] = concat(char(34), replace(cast([KOTD001].[DATBI] as nvarchar(8)), char(34), char(0)), char(34)),
+	 [DATAB] = concat(char(34), replace(cast([KOTD001].[DATAB] as nvarchar(8)), char(34), char(0)), char(34)),
+	 [KNUMH] = concat(char(34), replace(cast([KOTD001].[KNUMH] as nvarchar(10)), char(34), char(0)), char(34))
+from SAP_REPO.dbo.KOTD001

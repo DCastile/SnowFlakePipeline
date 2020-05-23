@@ -1,12 +1,9 @@
 select
-	 [MANDT] = quotename([T527X].[MANDT], char(34)),
-	 [SPRSL] = quotename([T527X].[SPRSL], char(34)),
-	 [ORGEH] = quotename([T527X].[ORGEH], char(34)),
-	 [ENDDA] = convert(varchar(50), [T527X].[ENDDA], 21),
-	 [BEGDA] = convert(varchar(50), [T527X].[BEGDA], 21),
-	 [ORGTX] = quotename([T527X].[ORGTX], char(34)),
-	 [MAINT] = quotename([T527X].[MAINT], char(34)),
-	 [ETL_DATA_SOURCE] = quotename([T527X].[ETL_DATA_SOURCE], char(34)),
-	 [ETL_PROCESS_ID] = quotename([T527X].[ETL_PROCESS_ID], char(34)),
-	 [ETL_LOAD_DATE] = convert(varchar(50), [T527X].[ETL_LOAD_DATE], 21)
-from SAP_Production.dbo.T527X
+	 [MANDT] = concat(char(34), replace(cast([T527X].[MANDT] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [SPRSL] = concat(char(34), replace(cast([T527X].[SPRSL] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [ORGEH] = concat(char(34), replace(cast([T527X].[ORGEH] as nvarchar(8)), char(34), char(0)), char(34)),
+	 [ENDDA] = concat(char(34), replace(cast([T527X].[ENDDA] as nvarchar(8)), char(34), char(0)), char(34)),
+	 [BEGDA] = concat(char(34), replace(cast([T527X].[BEGDA] as nvarchar(8)), char(34), char(0)), char(34)),
+	 [ORGTX] = concat(char(34), replace(cast([T527X].[ORGTX] as nvarchar(25)), char(34), char(0)), char(34)),
+	 [MAINT] = concat(char(34), replace(cast([T527X].[MAINT] as nvarchar(1)), char(34), char(0)), char(34))
+from SAP_REPO.dbo.T527X

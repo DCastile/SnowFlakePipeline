@@ -1,13 +1,10 @@
 select
-	 [MANDT] = quotename([CSKT].[MANDT], char(34)),
-	 [SPRAS] = quotename([CSKT].[SPRAS], char(34)),
-	 [KOKRS] = quotename([CSKT].[KOKRS], char(34)),
-	 [KOSTL] = quotename([CSKT].[KOSTL], char(34)),
-	 [DATBI] = convert(varchar(50), [CSKT].[DATBI], 21),
-	 [KTEXT] = quotename([CSKT].[KTEXT], char(34)),
-	 [LTEXT] = quotename([CSKT].[LTEXT], char(34)),
-	 [MCTXT] = quotename([CSKT].[MCTXT], char(34)),
-	 [ETL_DATA_SOURCE] = quotename([CSKT].[ETL_DATA_SOURCE], char(34)),
-	 [ETL_PROCESS_ID] = quotename([CSKT].[ETL_PROCESS_ID], char(34)),
-	 [ETL_LOAD_DATE] = convert(varchar(50), [CSKT].[ETL_LOAD_DATE], 21)
-from SAP_Production.dbo.CSKT
+	 [MANDT] = concat(char(34), replace(cast([CSKT].[MANDT] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [SPRAS] = concat(char(34), replace(cast([CSKT].[SPRAS] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [KOKRS] = concat(char(34), replace(cast([CSKT].[KOKRS] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [KOSTL] = concat(char(34), replace(cast([CSKT].[KOSTL] as nvarchar(10)), char(34), char(0)), char(34)),
+	 [DATBI] = concat(char(34), replace(cast([CSKT].[DATBI] as nvarchar(8)), char(34), char(0)), char(34)),
+	 [KTEXT] = concat(char(34), replace(cast([CSKT].[KTEXT] as nvarchar(20)), char(34), char(0)), char(34)),
+	 [LTEXT] = concat(char(34), replace(cast([CSKT].[LTEXT] as nvarchar(40)), char(34), char(0)), char(34)),
+	 [MCTXT] = concat(char(34), replace(cast([CSKT].[MCTXT] as nvarchar(20)), char(34), char(0)), char(34))
+from SAP_REPO.dbo.CSKT

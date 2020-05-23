@@ -1,15 +1,15 @@
 select
-	 [EQUIPMENT] = quotename([EQBS].[EQUIPMENT], char(34)),
-	 [STOCKTYPE] = quotename([EQBS].[STOCKTYPE], char(34)),
-	 [PLANT] = quotename([EQBS].[PLANT], char(34)),
-	 [STORAGELOCATION] = quotename([EQBS].[STORAGELOCATION], char(34)),
-	 [SALESORDER] = quotename([EQBS].[SALESORDER], char(34)),
-	 [SOITEM] = quotename([EQBS].[SOITEM], char(34)),
-	 [SPECIALSTOCK] = quotename([EQBS].[SPECIALSTOCK], char(34)),
-	 [KDAUF] = quotename([EQBS].[KDAUF], char(34)),
-	 [SOBKZ] = quotename([EQBS].[SOBKZ], char(34)),
-	 [LBBSA] = quotename([EQBS].[LBBSA], char(34)),
-	 [ETL_DATA_SOURCE] = quotename([EQBS].[ETL_DATA_SOURCE], char(34)),
-	 [ETL_PROCESS_ID] = quotename([EQBS].[ETL_PROCESS_ID], char(34)),
-	 [ETL_LOAD_DATE] = quotename([EQBS].[ETL_LOAD_DATE], char(34))
-from SAP_Production.dbo.EQBS
+	 [MANDT] = concat(char(34), replace(cast([EQBS].[MANDT] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [EQUNR] = concat(char(34), replace(cast([EQBS].[EQUNR] as nvarchar(18)), char(34), char(0)), char(34)),
+	 [LBBSA] = concat(char(34), replace(cast([EQBS].[LBBSA] as nvarchar(2)), char(34), char(0)), char(34)),
+	 [B_WERK] = concat(char(34), replace(cast([EQBS].[B_WERK] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [B_LAGER] = concat(char(34), replace(cast([EQBS].[B_LAGER] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [B_CHARGE] = concat(char(34), replace(cast([EQBS].[B_CHARGE] as nvarchar(10)), char(34), char(0)), char(34)),
+	 [SOBKZ] = concat(char(34), replace(cast([EQBS].[SOBKZ] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [KUNNR] = concat(char(34), replace(cast([EQBS].[KUNNR] as nvarchar(10)), char(34), char(0)), char(34)),
+	 [LIFNR] = concat(char(34), replace(cast([EQBS].[LIFNR] as nvarchar(10)), char(34), char(0)), char(34)),
+	 [KDAUF] = concat(char(34), replace(cast([EQBS].[KDAUF] as nvarchar(10)), char(34), char(0)), char(34)),
+	 [KDPOS] = concat(char(34), replace(cast([EQBS].[KDPOS] as nvarchar(6)), char(34), char(0)), char(34)),
+	 [PS_PSP_PNR] = concat(char(34), replace(cast([EQBS].[PS_PSP_PNR] as nvarchar(8)), char(34), char(0)), char(34)),
+	 [DISUB_OWNER] = concat(char(34), replace(cast([EQBS].[DISUB_OWNER] as nvarchar(10)), char(34), char(0)), char(34))
+from SAP_REPO.dbo.EQBS

@@ -1,12 +1,9 @@
 select
-	 [MANDT] = quotename([KONDD].[MANDT], char(34)),
-	 [KNUMH] = quotename([KONDD].[KNUMH], char(34)),
-	 [SMATN] = quotename([KONDD].[SMATN], char(34)),
-	 [MEINS] = quotename([KONDD].[MEINS], char(34)),
-	 [SUGRD] = quotename([KONDD].[SUGRD], char(34)),
-	 [PSDSP] = quotename([KONDD].[PSDSP], char(34)),
-	 [LSTACS] = quotename([KONDD].[LSTACS], char(34)),
-	 [ETL_DATA_SOURCE] = quotename([KONDD].[ETL_DATA_SOURCE], char(34)),
-	 [ETL_PROCESS_ID] = quotename([KONDD].[ETL_PROCESS_ID], char(34)),
-	 [ETL_LOAD_DATE] = convert(varchar(50), [KONDD].[ETL_LOAD_DATE], 21)
-from SAP_Production.dbo.KONDD
+	 [MANDT] = concat(char(34), replace(cast([KONDD].[MANDT] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [KNUMH] = concat(char(34), replace(cast([KONDD].[KNUMH] as nvarchar(10)), char(34), char(0)), char(34)),
+	 [SMATN] = concat(char(34), replace(cast([KONDD].[SMATN] as nvarchar(18)), char(34), char(0)), char(34)),
+	 [MEINS] = concat(char(34), replace(cast([KONDD].[MEINS] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [SUGRD] = concat(char(34), replace(cast([KONDD].[SUGRD] as nvarchar(4)), char(34), char(0)), char(34)),
+	 [PSDSP] = concat(char(34), replace(cast([KONDD].[PSDSP] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [LSTACS] = concat(char(34), replace(cast([KONDD].[LSTACS] as nvarchar(1)), char(34), char(0)), char(34))
+from SAP_REPO.dbo.KONDD

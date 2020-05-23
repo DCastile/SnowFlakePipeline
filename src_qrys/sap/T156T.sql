@@ -1,10 +1,10 @@
 select
-	 [MANDT] = quotename([T156T].[MANDT], char(34)),
-	 [SPRAS] = quotename([T156T].[SPRAS], char(34)),
-	 [BWART] = quotename([T156T].[BWART], char(34)),
-	 [SOBKZ] = quotename([T156T].[SOBKZ], char(34)),
-	 [KZBEW] = quotename([T156T].[KZBEW], char(34)),
-	 [KZZUG] = quotename([T156T].[KZZUG], char(34)),
-	 [KZVBR] = quotename([T156T].[KZVBR], char(34)),
-	 [BTEXT] = quotename([T156T].[BTEXT], char(34))
-from SAP_Production.dbo.T156T
+	 [MANDT] = concat(char(34), replace(cast([T156T].[MANDT] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [SPRAS] = concat(char(34), replace(cast([T156T].[SPRAS] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [BWART] = concat(char(34), replace(cast([T156T].[BWART] as nvarchar(3)), char(34), char(0)), char(34)),
+	 [SOBKZ] = concat(char(34), replace(cast([T156T].[SOBKZ] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [KZBEW] = concat(char(34), replace(cast([T156T].[KZBEW] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [KZZUG] = concat(char(34), replace(cast([T156T].[KZZUG] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [KZVBR] = concat(char(34), replace(cast([T156T].[KZVBR] as nvarchar(1)), char(34), char(0)), char(34)),
+	 [BTEXT] = concat(char(34), replace(cast([T156T].[BTEXT] as nvarchar(20)), char(34), char(0)), char(34))
+from SAP_REPO.dbo.T156T
