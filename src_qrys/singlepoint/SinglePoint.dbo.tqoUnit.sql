@@ -24,4 +24,4 @@ select
 	 [WebModelCode] = concat(char(34), isNull(replace(cast([tqoUnit].[WebModelCode] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [FromAssetHeaderID] = isNull(cast([tqoUnit].[FromAssetHeaderID] as varchar(36)), '\N'),
 	 [RecSource] = concat(char(34), isNull(replace(cast([tqoUnit].[RecSource] as nvarchar(50)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoUnit
+from SinglePoint.dbo.tqoUnit with(nolock)

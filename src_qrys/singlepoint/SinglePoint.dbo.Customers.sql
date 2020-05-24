@@ -40,4 +40,4 @@ select
 	 [PO_Required_ContractOrders] = isNull(cast([Customers].[PO_Required_ContractOrders] as varchar(36)), '\N'),
 	 [PO_Required_TM] = isNull(cast([Customers].[PO_Required_TM] as varchar(36)), '\N'),
 	 [InstanceID] = isNull(cast([Customers].[InstanceID] as varchar(36)), '\N')
-from SinglePoint.dbo.Customers
+from SinglePoint.dbo.Customers with(nolock)

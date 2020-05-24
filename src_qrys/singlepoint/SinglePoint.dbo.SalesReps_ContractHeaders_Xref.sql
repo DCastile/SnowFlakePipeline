@@ -6,4 +6,4 @@ select
 	 [LastChanged] = isNull(convert(varchar(50), [SalesReps_ContractHeaders_Xref].[LastChanged], 21), '\N'),
 	 [SalesRepID] = isNull(cast([SalesReps_ContractHeaders_Xref].[SalesRepID] as varchar(36)), '\N'),
 	 [CreateDate] = isNull(convert(varchar(50), [SalesReps_ContractHeaders_Xref].[CreateDate], 21), '\N')
-from SinglePoint.dbo.SalesReps_ContractHeaders_Xref
+from SinglePoint.dbo.SalesReps_ContractHeaders_Xref with(nolock)

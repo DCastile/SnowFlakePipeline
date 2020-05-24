@@ -9,4 +9,4 @@ select
 	 [CustomerID] = isNull(cast([UserRoles].[CustomerID] as varchar(36)), '\N'),
 	 [InactiveFlag] = isNull(cast([UserRoles].[InactiveFlag] as varchar(36)), '\N'),
 	 [CustomerUsageType] = isNull(cast([UserRoles].[CustomerUsageType] as varchar(36)), '\N')
-from SinglePoint.dbo.UserRoles
+from SinglePoint.dbo.UserRoles with(nolock)

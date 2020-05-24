@@ -41,4 +41,4 @@ select
 	 [IncidentNumber] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[IncidentNumber] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [CompanyName] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[CompanyName] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [Address_Line2] = concat(char(34), isNull(replace(cast([PurchaseRequisition_Lines].[Address_Line2] as nvarchar(50)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.PurchaseRequisition_Lines
+from SinglePoint.dbo.PurchaseRequisition_Lines with(nolock)

@@ -13,4 +13,4 @@ select
 	 [ChangeByID] = isNull(cast([SalesReps].[ChangeByID] as varchar(36)), '\N'),
 	 [ChangeDate] = isNull(convert(varchar(50), [SalesReps].[ChangeDate], 21), '\N'),
 	 [Active] = isNull(cast([SalesReps].[Active] as varchar(36)), '\N')
-from SinglePoint.dbo.SalesReps
+from SinglePoint.dbo.SalesReps with(nolock)

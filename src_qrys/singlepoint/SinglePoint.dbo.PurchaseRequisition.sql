@@ -23,4 +23,4 @@ select
 	 [LastChanged] = isNull(convert(varchar(50), [PurchaseRequisition].[LastChanged], 21), '\N'),
 	 [ChangedByID] = isNull(cast([PurchaseRequisition].[ChangedByID] as varchar(36)), '\N'),
 	 [UnitOfMeasure] = concat(char(34), isNull(replace(cast([PurchaseRequisition].[UnitOfMeasure] as nvarchar(50)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.PurchaseRequisition
+from SinglePoint.dbo.PurchaseRequisition with(nolock)

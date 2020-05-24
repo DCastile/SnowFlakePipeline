@@ -35,4 +35,4 @@ select
 	 [Oracle_Material_Key] = isNull(cast([SLATerms].[Oracle_Material_Key] as varchar(36)), '\N'),
 	 [Active] = isNull(cast([SLATerms].[Active] as varchar(36)), '\N'),
 	 [QuotingReview] = isNull(cast([SLATerms].[QuotingReview] as varchar(36)), '\N')
-from SinglePoint.dbo.SLATerms
+from SinglePoint.dbo.SLATerms with(nolock)

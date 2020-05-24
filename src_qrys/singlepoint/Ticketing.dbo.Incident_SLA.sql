@@ -17,4 +17,4 @@ select
 	 [SlaAcceptanceDateTime] = isNull(convert(varchar(50), [Incident_SLA].[SlaAcceptanceDateTime], 21), '\N'),
 	 [SlaTimeZoneKey] = isNull(cast([Incident_SLA].[SlaTimeZoneKey] as varchar(36)), '\N'),
 	 [SlaDisposition_Actual] = concat(char(34), isNull(replace(cast([Incident_SLA].[SlaDisposition_Actual] as nvarchar(50)), char(34), char(0)), '\N'), char(34))
-from Ticketing.dbo.Incident_SLA
+from Ticketing.dbo.Incident_SLA with(nolock)

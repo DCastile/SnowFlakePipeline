@@ -25,4 +25,4 @@ select
 	 [PointOfContact] = concat(char(34), isNull(replace(cast([IncServiceOrders].[PointOfContact] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [BatchID] = isNull(cast([IncServiceOrders].[BatchID] as varchar(36)), '\N'),
 	 [BillToCustomerID] = isNull(cast([IncServiceOrders].[BillToCustomerID] as varchar(36)), '\N')
-from SinglePoint.dbo.IncServiceOrders
+from SinglePoint.dbo.IncServiceOrders with(nolock)

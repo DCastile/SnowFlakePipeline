@@ -15,4 +15,4 @@ select
 	 [InactiveFlag] = isNull(cast([incCodes].[InactiveFlag] as varchar(36)), '\N'),
 	 [Sequence] = isNull(cast([incCodes].[Sequence] as varchar(36)), '\N'),
 	 [InternalOnly] = isNull(cast([incCodes].[InternalOnly] as varchar(36)), '\N')
-from SinglePoint.dbo.incCodes
+from SinglePoint.dbo.incCodes with(nolock)

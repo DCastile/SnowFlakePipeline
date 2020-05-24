@@ -32,4 +32,4 @@ select
 	 [SiteAuditID] = isNull(cast([AssetConfigs].[SiteAuditID] as varchar(36)), '\N'),
 	 [Manufacturer_Name] = concat(char(34), isNull(replace(cast([AssetConfigs].[Manufacturer_Name] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [SourceProc] = concat(char(34), isNull(replace(cast([AssetConfigs].[SourceProc] as nvarchar(100)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.AssetConfigs
+from SinglePoint.dbo.AssetConfigs with(nolock)

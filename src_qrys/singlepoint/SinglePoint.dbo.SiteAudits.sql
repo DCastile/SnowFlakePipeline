@@ -20,4 +20,4 @@ select
 	 [AssignedToID] = isNull(cast([SiteAudits].[AssignedToID] as varchar(36)), '\N'),
 	 [ConfigImportFromMASDate] = isNull(convert(varchar(50), [SiteAudits].[ConfigImportFromMASDate], 21), '\N'),
 	 [ConfigExportToMASDate] = isNull(convert(varchar(50), [SiteAudits].[ConfigExportToMASDate], 21), '\N')
-from SinglePoint.dbo.SiteAudits
+from SinglePoint.dbo.SiteAudits with(nolock)

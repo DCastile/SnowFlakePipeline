@@ -26,4 +26,4 @@ select
 	 [canTransactServiceOrders] = isNull(cast([tqoCompany].[canTransactServiceOrders] as varchar(36)), '\N'),
 	 [BillingAddressID] = isNull(cast([tqoCompany].[BillingAddressID] as varchar(36)), '\N'),
 	 [MirrorCompanyGuid] = isNull(cast([tqoCompany].[MirrorCompanyGuid] as varchar(36)), '\N')
-from SinglePoint.dbo.tqoCompany
+from SinglePoint.dbo.tqoCompany with(nolock)

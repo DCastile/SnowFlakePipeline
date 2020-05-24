@@ -28,4 +28,4 @@ select
 	 [WarehouseID] = isNull(cast([Incident_ServiceOrder_Header].[WarehouseID] as varchar(36)), '\N'),
 	 [SAP_ID] = concat(char(34), isNull(replace(cast([Incident_ServiceOrder_Header].[SAP_ID] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [SAP_SyncAckDate] = isNull(convert(varchar(50), [Incident_ServiceOrder_Header].[SAP_SyncAckDate], 21), '\N')
-from Ticketing.dbo.Incident_ServiceOrder_Header
+from Ticketing.dbo.Incident_ServiceOrder_Header with(nolock)

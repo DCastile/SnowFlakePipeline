@@ -67,7 +67,7 @@ select
 	 [Priority_Code] = concat(char(34), isNull(replace(cast([Incidents].[Priority_Code] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [Urgency] = concat(char(34), isNull(replace(cast([Incidents].[Urgency] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [Impact] = concat(char(34), isNull(replace(cast([Incidents].[Impact] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
-	 [Address_Display] = concat(char(34), isNull(replace(cast([Incidents].[Address_Display] as nvarchar(5000)), char(34), char(0)), '\N'), char(34)),
+	 [Address_Display] = concat(char(34), isNull(replace(cast([Incidents].[Address_Display] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Address_Line_1] = concat(char(34), isNull(replace(cast([Incidents].[Address_Line_1] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [Address_Line_2] = concat(char(34), isNull(replace(cast([Incidents].[Address_Line_2] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [Address_Line_3] = concat(char(34), isNull(replace(cast([Incidents].[Address_Line_3] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
@@ -132,4 +132,4 @@ select
 	 [ContractTypeID] = isNull(cast([Incidents].[ContractTypeID] as varchar(36)), '\N'),
 	 [flagPendingCustomerResponse] = isNull(cast([Incidents].[flagPendingCustomerResponse] as varchar(36)), '\N'),
 	 [InstanceID] = isNull(cast([Incidents].[InstanceID] as varchar(36)), '\N')
-from SinglePoint.dbo.Incidents
+from SinglePoint.dbo.Incidents with(nolock)

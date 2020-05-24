@@ -9,4 +9,4 @@ select
 	 [StartEventID] = isNull(cast([Queue_Warehouse_Incidents].[StartEventID] as varchar(36)), '\N'),
 	 [EndEventID] = isNull(cast([Queue_Warehouse_Incidents].[EndEventID] as varchar(36)), '\N'),
 	 [AssignmentTimerStart] = isNull(convert(varchar(50), [Queue_Warehouse_Incidents].[AssignmentTimerStart], 21), '\N')
-from Ticketing.dbo.Queue_Warehouse_Incidents
+from Ticketing.dbo.Queue_Warehouse_Incidents with(nolock)

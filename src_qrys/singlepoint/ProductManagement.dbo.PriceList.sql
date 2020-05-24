@@ -7,4 +7,4 @@ select
 	 [CreatedDate] = isNull(convert(varchar(50), [PriceList].[CreatedDate], 21), '\N'),
 	 [PriceListMultiplier] = isNull(cast([PriceList].[PriceListMultiplier] as varchar(36)), '\N'),
 	 [Inactive] = isNull(cast([PriceList].[Inactive] as varchar(36)), '\N')
-from ProductManagement.dbo.PriceList
+from ProductManagement.dbo.PriceList with(nolock)

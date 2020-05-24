@@ -32,4 +32,4 @@ select
 	 [SAP_SyncAck_DateTime] = isNull(convert(varchar(50), [Contacts].[SAP_SyncAck_DateTime], 21), '\N'),
 	 [SalesForce_Contact_Key] = concat(char(34), isNull(replace(cast([Contacts].[SalesForce_Contact_Key] as nvarchar(18)), char(34), char(0)), '\N'), char(34)),
 	 [Oracle_ID] = isNull(cast([Contacts].[Oracle_ID] as varchar(36)), '\N')
-from SinglePoint.dbo.Contacts
+from SinglePoint.dbo.Contacts with(nolock)

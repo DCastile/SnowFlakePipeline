@@ -4,4 +4,4 @@ select
 	 [NewStatusID] = isNull(cast([tqoQuoteStatusHistory].[NewStatusID] as varchar(36)), '\N'),
 	 [CreateByID] = isNull(cast([tqoQuoteStatusHistory].[CreateByID] as varchar(36)), '\N'),
 	 [CreateDate] = isNull(convert(varchar(50), [tqoQuoteStatusHistory].[CreateDate], 21), '\N')
-from SinglePoint.dbo.tqoQuoteStatusHistory
+from SinglePoint.dbo.tqoQuoteStatusHistory with(nolock)

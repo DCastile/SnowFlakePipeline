@@ -7,4 +7,4 @@ select
 	 [SroTemplateID] = isNull(cast([SroTypes].[SroTemplateID] as varchar(36)), '\N'),
 	 [Billable] = isNull(cast([SroTypes].[Billable] as varchar(36)), '\N'),
 	 [CreateDate] = isNull(convert(varchar(50), [SroTypes].[CreateDate], 21), '\N')
-from SinglePoint.dbo.SroTypes
+from SinglePoint.dbo.SroTypes with(nolock)

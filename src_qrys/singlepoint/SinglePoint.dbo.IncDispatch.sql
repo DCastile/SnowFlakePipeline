@@ -22,4 +22,4 @@ select
 	 [LastUpdateUserID] = isNull(cast([IncDispatch].[LastUpdateUserID] as varchar(36)), '\N'),
 	 [StatusCodeID] = isNull(cast([IncDispatch].[StatusCodeID] as varchar(36)), '\N'),
 	 [ReScheduledAppointment] = isNull(convert(varchar(50), [IncDispatch].[ReScheduledAppointment], 21), '\N')
-from SinglePoint.dbo.IncDispatch
+from SinglePoint.dbo.IncDispatch with(nolock)

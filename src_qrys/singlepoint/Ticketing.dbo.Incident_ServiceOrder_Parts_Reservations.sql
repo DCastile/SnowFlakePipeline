@@ -21,4 +21,4 @@ select
 	 [ReturnStorageLocationDescription] = concat(char(34), isNull(replace(cast([Incident_ServiceOrder_Parts_Reservations].[ReturnStorageLocationDescription] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [ReservationDateTIme] = isNull(convert(varchar(50), [Incident_ServiceOrder_Parts_Reservations].[ReservationDateTIme], 21), '\N'),
 	 [FieldReportCompleteDateTime] = isNull(convert(varchar(50), [Incident_ServiceOrder_Parts_Reservations].[FieldReportCompleteDateTime], 21), '\N')
-from Ticketing.dbo.Incident_ServiceOrder_Parts_Reservations
+from Ticketing.dbo.Incident_ServiceOrder_Parts_Reservations with(nolock)

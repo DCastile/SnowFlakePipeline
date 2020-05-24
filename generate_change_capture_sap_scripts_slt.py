@@ -92,7 +92,7 @@ alter table dbo.{table}
     update_hashes_script = '''
 create or alter procedure dbo.Calculate_{table}_Changes as
 merge into {ct_db}.dbo.{table} change
-using (select *, checksum({hash_columns}) prod_hash from {source_db}.dbo.{table}) prod
+using (select *, checksum({hash_columns}) prod_hash from {source_db}.dbo.{table} with(nolock)) prod
 on
 {pk_join_condition}
 when not matched by target then insert values ({pk_list_text}, GetDate(), 0, prod.prod_hash)
@@ -100,7 +100,7 @@ when not matched by source then update
     set
         touchstamp = GetDate(),
         deleted = 1
-when matched and change.hash != prod.prod_hash or change.hash is null then update
+when matched and change.hash != prod.prod_hash or change.deleted = 1 then update
     set
         change.touchstamp = GetDate(),
         change.hash = prod.prod_hash,

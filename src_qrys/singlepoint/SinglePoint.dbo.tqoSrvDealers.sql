@@ -14,4 +14,4 @@ select
 	 [InactiveFlag] = isNull(cast([tqoSrvDealers].[InactiveFlag] as varchar(36)), '\N'),
 	 [ServiceUsage] = isNull(cast([tqoSrvDealers].[ServiceUsage] as varchar(36)), '\N'),
 	 [Oracle_vender_id] = isNull(cast([tqoSrvDealers].[Oracle_vender_id] as varchar(36)), '\N')
-from SinglePoint.dbo.tqoSrvDealers
+from SinglePoint.dbo.tqoSrvDealers with(nolock)

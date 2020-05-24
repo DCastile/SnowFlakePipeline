@@ -19,4 +19,4 @@ select
 	 [GenericContactFlag] = isNull(cast([AddressDetails].[GenericContactFlag] as varchar(36)), '\N'),
 	 [WarehouseCalculation_Method] = isNull(cast([AddressDetails].[WarehouseCalculation_Method] as varchar(36)), '\N'),
 	 [WarehouseCalculation_Date] = isNull(convert(varchar(50), [AddressDetails].[WarehouseCalculation_Date], 21), '\N')
-from SinglePoint.dbo.AddressDetails
+from SinglePoint.dbo.AddressDetails with(nolock)

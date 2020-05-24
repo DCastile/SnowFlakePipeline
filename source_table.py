@@ -238,15 +238,14 @@ class SourceTableBatch:
 
         true_table_name = self.source_table.table.split('.')[2]
         params = {'db': self.source.database, 'schema': self.source.schema, 'table': true_table_name}
-        fq_table_name = '{db}.{schema}.{table}'.format(**params) # table names are already fully qualified for singlePoint
+        fq_table_name = '{db}.{schema}.{table} with(nolock)'.format(**params) # table names are already fully qualified for singlePoint
         format_dates = lambda x: x.strftime(sql_date_format)
         start, end = map(format_dates, [self.source.incremental_start_time, self.source.incremental_end_time])
 
         cdc_params = "({db}.sys.fn_cdc_get_min_lsn('{schema}_{table}'), {db}.sys.fn_cdc_get_max_lsn(), 'all')".format(**params)
         params.update({'cdc_params': cdc_params})
-        cdc_fq_object = "{db}.cdc.fn_cdc_get_net_changes_{schema}_{table}{cdc_params} [{table}]".format(**params)
+        cdc_fq_object = "{db}.cdc.fn_cdc_get_net_changes_{schema}_{table}{cdc_params} [{table}] with(nolock)".format(**params)
         self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object)
-        self.qry = self.qry.replace('with(nolock)', '')
         self.qry = self.qry.replace('select', 'select IIF( __$operation = 1, 1, 0) deleted,')
 
     def set_qry_incremental_cdc_change_table(self):
@@ -265,12 +264,11 @@ class SourceTableBatch:
 
         cdc_fq_object = "{db}.cdc.{schema}_{table}_CT [{table}]".format(**params)
         self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object)
-        self.qry = self.qry.replace('with(nolock)', '')
         self.qry = self.qry.replace('select', 'select IIF( __$operation = 1, 1, 0) deleted,')
         self.qry += '\nwhere __$operation in (1,2,4) -- exclude 3, previous value from update\n'
 
         primary_keys = ' and '.join(['[{table}].[{pk}] = inn.[{pk}]'.format(pk=pk, table=true_table_name) for pk in self.source_table.primary_keys])
-        self.qry += '\tand __$start_lsn = (select top 1 __$start_lsn from {fqtn} inn where {primary_keys} order by __$start_lsn desc)'.format(fqtn=fq_table_name, primary_keys=primary_keys)
+        self.qry += '\tand __$start_lsn = (select top 1 __$start_lsn from {fqtn} inn with(nolock) where {primary_keys} order by __$start_lsn desc)'.format(fqtn=fq_table_name, primary_keys=primary_keys)
 
 
 

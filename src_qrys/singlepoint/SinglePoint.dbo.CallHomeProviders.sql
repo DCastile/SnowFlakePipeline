@@ -4,4 +4,4 @@ select
 	 [ServiceDealerID] = isNull(cast([CallHomeProviders].[ServiceDealerID] as varchar(36)), '\N'),
 	 [CreateDate] = isNull(convert(varchar(50), [CallHomeProviders].[CreateDate], 21), '\N'),
 	 [CreateByID] = isNull(cast([CallHomeProviders].[CreateByID] as varchar(36)), '\N')
-from SinglePoint.dbo.CallHomeProviders
+from SinglePoint.dbo.CallHomeProviders with(nolock)

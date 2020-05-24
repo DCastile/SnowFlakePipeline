@@ -20,4 +20,4 @@ select
 	 [RSMPartnerKey] = isNull(cast([WarehouseDetails].[RSMPartnerKey] as varchar(36)), '\N'),
 	 [CreateDate] = isNull(convert(varchar(50), [WarehouseDetails].[CreateDate], 21), '\N'),
 	 [EmailDirMobile] = concat(char(34), isNull(replace(cast([WarehouseDetails].[EmailDirMobile] as nvarchar(255)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.WarehouseDetails
+from SinglePoint.dbo.WarehouseDetails with(nolock)

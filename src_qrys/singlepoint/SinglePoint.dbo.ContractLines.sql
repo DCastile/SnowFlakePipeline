@@ -72,4 +72,4 @@ select
 	 [noticeFlag] = isNull(cast([ContractLines].[noticeFlag] as varchar(36)), '\N'),
 	 [noticeDate] = isNull(convert(varchar(50), [ContractLines].[noticeDate], 21), '\N'),
 	 [noticeUserID] = isNull(cast([ContractLines].[noticeUserID] as varchar(36)), '\N')
-from SinglePoint.dbo.ContractLines
+from SinglePoint.dbo.ContractLines with(nolock)

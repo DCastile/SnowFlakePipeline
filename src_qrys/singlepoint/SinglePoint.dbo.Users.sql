@@ -44,4 +44,4 @@ select
 	 [LastFailedAttempt] = isNull(convert(varchar(50), [Users].[LastFailedAttempt], 21), '\N'),
 	 [AccountLocked] = isNull(cast([Users].[AccountLocked] as varchar(36)), '\N'),
 	 [InstanceID] = isNull(cast([Users].[InstanceID] as varchar(36)), '\N')
-from SinglePoint.dbo.Users
+from SinglePoint.dbo.Users with(nolock)

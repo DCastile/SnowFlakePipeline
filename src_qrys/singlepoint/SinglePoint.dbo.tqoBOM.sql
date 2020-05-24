@@ -19,4 +19,4 @@ select
 	 [SparesKit] = isNull(cast([tqoBOM].[SparesKit] as varchar(36)), '\N'),
 	 [SourceProc] = concat(char(34), isNull(replace(cast([tqoBOM].[SourceProc] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [FromSiteAudit] = isNull(cast([tqoBOM].[FromSiteAudit] as varchar(36)), '\N')
-from SinglePoint.dbo.tqoBOM
+from SinglePoint.dbo.tqoBOM with(nolock)

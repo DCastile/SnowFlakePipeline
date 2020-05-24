@@ -21,4 +21,4 @@ select
 	 [IsNotificationRecipient] = isNull(cast([PartiesInvolved].[IsNotificationRecipient] as varchar(36)), '\N'),
 	 [UserID] = isNull(cast([PartiesInvolved].[UserID] as varchar(36)), '\N'),
 	 [PartyTypeID] = isNull(cast([PartiesInvolved].[PartyTypeID] as varchar(36)), '\N')
-from SinglePoint.dbo.PartiesInvolved
+from SinglePoint.dbo.PartiesInvolved with(nolock)

@@ -13,4 +13,4 @@ select
 	 [AssetHeaderID] = isNull(cast([REM_Alerts].[AssetHeaderID] as varchar(36)), '\N'),
 	 [CreateDate] = isNull(convert(varchar(50), [REM_Alerts].[CreateDate], 21), '\N'),
 	 [TransactionID] = isNull(cast([REM_Alerts].[TransactionID] as varchar(36)), '\N')
-from Ticketing.dbo.REM_Alerts
+from Ticketing.dbo.REM_Alerts with(nolock)

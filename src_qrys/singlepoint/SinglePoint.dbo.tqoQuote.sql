@@ -54,4 +54,4 @@ select
 	 [AssignedToUserDate] = isNull(convert(varchar(50), [tqoQuote].[AssignedToUserDate], 21), '\N'),
 	 [derivedFromQuoteGuid] = isNull(cast([tqoQuote].[derivedFromQuoteGuid] as varchar(36)), '\N'),
 	 [quoteRecSource] = concat(char(34), isNull(replace(cast([tqoQuote].[quoteRecSource] as nvarchar(100)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoQuote
+from SinglePoint.dbo.tqoQuote with(nolock)

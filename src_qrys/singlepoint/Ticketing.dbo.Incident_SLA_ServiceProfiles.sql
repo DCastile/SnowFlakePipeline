@@ -13,4 +13,4 @@ select
 	 [SlaJeopordyStartTime] = isNull(convert(varchar(50), [Incident_SLA_ServiceProfiles].[SlaJeopordyStartTime], 21), '\N'),
 	 [SlaServiceCommitment] = concat(char(34), isNull(replace(cast([Incident_SLA_ServiceProfiles].[SlaServiceCommitment] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [SlaDisposition_Actual] = concat(char(34), isNull(replace(cast([Incident_SLA_ServiceProfiles].[SlaDisposition_Actual] as nvarchar(50)), char(34), char(0)), '\N'), char(34))
-from Ticketing.dbo.Incident_SLA_ServiceProfiles
+from Ticketing.dbo.Incident_SLA_ServiceProfiles with(nolock)

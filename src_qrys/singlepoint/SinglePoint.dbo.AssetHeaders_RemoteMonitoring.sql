@@ -13,4 +13,4 @@ select
 	 [AlertCount] = isNull(cast([AssetHeaders_RemoteMonitoring].[AlertCount] as varchar(36)), '\N'),
 	 [DecommissionDate] = isNull(convert(varchar(50), [AssetHeaders_RemoteMonitoring].[DecommissionDate], 21), '\N'),
 	 [Status] = concat(char(34), isNull(replace(cast([AssetHeaders_RemoteMonitoring].[Status] as nvarchar(50)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.AssetHeaders_RemoteMonitoring
+from SinglePoint.dbo.AssetHeaders_RemoteMonitoring with(nolock)

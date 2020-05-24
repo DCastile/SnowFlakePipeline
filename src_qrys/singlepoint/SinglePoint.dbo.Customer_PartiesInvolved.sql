@@ -19,4 +19,4 @@ select
 	 [UpdateDate] = isNull(convert(varchar(50), [Customer_PartiesInvolved].[UpdateDate], 21), '\N'),
 	 [Notes] = concat(char(34), isNull(replace(cast([Customer_PartiesInvolved].[Notes] as nvarchar(4000)), char(34), char(0)), '\N'), char(34)),
 	 [PartyTypeID] = isNull(cast([Customer_PartiesInvolved].[PartyTypeID] as varchar(36)), '\N')
-from SinglePoint.dbo.Customer_PartiesInvolved
+from SinglePoint.dbo.Customer_PartiesInvolved with(nolock)

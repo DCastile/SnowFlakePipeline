@@ -84,4 +84,4 @@ select
 	 [RepricingDate] = isNull(convert(varchar(50), [ContractHeaders].[RepricingDate], 21), '\N'),
 	 [PaymentTermID] = isNull(cast([ContractHeaders].[PaymentTermID] as varchar(36)), '\N'),
 	 [sapAllowWrtyEndDatesWithoutWrtyRates] = isNull(cast([ContractHeaders].[sapAllowWrtyEndDatesWithoutWrtyRates] as varchar(36)), '\N')
-from SinglePoint.dbo.ContractHeaders
+from SinglePoint.dbo.ContractHeaders with(nolock)

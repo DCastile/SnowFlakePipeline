@@ -7,4 +7,4 @@ select
 	 [CreatedDate] = isNull(convert(varchar(50), [PurchaseRequisition_UrgencyCodes].[CreatedDate], 21), '\N'),
 	 [ChangedByID] = isNull(cast([PurchaseRequisition_UrgencyCodes].[ChangedByID] as varchar(36)), '\N'),
 	 [LastChanged] = isNull(convert(varchar(50), [PurchaseRequisition_UrgencyCodes].[LastChanged], 21), '\N')
-from SinglePoint.dbo.PurchaseRequisition_UrgencyCodes
+from SinglePoint.dbo.PurchaseRequisition_UrgencyCodes with(nolock)

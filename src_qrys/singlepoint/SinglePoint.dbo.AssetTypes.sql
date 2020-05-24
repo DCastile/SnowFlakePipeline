@@ -8,4 +8,4 @@ select
 	 [ForceProductReviewFlag] = isNull(cast([AssetTypes].[ForceProductReviewFlag] as varchar(36)), '\N'),
 	 [HideInQuoterFlag] = isNull(cast([AssetTypes].[HideInQuoterFlag] as varchar(36)), '\N'),
 	 [isTopLevel] = isNull(cast([AssetTypes].[isTopLevel] as varchar(36)), '\N')
-from SinglePoint.dbo.AssetTypes
+from SinglePoint.dbo.AssetTypes with(nolock)

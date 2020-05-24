@@ -7,4 +7,4 @@ select
 	 [StartEventID] = isNull(cast([Incident_PendingCustomerResponse].[StartEventID] as varchar(36)), '\N'),
 	 [EndEventID] = isNull(cast([Incident_PendingCustomerResponse].[EndEventID] as varchar(36)), '\N'),
 	 [LastNextActionDue] = isNull(convert(varchar(50), [Incident_PendingCustomerResponse].[LastNextActionDue], 21), '\N')
-from Ticketing.dbo.Incident_PendingCustomerResponse
+from Ticketing.dbo.Incident_PendingCustomerResponse with(nolock)

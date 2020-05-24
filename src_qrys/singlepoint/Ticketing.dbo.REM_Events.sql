@@ -16,4 +16,4 @@ select
 	 [SubStatus] = concat(char(34), isNull(replace(cast([REM_Events].[SubStatus] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [HandlingOutcome] = concat(char(34), isNull(replace(cast([REM_Events].[HandlingOutcome] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [AcknowledgedByUserID] = isNull(cast([REM_Events].[AcknowledgedByUserID] as varchar(36)), '\N')
-from Ticketing.dbo.REM_Events
+from Ticketing.dbo.REM_Events with(nolock)

@@ -4,4 +4,4 @@ select
 	 [CreateDate] = isNull(convert(varchar(50), [Customers_Users_XREF].[CreateDate], 21), '\N'),
 	 [User_Customer_XREFID] = isNull(cast([Customers_Users_XREF].[User_Customer_XREFID] as varchar(36)), '\N'),
 	 [CreateUserID] = isNull(cast([Customers_Users_XREF].[CreateUserID] as varchar(36)), '\N')
-from SinglePoint.dbo.Customers_Users_XREF
+from SinglePoint.dbo.Customers_Users_XREF with(nolock)

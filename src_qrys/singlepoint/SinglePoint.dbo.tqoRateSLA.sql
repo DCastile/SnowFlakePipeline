@@ -9,4 +9,4 @@ select
 	 [PartsRequired] = isNull(cast([tqoRateSLA].[PartsRequired] as varchar(36)), '\N'),
 	 [SameDay] = isNull(cast([tqoRateSLA].[SameDay] as varchar(36)), '\N'),
 	 [NextDay] = isNull(cast([tqoRateSLA].[NextDay] as varchar(36)), '\N')
-from SinglePoint.dbo.tqoRateSLA
+from SinglePoint.dbo.tqoRateSLA with(nolock)

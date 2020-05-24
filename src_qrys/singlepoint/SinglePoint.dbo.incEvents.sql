@@ -29,4 +29,4 @@ select
 	 [Longitude] = isNull(cast([incEvents].[Longitude] as varchar(36)), '\N'),
 	 [InstanceID] = isNull(cast([incEvents].[InstanceID] as varchar(36)), '\N'),
 	 [Visibility_UsageType] = isNull(cast([incEvents].[Visibility_UsageType] as varchar(36)), '\N')
-from SinglePoint.dbo.incEvents
+from SinglePoint.dbo.incEvents with(nolock)

@@ -19,4 +19,4 @@ select
 	 [ImportBatch] = isNull(cast([incReasons].[ImportBatch] as varchar(36)), '\N'),
 	 [ReasonVerySpecID] = isNull(cast([incReasons].[ReasonVerySpecID] as varchar(36)), '\N'),
 	 [ResolutionVerySpecID] = isNull(cast([incReasons].[ResolutionVerySpecID] as varchar(36)), '\N')
-from SinglePoint.dbo.incReasons
+from SinglePoint.dbo.incReasons with(nolock)

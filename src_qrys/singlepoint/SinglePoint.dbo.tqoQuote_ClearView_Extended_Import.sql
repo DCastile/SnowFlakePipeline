@@ -111,7 +111,7 @@ select
 	 [ItemDescription] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[ItemDescription] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [AssetType] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[AssetType] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [Status] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[Status] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
-	 [ErrorMsg] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[ErrorMsg] as nvarchar(8000)), char(34), char(0)), '\N'), char(34)),
+	 [ErrorMsg] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[ErrorMsg] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [keyMap] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[keyMap] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [quote_id] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[quote_id] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [contLine] = isNull(cast([tqoQuote_ClearView_Extended_Import].[contLine] as varchar(36)), '\N'),
@@ -125,4 +125,4 @@ select
 	 [endCustomerID] = isNull(cast([tqoQuote_ClearView_Extended_Import].[endCustomerID] as varchar(36)), '\N'),
 	 [Outcome] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[Outcome] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [reqQuoteType] = concat(char(34), isNull(replace(cast([tqoQuote_ClearView_Extended_Import].[reqQuoteType] as nvarchar(255)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.tqoQuote_ClearView_Extended_Import
+from SinglePoint.dbo.tqoQuote_ClearView_Extended_Import with(nolock)

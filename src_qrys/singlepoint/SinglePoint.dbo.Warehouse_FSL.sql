@@ -17,4 +17,4 @@ select
 	 [VendorLocation_ID] = concat(char(34), isNull(replace(cast([Warehouse_FSL].[VendorLocation_ID] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [Radius] = isNull(cast([Warehouse_FSL].[Radius] as varchar(36)), '\N'),
 	 [Type] = concat(char(34), isNull(replace(cast([Warehouse_FSL].[Type] as nvarchar(50)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.Warehouse_FSL
+from SinglePoint.dbo.Warehouse_FSL with(nolock)

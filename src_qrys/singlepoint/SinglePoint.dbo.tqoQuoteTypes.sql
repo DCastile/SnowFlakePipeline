@@ -6,4 +6,4 @@ select
 	 [allowHeaderEdits] = isNull(cast([tqoQuoteTypes].[allowHeaderEdits] as varchar(36)), '\N'),
 	 [showOnSearch] = isNull(cast([tqoQuoteTypes].[showOnSearch] as varchar(36)), '\N'),
 	 [showOnNewQuoteDialog] = isNull(cast([tqoQuoteTypes].[showOnNewQuoteDialog] as varchar(36)), '\N')
-from SinglePoint.dbo.tqoQuoteTypes
+from SinglePoint.dbo.tqoQuoteTypes with(nolock)

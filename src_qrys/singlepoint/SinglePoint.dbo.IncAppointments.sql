@@ -11,4 +11,4 @@ select
 	 [LastUpdateUserID] = isNull(cast([IncAppointments].[LastUpdateUserID] as varchar(36)), '\N'),
 	 [UTC_OnSiteDateTime] = isNull(convert(varchar(50), [IncAppointments].[UTC_OnSiteDateTime], 21), '\N'),
 	 [UTC_OffSiteDateTime] = isNull(convert(varchar(50), [IncAppointments].[UTC_OffSiteDateTime], 21), '\N')
-from SinglePoint.dbo.IncAppointments
+from SinglePoint.dbo.IncAppointments with(nolock)

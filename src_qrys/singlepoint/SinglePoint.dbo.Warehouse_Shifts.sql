@@ -12,4 +12,4 @@ select
 	 [Saturday] = isNull(cast([Warehouse_Shifts].[Saturday] as varchar(36)), '\N'),
 	 [Sunday] = isNull(cast([Warehouse_Shifts].[Sunday] as varchar(36)), '\N'),
 	 [IsActiveDuringHolidays] = isNull(cast([Warehouse_Shifts].[IsActiveDuringHolidays] as varchar(36)), '\N')
-from SinglePoint.dbo.Warehouse_Shifts
+from SinglePoint.dbo.Warehouse_Shifts with(nolock)

@@ -71,4 +71,4 @@ select
 	 [isHighRisk] = isNull(cast([tqoItem].[isHighRisk] as varchar(36)), '\N'),
 	 [CallHomeEligibility] = concat(char(34), isNull(replace(cast([tqoItem].[CallHomeEligibility] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [bandedFlag] = isNull(cast([tqoItem].[bandedFlag] as varchar(36)), '\N')
-from SinglePoint.dbo.tqoItem
+from SinglePoint.dbo.tqoItem with(nolock)

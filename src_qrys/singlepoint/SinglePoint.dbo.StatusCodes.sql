@@ -9,4 +9,4 @@ select
 	 [LastChanged] = isNull(convert(varchar(50), [StatusCodes].[LastChanged], 21), '\N'),
 	 [SSStatCodeKey] = isNull(cast([StatusCodes].[SSStatCodeKey] as varchar(36)), '\N'),
 	 [ParentID] = isNull(cast([StatusCodes].[ParentID] as varchar(36)), '\N')
-from SinglePoint.dbo.StatusCodes
+from SinglePoint.dbo.StatusCodes with(nolock)

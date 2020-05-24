@@ -69,4 +69,4 @@ select
 	 [reqPartsServiceDealerCurrency] = concat(char(34), isNull(replace(cast([ContractChgRequests].[reqPartsServiceDealerCurrency] as nvarchar(10)), char(34), char(0)), '\N'), char(34)),
 	 [reqBacklineServiceDealerCurrency] = concat(char(34), isNull(replace(cast([ContractChgRequests].[reqBacklineServiceDealerCurrency] as nvarchar(10)), char(34), char(0)), '\N'), char(34)),
 	 [reqRetainerServiceDealerCurrency] = concat(char(34), isNull(replace(cast([ContractChgRequests].[reqRetainerServiceDealerCurrency] as nvarchar(10)), char(34), char(0)), '\N'), char(34))
-from SinglePoint.dbo.ContractChgRequests
+from SinglePoint.dbo.ContractChgRequests with(nolock)

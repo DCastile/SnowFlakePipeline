@@ -25,8 +25,8 @@ select
 	 [NumConfigs] = isNull(cast([tqoSync].[NumConfigs] as varchar(36)), '\N'),
 	 [NumConfigsSuccess] = isNull(cast([tqoSync].[NumConfigsSuccess] as varchar(36)), '\N'),
 	 [NumConfigsFail] = isNull(cast([tqoSync].[NumConfigsFail] as varchar(36)), '\N'),
-	 [Error] = concat(char(34), isNull(replace(cast([tqoSync].[Error] as nvarchar(8000)), char(34), char(0)), '\N'), char(34)),
-	 [Comment] = concat(char(34), isNull(replace(cast([tqoSync].[Comment] as nvarchar(8000)), char(34), char(0)), '\N'), char(34)),
+	 [Error] = concat(char(34), isNull(replace(cast([tqoSync].[Error] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
+	 [Comment] = concat(char(34), isNull(replace(cast([tqoSync].[Comment] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [AppVer] = concat(char(34), isNull(replace(cast([tqoSync].[AppVer] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [ContractHeaderID] = isNull(cast([tqoSync].[ContractHeaderID] as varchar(36)), '\N'),
 	 [ChangedByID] = isNull(cast([tqoSync].[ChangedByID] as varchar(36)), '\N'),
@@ -39,4 +39,4 @@ select
 	 [OracleCompletedDate] = isNull(convert(varchar(50), [tqoSync].[OracleCompletedDate], 21), '\N'),
 	 [OracleFailureDate] = isNull(convert(varchar(50), [tqoSync].[OracleFailureDate], 21), '\N'),
 	 [OraclePartialDate] = isNull(convert(varchar(50), [tqoSync].[OraclePartialDate], 21), '\N')
-from SinglePoint.dbo.tqoSync
+from SinglePoint.dbo.tqoSync with(nolock)
