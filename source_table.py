@@ -276,10 +276,10 @@ class SourceTableBatch:
         join_lines = ['{table_name}.{column} = changes.{column}\n'.format(table_name=self.source_table.table, column=col) for col in self.source_table.primary_keys]
         join_condition = 'and '.join(join_lines)
         where_clause = '''
-        right join SAP_Production.change.{table_name}_changes changes
+        right join SAP_REPO_CT.dbo.{table_name} changes
             on {join_condition}
         where
-            changes.update_date >= '{start_date}'
+            changes.touchstamp >= '{start_date}'
         '''.format(table_name= self.source_table.table, join_condition=join_condition, start_date=self.source.incremental_start_time)
         new_qry = []
 
