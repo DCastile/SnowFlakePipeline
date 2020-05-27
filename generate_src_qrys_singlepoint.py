@@ -68,7 +68,7 @@ get_src_qry = r'''
             tab.TABLE_TYPE = 'BASE TABLE'
             and col.DATA_TYPE not in ('binary', 'image', 'geography', 'varbinary', 'text')
             and a.column_id is not null -- cdc must be enabled (sort kinda we can change this later on)
-            and col.TABLE_SCHEMA = 'dbo'
+            and col.TABLE_SCHEMA = ?
             and col.TABLE_NAME = ?
 --             and col.TABLE_NAME = 'tqoQuoteLine'
     ) a
@@ -76,9 +76,9 @@ get_src_qry = r'''
 '''
 
 get_tables_qry = '''
-    select TABLE_NAME
+    select TABLE_SCHEMA, TABLE_NAME
     from INFORMATION_SCHEMA.tables
-    where TABLE_TYPE = 'BASE TABLE' and TABLE_SCHEMA = 'DBO'
+    where TABLE_TYPE = 'BASE TABLE' and TABLE_SCHEMA != 'cdc'
 '''
 
 
@@ -87,34 +87,37 @@ snowflake_creates = []
 
 dbs = ['SinglePoint', 'Ticketing', 'ProductManagement']
 # tables_to_create = set(['ProductManagement.dbo.PriceList', 'ProductManagement.dbo.PriceListDetail', 'SinglePoint.dbo.Activity_ExtendedData', 'SinglePoint.dbo.AddressDetails', 'SinglePoint.dbo.Addresses', 'SinglePoint.dbo.AssetConfigs', 'SinglePoint.dbo.AssetHeaders', 'SinglePoint.dbo.AssetHeaders_RemoteMonitoring', 'SinglePoint.dbo.AssetLocation', 'SinglePoint.dbo.AssetTypes', 'SinglePoint.dbo.CallHomeProviders', 'SinglePoint.dbo.Contacts', 'SinglePoint.dbo.ContractBillCycles', 'SinglePoint.dbo.ContractChgRequests', 'SinglePoint.dbo.ContractHeaders', 'SinglePoint.dbo.ContractLines', 'SinglePoint.dbo.Coordinates', 'SinglePoint.dbo.CountryCodes', 'SinglePoint.dbo.CountryMultipliers', 'SinglePoint.dbo.CountryRegions', 'SinglePoint.dbo.Country_Categories', 'SinglePoint.dbo.Country_Groups', 'SinglePoint.dbo.Country_Mapping', 'SinglePoint.dbo.Currency_PriceList_Xref', 'SinglePoint.dbo.Customer_BillingProfile', 'SinglePoint.dbo.Customer_PartiesInvolved', 'SinglePoint.dbo.Customers', 'SinglePoint.dbo.Customers_Users_XREF', 'SinglePoint.dbo.Departments', 'SinglePoint.dbo.Groups', 'SinglePoint.dbo.IncAppointments', 'SinglePoint.dbo.IncDispatch', 'SinglePoint.dbo.IncPriority', 'SinglePoint.dbo.IncServiceOrders', 'SinglePoint.dbo.IncWorkstream', 'SinglePoint.dbo.IncWorkstreamSla', 'SinglePoint.dbo.IncidentDates', 'SinglePoint.dbo.IncidentDatesDeferals', 'SinglePoint.dbo.Incidents', 'SinglePoint.dbo.MethodOfContact', 'SinglePoint.dbo.MfgCodes', 'SinglePoint.dbo.NotesGeneric', 'SinglePoint.dbo.OrgChart', 'SinglePoint.dbo.OrgChart_ReportingTypes', 'SinglePoint.dbo.PartiesInvolved', 'SinglePoint.dbo.PurchaseOrders', 'SinglePoint.dbo.PurchaseRequisition', 'SinglePoint.dbo.PurchaseRequisition_Lines', 'SinglePoint.dbo.PurchaseRequisition_UrgencyCodes', 'SinglePoint.dbo.SLATerms', 'SinglePoint.dbo.SalesReps', 'SinglePoint.dbo.SalesReps_ContractHeaders_Xref', 'SinglePoint.dbo.SiteAudits', 'SinglePoint.dbo.SroHeader', 'SinglePoint.dbo.SroTypes', 'SinglePoint.dbo.StatusCodes', 'SinglePoint.dbo.TimeZones', 'SinglePoint.dbo.UserRoles', 'SinglePoint.dbo.User_UserRoles_XREF', 'SinglePoint.dbo.Users', 'SinglePoint.dbo.WarehouseDetails', 'SinglePoint.dbo.Warehouse_FSL', 'SinglePoint.dbo.Warehouse_FieldEngineers', 'SinglePoint.dbo.Warehouse_Shift_Users', 'SinglePoint.dbo.Warehouse_Shifts', 'SinglePoint.dbo.Warehouses', 'SinglePoint.dbo.incCodes', 'SinglePoint.dbo.incEvents', 'SinglePoint.dbo.incReasons', 'SinglePoint.dbo.tqoBOM', 'SinglePoint.dbo.tqoCompany', 'SinglePoint.dbo.tqoItem', 'SinglePoint.dbo.tqoQuote', 'SinglePoint.dbo.tqoQuoteHeader', 'SinglePoint.dbo.tqoQuoteLine', 'SinglePoint.dbo.tqoQuoteStatusHistory', 'SinglePoint.dbo.tqoQuoteTypes', 'SinglePoint.dbo.tqoQuote_ClearView_Extended_Import', 'SinglePoint.dbo.tqoRateSLA', 'SinglePoint.dbo.tqoSrvDealers', 'SinglePoint.dbo.tqoSync', 'SinglePoint.dbo.tqoUnit', 'Ticketing.dbo.Incident_Metric_Details', 'Ticketing.dbo.Incident_PendingCustomerResponse', 'Ticketing.dbo.Incident_RemoteHands_Details', 'Ticketing.dbo.Incident_SLA', 'Ticketing.dbo.Incident_SLA_ServiceProfiles', 'Ticketing.dbo.Incident_ServiceOrder_Header', 'Ticketing.dbo.Incident_ServiceOrder_Parts_Needed', 'Ticketing.dbo.Incident_ServiceOrder_Parts_Reservations', 'Ticketing.dbo.Queue_Incidents', 'Ticketing.dbo.Queue_Users', 'Ticketing.dbo.Queue_Warehouse_Incidents', 'Ticketing.dbo.REM_Alerts', 'Ticketing.dbo.REM_Events'])
-tables_to_create = set(['ProductManagement.dbo.PriceList','ProductManagement.dbo.PriceListDetail','SinglePoint.dbo.Activity_ExtendedData','SinglePoint.dbo.AddressDetails','SinglePoint.dbo.Addresses','SinglePoint.dbo.AssetConfigs','SinglePoint.dbo.AssetHeaders','SinglePoint.dbo.AssetHeaders_RemoteMonitoring','SinglePoint.dbo.AssetLocation','SinglePoint.dbo.AssetTypes','SinglePoint.dbo.CallHomeProviders','SinglePoint.dbo.Contacts','SinglePoint.dbo.ContractBillCycles','SinglePoint.dbo.ContractChgRequests','SinglePoint.dbo.ContractHeaders','SinglePoint.dbo.ContractLines','SinglePoint.dbo.Coordinates','SinglePoint.dbo.CountryCodes','SinglePoint.dbo.CountryMultipliers','SinglePoint.dbo.CountryRegions','SinglePoint.dbo.Country_Categories','SinglePoint.dbo.Country_Groups','SinglePoint.dbo.Country_Mapping','SinglePoint.dbo.Currency_PriceList_Xref','SinglePoint.dbo.Customer_BillingProfile','SinglePoint.dbo.Customer_PartiesInvolved','SinglePoint.dbo.Customers','SinglePoint.dbo.Customers_Users_XREF','SinglePoint.dbo.Departments','SinglePoint.dbo.Groups','SinglePoint.dbo.IncAppointments','SinglePoint.dbo.IncDispatch','SinglePoint.dbo.IncPriority','SinglePoint.dbo.IncServiceOrders','SinglePoint.dbo.IncWorkstream','SinglePoint.dbo.IncWorkstreamSla','SinglePoint.dbo.IncidentDates','SinglePoint.dbo.IncidentDatesDeferals','SinglePoint.dbo.Incidents','SinglePoint.dbo.MethodOfContact','SinglePoint.dbo.MfgCodes','SinglePoint.dbo.NotesGeneric','SinglePoint.dbo.OrgChart','SinglePoint.dbo.OrgChart_ReportingTypes','SinglePoint.dbo.PartiesInvolved','SinglePoint.dbo.PurchaseOrders','SinglePoint.dbo.PurchaseRequisition','SinglePoint.dbo.PurchaseRequisition_Lines','SinglePoint.dbo.PurchaseRequisition_UrgencyCodes','SinglePoint.dbo.SLATerms','SinglePoint.dbo.SalesReps','SinglePoint.dbo.SalesReps_ContractHeaders_Xref','SinglePoint.dbo.SiteAudits','SinglePoint.dbo.SroHeader','SinglePoint.dbo.SroTypes','SinglePoint.dbo.StatusCodes','SinglePoint.dbo.TimeZones','SinglePoint.dbo.UserRoles','SinglePoint.dbo.User_UserRoles_XREF','SinglePoint.dbo.Users','SinglePoint.dbo.WarehouseDetails','SinglePoint.dbo.Warehouse_FSL','SinglePoint.dbo.Warehouse_FieldEngineers','SinglePoint.dbo.Warehouse_Shift_Users','SinglePoint.dbo.Warehouse_Shifts','SinglePoint.dbo.Warehouses','SinglePoint.dbo.incCodes','SinglePoint.dbo.incEvents','SinglePoint.dbo.incReasons','SinglePoint.dbo.tqoBOM','SinglePoint.dbo.tqoCompany','SinglePoint.dbo.tqoItem','SinglePoint.dbo.tqoQuote','SinglePoint.dbo.tqoQuoteHeader','SinglePoint.dbo.tqoQuoteLine','SinglePoint.dbo.tqoQuoteStatusHistory','SinglePoint.dbo.tqoQuoteTypes','SinglePoint.dbo.tqoQuote_ClearView_Extended_Import','SinglePoint.dbo.tqoRateSLA','SinglePoint.dbo.tqoSrvDealers','SinglePoint.dbo.tqoSync','SinglePoint.dbo.tqoUnit','Ticketing.dbo.Incident_Metric_Details','Ticketing.dbo.Incident_PendingCustomerResponse','Ticketing.dbo.Incident_RemoteHands_Details','Ticketing.dbo.Incident_SLA','Ticketing.dbo.Incident_SLA_ServiceProfiles','Ticketing.dbo.Incident_ServiceOrder_Header','Ticketing.dbo.Incident_ServiceOrder_Parts_Needed','Ticketing.dbo.Incident_ServiceOrder_Parts_Reservations','Ticketing.dbo.Queue_Incidents','Ticketing.dbo.Queue_Users','Ticketing.dbo.Queue_Warehouse_Incidents','Ticketing.dbo.REM_Alerts','Ticketing.dbo.REM_Events'])
+# tables_to_create = set(['ProductManagement.dbo.PriceList','ProductManagement.dbo.PriceListDetail','SinglePoint.dbo.Activity_ExtendedData','SinglePoint.dbo.AddressDetails','SinglePoint.dbo.Addresses','SinglePoint.dbo.AssetConfigs','SinglePoint.dbo.AssetHeaders','SinglePoint.dbo.AssetHeaders_RemoteMonitoring','SinglePoint.dbo.AssetLocation','SinglePoint.dbo.AssetTypes','SinglePoint.dbo.CallHomeProviders','SinglePoint.dbo.Contacts','SinglePoint.dbo.ContractBillCycles','SinglePoint.dbo.ContractChgRequests','SinglePoint.dbo.ContractHeaders','SinglePoint.dbo.ContractLines','SinglePoint.dbo.Coordinates','SinglePoint.dbo.CountryCodes','SinglePoint.dbo.CountryMultipliers','SinglePoint.dbo.CountryRegions','SinglePoint.dbo.Country_Categories','SinglePoint.dbo.Country_Groups','SinglePoint.dbo.Country_Mapping','SinglePoint.dbo.Currency_PriceList_Xref','SinglePoint.dbo.Customer_BillingProfile','SinglePoint.dbo.Customer_PartiesInvolved','SinglePoint.dbo.Customers','SinglePoint.dbo.Customers_Users_XREF','SinglePoint.dbo.Departments','SinglePoint.dbo.Groups','SinglePoint.dbo.IncAppointments','SinglePoint.dbo.IncDispatch','SinglePoint.dbo.IncPriority','SinglePoint.dbo.IncServiceOrders','SinglePoint.dbo.IncWorkstream','SinglePoint.dbo.IncWorkstreamSla','SinglePoint.dbo.IncidentDates','SinglePoint.dbo.IncidentDatesDeferals','SinglePoint.dbo.Incidents','SinglePoint.dbo.MethodOfContact','SinglePoint.dbo.MfgCodes','SinglePoint.dbo.NotesGeneric','SinglePoint.dbo.OrgChart','SinglePoint.dbo.OrgChart_ReportingTypes','SinglePoint.dbo.PartiesInvolved','SinglePoint.dbo.PurchaseOrders','SinglePoint.dbo.PurchaseRequisition','SinglePoint.dbo.PurchaseRequisition_Lines','SinglePoint.dbo.PurchaseRequisition_UrgencyCodes','SinglePoint.dbo.SLATerms','SinglePoint.dbo.SalesReps','SinglePoint.dbo.SalesReps_ContractHeaders_Xref','SinglePoint.dbo.SiteAudits','SinglePoint.dbo.SroHeader','SinglePoint.dbo.SroTypes','SinglePoint.dbo.StatusCodes','SinglePoint.dbo.TimeZones','SinglePoint.dbo.UserRoles','SinglePoint.dbo.User_UserRoles_XREF','SinglePoint.dbo.Users','SinglePoint.dbo.WarehouseDetails','SinglePoint.dbo.Warehouse_FSL','SinglePoint.dbo.Warehouse_FieldEngineers','SinglePoint.dbo.Warehouse_Shift_Users','SinglePoint.dbo.Warehouse_Shifts','SinglePoint.dbo.Warehouses','SinglePoint.dbo.incCodes','SinglePoint.dbo.incEvents','SinglePoint.dbo.incReasons','SinglePoint.dbo.tqoBOM','SinglePoint.dbo.tqoCompany','SinglePoint.dbo.tqoItem','SinglePoint.dbo.tqoQuote','SinglePoint.dbo.tqoQuoteHeader','SinglePoint.dbo.tqoQuoteLine','SinglePoint.dbo.tqoQuoteStatusHistory','SinglePoint.dbo.tqoQuoteTypes','SinglePoint.dbo.tqoQuote_ClearView_Extended_Import','SinglePoint.dbo.tqoRateSLA','SinglePoint.dbo.tqoSrvDealers','SinglePoint.dbo.tqoSync','SinglePoint.dbo.tqoUnit','Ticketing.dbo.Incident_Metric_Details','Ticketing.dbo.Incident_PendingCustomerResponse','Ticketing.dbo.Incident_RemoteHands_Details','Ticketing.dbo.Incident_SLA','Ticketing.dbo.Incident_SLA_ServiceProfiles','Ticketing.dbo.Incident_ServiceOrder_Header','Ticketing.dbo.Incident_ServiceOrder_Parts_Needed','Ticketing.dbo.Incident_ServiceOrder_Parts_Reservations','Ticketing.dbo.Queue_Incidents','Ticketing.dbo.Queue_Users','Ticketing.dbo.Queue_Warehouse_Incidents','Ticketing.dbo.REM_Alerts','Ticketing.dbo.REM_Events'])
+tables_to_create = set(['SinglePoint.dbo.tqoQuoteLine_Discreps', 'SinglePoint.quoter.tqoNoBidReasonCodes'])
 table_names = []
 
 for db in dbs:
     table_data = connection_manager.execute_query(get_tables_qry, None, server, db, user=user, password=password)
-    tables = [row['TABLE_NAME'] for row in table_data if '{db}.dbo.{table}'.format(db=db, table=row['TABLE_NAME']) in tables_to_create]
+    schemas = set([row['TABLE_SCHEMA'] for row in table_data])
+    for schema in schemas:
+        tables = [row['TABLE_NAME'] for row in table_data if '{db}.{schema}.{table}'.format(db=db, schema=schema, table=row['TABLE_NAME']) in tables_to_create]
 
-    for table in tables:
-        fq_table_name = '{db}.dbo.{table}'.format(db=db, table=table)
-        if fq_table_name in tables_to_create:
-        # if True:
-            tmp = connection_manager.execute_query(get_src_qry, [table], server, db, user=user, password=password)
-            src_qry = 'select'
-            snowflake_create = 'create or replace table repo.{source}."{db}.{schema}.{table}" (\n'.format(source=source,db=db,schema='dbo', table=table)
-            if len(tmp) <= 1:
-                print('Error on:', fq_table_name, '- no columns under cdc')
-                continue
-            snowflake_create += '\tdeleted boolean, touchstamp timestamp_tz default current_timestamp,'
-            for idx, row in enumerate(tmp):
-                src_qry += '\n\t' + row['SqlServerViewCreate']
-                snowflake_create += '\n\t' + row['SnowFlakeCreate']
+        for table in tables:
+            fq_table_name = '{db}.{schema}.{table}'.format(db=db, schema=schema, table=table)
+            if fq_table_name in tables_to_create:
+            # if True:
+                tmp = connection_manager.execute_query(get_src_qry, [schema, table], server, db, user=user, password=password)
+                src_qry = 'select'
+                snowflake_create = 'create or replace table repo.{source}."{db}.{schema}.{table}" (\n'.format(source=source,db=db,schema='dbo', table=table)
+                if len(tmp) <= 1:
+                    print('Error on:', fq_table_name, '- no columns under cdc')
+                    continue
+                snowflake_create += '\tdeleted boolean, touchstamp timestamp_tz default current_timestamp,'
+                for idx, row in enumerate(tmp):
+                    src_qry += '\n\t' + row['SqlServerViewCreate']
+                    snowflake_create += '\n\t' + row['SnowFlakeCreate']
 
-            src_qry += '\n' + 'from {db}.dbo.{table} with(nolock)'.format(db=db, table=table)
-            snowflake_create += '\n)'
+                src_qry += '\n' + 'from {db}.dbo.{table} with(nolock)'.format(db=db, table=table)
+                snowflake_create += '\n)'
 
-            table_names.append(fq_table_name)
-            src_qrys.append(src_qry)
-            snowflake_creates.append(snowflake_create)
+                table_names.append(fq_table_name)
+                src_qrys.append(src_qry)
+                snowflake_creates.append(snowflake_create)
 
 
     path = 'src_qrys/{source}/'.format(source=source)
