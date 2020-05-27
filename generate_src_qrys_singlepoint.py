@@ -103,7 +103,7 @@ for db in dbs:
             # if True:
                 tmp = connection_manager.execute_query(get_src_qry, [schema, table], server, db, user=user, password=password)
                 src_qry = 'select'
-                snowflake_create = 'create or replace table repo.{source}."{db}.{schema}.{table}" (\n'.format(source=source,db=db,schema='dbo', table=table)
+                snowflake_create = 'create or replace table repo.{source}."{db}.{schema}.{table}" (\n'.format(source=source,db=db,schema=schema, table=table)
                 if len(tmp) <= 1:
                     print('Error on:', fq_table_name, '- no columns under cdc')
                     continue
@@ -112,7 +112,7 @@ for db in dbs:
                     src_qry += '\n\t' + row['SqlServerViewCreate']
                     snowflake_create += '\n\t' + row['SnowFlakeCreate']
 
-                src_qry += '\n' + 'from {db}.dbo.{table} with(nolock)'.format(db=db, table=table)
+                src_qry += '\n' + 'from {db}.{schema}.{table} with(nolock)'.format(db=db, schema=schema, table=table)
                 snowflake_create += '\n)'
 
                 table_names.append(fq_table_name)
@@ -127,11 +127,11 @@ for db in dbs:
             f.write(src_qry)
 
 
-    # sf_conn = connect(**snowflake_connection_properties)
-    # for table, create_table in zip(table_names, snowflake_creates):
-    #     try:
-    #         sf_conn.execute_string(create_table)
-    #     except Exception as e:
-    #         print('Error creating', table, 'in snowflake')
-    #         print(e)
+    sf_conn = connect(**snowflake_connection_properties)
+    for table, create_table in zip(table_names, snowflake_creates):
+        try:
+            sf_conn.execute_string(create_table)
+        except Exception as e:
+            print('Error creating', table, 'in snowflake')
+            print(e)
 
