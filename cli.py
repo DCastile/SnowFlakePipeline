@@ -105,9 +105,14 @@ if __name__ == '__main__':
     for source in source_names:
         dbs = source_database_map[(source, server)]
         # TODO have defaults for this
-        for db in dbs:
-            tmp = Source(source, server, db, 'dbo', user=user, password=password, load_type=load_type, incremental_start_time=start_date)
-            sources.append(tmp)
+        if source == 'sap':
+            for db in dbs:
+                tmp = Source(source, server, db, 'dbo', user=user, password=password, load_type=load_type, incremental_start_time=start_date)
+                sources.append(tmp)
+        if source == 'singlepoint':
+            for (db, schema) in dbs:
+                tmp = Source(source, server, db, schema, user=user, password=password, load_type=load_type, incremental_start_time=start_date)
+                sources.append(tmp)
 
 
     source_table_batches: List[SourceTableBatch] = []
