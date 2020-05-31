@@ -262,13 +262,13 @@ class SourceTableBatch:
         # cdc_params = "({db}.sys.fn_cdc_get_min_lsn('{schema}_{table}'), {db}.sys.fn_cdc_get_max_lsn(), 'all')".format(**params)
         # params.update({'cdc_params': cdc_params})
 
-        cdc_fq_object = "{db}.cdc.{schema}_{table}_CT [{table}]".format(**params)
-        self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object)
+        cdc_fq_object = "{db}.cdc.{schema}_{table}_CT".format(**params)
+        self.qry = self.source_table.base_qry.replace(fq_table_name, cdc_fq_object + ' [{table}]'.format(**params))
         self.qry = self.qry.replace('select', 'select IIF( __$operation = 1, 1, 0) deleted,')
         self.qry += '\nwhere __$operation in (1,2,4) -- exclude 3, previous value from update\n'
 
         primary_keys = ' and '.join(['[{table}].[{pk}] = inn.[{pk}]'.format(pk=pk, table=true_table_name) for pk in self.source_table.primary_keys])
-        self.qry += '\tand __$start_lsn = (select top 1 __$start_lsn from {fqtn} inn with(nolock) where {primary_keys} order by __$start_lsn desc)'.format(fqtn=fq_table_name, primary_keys=primary_keys)
+        self.qry += '\tand __$start_lsn = (select top 1 inn.[__$start_lsn] from {fqtn} inn with(nolock) where {primary_keys} order by inn.[__$start_lsn] desc)'.format(fqtn=cdc_fq_object, primary_keys=primary_keys)
 
 
 
