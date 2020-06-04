@@ -267,8 +267,14 @@ class SourceTableBatch:
         self.qry = self.qry.replace('select', 'select IIF( __$operation = 1, 1, 0) deleted,')
         self.qry += '\nwhere __$operation in (1,2,4) -- exclude 3, previous value from update\n'
 
-        primary_keys = ' and '.join(['[{table}].[{pk}] = inn.[{pk}]'.format(pk=pk, table=true_table_name) for pk in self.source_table.primary_keys])
-        self.qry += '\tand __$start_lsn = (select top 1 inn.[__$start_lsn] from {fqtn} inn with(nolock) where {primary_keys} order by inn.[__$start_lsn] desc)'.format(fqtn=cdc_fq_object, primary_keys=primary_keys)
+        primary_keys = ','.join(['[' + pk + ']' for pk in self.source_table.primary_keys])
+        ord_snip = '\n\t, row_number() over(partition by {primary_keys} order by __$start_lsn desc, __$operation desc) ord'.format(primary_keys=primary_keys)
+
+        self.qry = self.qry.replace('from ' + cdc_fq_object, ord_snip + '\nfrom ' + cdc_fq_object)
+
+        all_columns = ', '.join(self.source_table.columns)
+        self.qry = 'select {all_columns} from (\n'.format(all_columns=all_columns) + self.qry + '\n) a where ord = 1'
+
 
 
 
