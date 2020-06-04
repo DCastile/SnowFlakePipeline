@@ -100,7 +100,6 @@ class SnowFlakeTableSyncher:
         #         batch=self.source_table_batch.batch_number))
         try:
             self.merge_command = self.build_snowflake_merge_command()
-            print(self.merge_command)
             with conn.cursor() as  curs:
                 curs.execute(self.merge_command)
                 self.qry_id = curs.sfqid
