@@ -20,7 +20,7 @@ select
 	 [UpdateByID] = isNull(cast([Incident_PartiesInvolved].[UpdateByID] as varchar(36)), '\N'),
 	 [UpdateBy] = concat(char(34), isNull(replace(cast([Incident_PartiesInvolved].[UpdateBy] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [UpdateDate] = isNull(convert(varchar(50), [Incident_PartiesInvolved].[UpdateDate], 21), '\N'),
-	 [Notes] = concat(char(34), isNull(replace(cast([Incident_PartiesInvolved].[Notes] as nvarchar(4000)), char(34), char(0)), '\N'), char(34)),
+	 [Notes] = concat(char(34), isNull(replace(cast([Incident_PartiesInvolved].[Notes] as nvarchar(3998)), char(34), char(0)), '\N'), char(34)),
 	 [EMailMobile] = concat(char(34), isNull(replace(cast([Incident_PartiesInvolved].[EMailMobile] as nvarchar(500)), char(34), char(0)), '\N'), char(34)),
 	 [IsNotificationRecipient] = isNull(cast([Incident_PartiesInvolved].[IsNotificationRecipient] as varchar(36)), '\N'),
 	 [SubType] = concat(char(34), isNull(replace(cast([Incident_PartiesInvolved].[SubType] as nvarchar(50)), char(34), char(0)), '\N'), char(34))
