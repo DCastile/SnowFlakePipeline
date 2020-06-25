@@ -32,7 +32,7 @@ pk_qry = '''
             on schema_name(tab.schema_id) = info_col.TABLE_SCHEMA
                and tab.name = info_col.TABLE_NAME
                 and col.name = info_col.COLUMN_NAME
-        where schema_name(tab.schema_id) = 'dbo' and tab.name = 'EQUZ'
+        where schema_name(tab.schema_id) = 'dbo' --and tab.name = 'EQUZ'
     )
     select schema_name, table_name, column_id, column_name, data_type, part_of_pk
     from table_columns
@@ -100,7 +100,7 @@ when not matched by source then update
     set
         touchstamp = GetDate(),
         deleted = 1
-when matched and change.hash != prod.prod_hash or change.deleted = 1 then update
+when matched and (change.hash != prod.prod_hash or change.deleted = 1) then update
     set
         change.touchstamp = GetDate(),
         change.hash = prod.prod_hash,
@@ -108,7 +108,7 @@ when matched and change.hash != prod.prod_hash or change.deleted = 1 then update
 ;
     '''.format(source_db=source_db, ct_db=ct_db, table=table_name, pk_join_condition= pk_join_condition, pk_list_text=pk_column_text, hash_columns= hash_columns)
     print(update_hashes_script)
-    connection_manager.execute_query(create_table_script, None, server, ct_db, user='datapipeline', password='datareader99$', results=False)
+    # connection_manager.execute_query(create_table_script, None, server, ct_db, user='datapipeline', password='datareader99$', results=False)
     connection_manager.execute_query(update_hashes_script, None, server, ct_db, user='datapipeline', password='datareader99$', results=False)
     print('\n\n\n\n')
 
