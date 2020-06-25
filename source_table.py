@@ -299,7 +299,7 @@ class SourceTableBatch:
         self.qry = '\n'.join(new_qry)
 
         self.qry = self.qry + where_clause
-        self.qry = self.qry.replace('select', 'select IIF(changes.hash is null, 1, 0) deleted,')
+        self.qry = self.qry.replace('select', 'select changes.deleted,')
 
 
 
