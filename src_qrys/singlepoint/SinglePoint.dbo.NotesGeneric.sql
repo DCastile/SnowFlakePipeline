@@ -3,6 +3,7 @@ select
 	 [FKID] = isNull(cast([NotesGeneric].[FKID] as varchar(36)), '\N'),
 	 [ObjectType] = concat(char(34), isNull(replace(cast([NotesGeneric].[ObjectType] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
 	 [Title] = concat(char(34), isNull(replace(cast([NotesGeneric].[Title] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
+	 [Body] = concat(char(34), isNull(replace(cast([NotesGeneric].[Body] as nvarchar(max)), char(34), char(0)), '\N'), char(34)),
 	 [Audiance] = concat(char(34), isNull(replace(cast([NotesGeneric].[Audiance] as nvarchar(255)), char(34), char(0)), '\N'), char(34)),
 	 [EffectiveDate] = isNull(convert(varchar(50), [NotesGeneric].[EffectiveDate], 21), '\N'),
 	 [ExpirationDate] = isNull(convert(varchar(50), [NotesGeneric].[ExpirationDate], 21), '\N'),
