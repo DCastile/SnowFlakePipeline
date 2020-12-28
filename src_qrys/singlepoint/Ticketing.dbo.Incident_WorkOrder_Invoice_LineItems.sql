@@ -1,0 +1,21 @@
+select
+	 [InvoiceLineID] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[InvoiceLineID] as varchar(36)), '\N'),
+	 [WorkOrderID] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[WorkOrderID] as varchar(36)), '\N'),
+	 [IncidentID] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[IncidentID] as varchar(36)), '\N'),
+	 [LineItemID] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[LineItemID] as varchar(36)), '\N'),
+	 [Description] = concat(char(34), isNull(replace(cast([Incident_WorkOrder_Invoice_LineItems].[Description] as nvarchar(100)), char(34), char(0)), '\N'), char(34)),
+	 [Quantity] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[Quantity] as varchar(36)), '\N'),
+	 [Rate] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[Rate] as varchar(36)), '\N'),
+	 [Amount] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[Amount] as varchar(36)), '\N'),
+	 [TransactionID] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[TransactionID] as varchar(36)), '\N'),
+	 [Currency] = concat(char(34), isNull(replace(cast([Incident_WorkOrder_Invoice_LineItems].[Currency] as nvarchar(3)), char(34), char(0)), '\N'), char(34)),
+	 [ExchangeRate] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[ExchangeRate] as varchar(36)), '\N'),
+	 [Type] = concat(char(34), isNull(replace(cast([Incident_WorkOrder_Invoice_LineItems].[Type] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
+	 [Status] = concat(char(34), isNull(replace(cast([Incident_WorkOrder_Invoice_LineItems].[Status] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
+	 [InvoiceNumber] = concat(char(34), isNull(replace(cast([Incident_WorkOrder_Invoice_LineItems].[InvoiceNumber] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
+	 [Amount_InvoiceCurrency] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[Amount_InvoiceCurrency] as varchar(36)), '\N'),
+	 [Source] = concat(char(34), isNull(replace(cast([Incident_WorkOrder_Invoice_LineItems].[Source] as nvarchar(50)), char(34), char(0)), '\N'), char(34)),
+	 [TransactionDate] = isNull(convert(varchar(50), [Incident_WorkOrder_Invoice_LineItems].[TransactionDate], 21), '\N'),
+	 [ConcessionID] = isNull(cast([Incident_WorkOrder_Invoice_LineItems].[ConcessionID] as varchar(36)), '\N'),
+	 [SubType] = concat(char(34), isNull(replace(cast([Incident_WorkOrder_Invoice_LineItems].[SubType] as nvarchar(50)), char(34), char(0)), '\N'), char(34))
+from Ticketing.dbo.Incident_WorkOrder_Invoice_LineItems with(nolock)
